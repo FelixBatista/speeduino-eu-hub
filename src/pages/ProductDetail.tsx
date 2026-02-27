@@ -1,12 +1,15 @@
 import { useParams, Link } from "react-router-dom";
 import { getProductBySlug } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 import { motion } from "framer-motion";
 import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones } from "lucide-react";
+import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const product = getProductBySlug(slug || "");
+  const { addItem } = useCart();
 
   if (!product) {
     return (
@@ -71,7 +74,13 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <button className="cta-primary w-full mb-4">
+            <button
+              onClick={() => {
+                addItem(product);
+                toast.success(`${product.shortName} added to cart`);
+              }}
+              className="cta-primary w-full mb-4"
+            >
               <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
             </button>
             <p className="text-xs text-muted-foreground text-center mb-8">Prices include VAT. Free shipping on orders over €250.</p>
