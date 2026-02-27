@@ -14,7 +14,10 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Compare from "./pages/Compare";
 import Compatibility from "./pages/Compatibility";
+import Vehicles from "./pages/Vehicles";
+import VehicleDetail from "./pages/VehicleDetail";
 import Guides from "./pages/Guides";
+import BlogArticle from "./pages/BlogArticle";
 import Support from "./pages/Support";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -41,7 +44,10 @@ const App = () => (
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/compatibility" element={<Compatibility />} />
+            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/vehicles/:slug" element={<VehicleDetail />} />
             <Route path="/guides" element={<Guides />} />
+            <Route path="/guides/:slug" element={<BlogArticle />} />
             <Route path="/support" element={<Support />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<Privacy />} />

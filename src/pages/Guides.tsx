@@ -33,9 +33,11 @@ export default function Guides() {
                   <Clock className="w-3 h-3" /> {post.readTime}
                 </span>
               </div>
-              <h2 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {post.title}
-              </h2>
+              <Link to={`/guides/${post.slug}`}>
+                <h2 className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                  {post.title}
+                </h2>
+              </Link>
               <p className="text-sm text-muted-foreground mb-4">{post.intro}</p>
               <div className="mb-4">
                 <p className="data-label text-[10px] mb-2">Topics covered</p>
@@ -45,9 +47,9 @@ export default function Guides() {
                   ))}
                 </ul>
               </div>
-              <span className="text-primary text-sm font-medium flex items-center gap-1">
+              <Link to={`/guides/${post.slug}`} className="text-primary text-sm font-medium flex items-center gap-1">
                 Read more <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </span>
+              </Link>
             </motion.article>
           ))}
         </div>
