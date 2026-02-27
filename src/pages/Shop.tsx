@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { products, Product } from "@/data/products";
+import { useCart } from "@/contexts/CartContext";
 import { motion } from "framer-motion";
-import { Filter, ArrowRight } from "lucide-react";
+import { Filter, ArrowRight, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
 const categories = [
@@ -16,6 +18,7 @@ const categories = [
 export default function Shop() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
+  const { addItem } = useCart();
 
   const filtered = activeCategory === "all" ? products : products.filter((p) => p.category === activeCategory);
 
@@ -104,9 +107,22 @@ export default function Shop() {
                 <p className="text-sm text-muted-foreground mb-3 flex-1">{product.description}</p>
                 <div className="flex items-center justify-between">
                   <span className="font-mono font-bold text-lg text-foreground">{price(product)}</span>
-                  <span className="text-primary text-sm flex items-center gap-1">
-                    Details <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        addItem(product);
+                        toast.success(`${product.shortName} added to cart`);
+                      }}
+                      className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      aria-label="Add to cart"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                    </button>
+                    <span className="text-primary text-sm flex items-center gap-1">
+                      Details <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
                 </div>
               </Link>
             </motion.div>
