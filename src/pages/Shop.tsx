@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { products, Product } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
+import { useAvailability } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { Filter, ArrowRight, ShoppingCart } from "lucide-react";
+import { Filter, ArrowRight, ShoppingCart, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
@@ -19,10 +20,13 @@ export default function Shop() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
   const { addItem } = useCart();
+  const { availability } = useAvailability();
 
   const filtered = activeCategory === "all" ? products : products.filter((p) => p.category === activeCategory);
 
   const price = (p: Product) => currency === "EUR" ? `€${p.priceEUR}` : `${p.priceSEK} SEK`;
+  const stockQty = (productId: string) => typeof availability[productId] === "number" ? availability[productId] : -1;
+  const outOfStock = (productId: string) => stockQty(productId) === 0;
 
   return (
     <main className="pt-24 pb-20">
@@ -101,6 +105,14 @@ export default function Shop() {
                     {product.badge}
                   </span>
                 )}
+                {outOfStock(product.id) && (
+                  <span className="self-start text-xs font-medium text-destructive bg-destructive/10 px-2 py-0.5 rounded mb-2 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" /> Out of stock
+                  </span>
+                )}
+                {stockQty(product.id) > 0 && stockQty(product.id) <= 3 && (
+                  <span className="self-start text-xs text-muted-foreground mb-2">Only {stockQty(product.id)} left</span>
+                )}
                 <h2 className="font-display text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
                   {product.shortName}
                 </h2>
@@ -111,10 +123,15 @@ export default function Shop() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
+                        if (outOfStock(product.id)) {
+                          toast.error("This item is out of stock.");
+                          return;
+                        }
                         addItem(product);
                         toast.success(`${product.shortName} added to cart`);
                       }}
-                      className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                      disabled={outOfStock(product.id)}
+                      className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-50 disabled:pointer-events-none"
                       aria-label="Add to cart"
                     >
                       <ShoppingCart className="w-4 h-4" />

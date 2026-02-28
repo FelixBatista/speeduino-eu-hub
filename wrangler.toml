@@ -1,0 +1,16 @@
+# Cloudflare Pages + D1
+# Build: npm run build | Output: dist
+# Create D1: wrangler d1 create speeduino-eu-hub-db
+# Then set database_id below and run: wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/schema.sql
+
+name = "speeduino-eu-hub"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "speeduino-eu-hub-db"
+database_id = ""  # Replace after: wrangler d1 create speeduino-eu-hub-db
+
+# Env vars / secrets: set in Cloudflare dashboard or via wrangler secret
+# APP_URL, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ADMIN_TOKEN

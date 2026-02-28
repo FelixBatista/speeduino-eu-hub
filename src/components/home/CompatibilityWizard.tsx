@@ -3,6 +3,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { wizardSteps, getRecommendation } from "@/data/compatibility";
 import { products } from "@/data/products";
+import { useAvailability } from "@/hooks/useAvailability";
 import { ChevronRight, ChevronLeft, Check, AlertTriangle, ShoppingCart } from "lucide-react";
 
 export default function CompatibilityWizard() {
@@ -55,6 +56,8 @@ export default function CompatibilityWizard() {
   const recommendedProducts = recommendation
     ? recommendation.productIds.map((id) => products.find((p) => p.id === id)).filter(Boolean)
     : [];
+  const { availability } = useAvailability();
+  const hasOutOfStockInBundle = recommendation?.productIds.some((id) => availability[id] === 0) ?? false;
 
   return (
     <section className="py-20 md:py-32 relative" ref={ref} id="find-my-kit">
@@ -184,10 +187,21 @@ export default function CompatibilityWizard() {
                         <p className="font-medium text-foreground">{product.shortName}</p>
                         <p className="text-sm text-muted-foreground">{product.description}</p>
                         <p className="font-mono text-primary font-semibold mt-1">€{product.priceEUR}</p>
+                        {typeof availability[product.id] === "number" && (
+                          <p className={`text-xs mt-1 ${availability[product.id] === 0 ? "text-destructive" : "text-muted-foreground"}`}>
+                            {availability[product.id] === 0 ? "Out of stock" : `${availability[product.id]} in stock`}
+                          </p>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
+                {hasOutOfStockInBundle && (
+                  <p className="text-sm text-destructive flex items-center gap-2 mb-6">
+                    <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                    One or more recommended items are currently out of stock. You can still add others from the shop; stock is confirmed at checkout.
+                  </p>
+                )}
 
                 <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                   <div>

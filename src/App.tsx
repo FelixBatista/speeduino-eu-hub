@@ -12,6 +12,8 @@ import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
+import Admin from "./pages/Admin";
 import Compare from "./pages/Compare";
 import Compatibility from "./pages/Compatibility";
 import Vehicles from "./pages/Vehicles";
@@ -42,6 +44,8 @@ const App = () => (
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order/success" element={<OrderSuccess />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/compatibility" element={<Compatibility />} />
             <Route path="/vehicles" element={<Vehicles />} />

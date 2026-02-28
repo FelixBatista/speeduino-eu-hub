@@ -1,8 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import { getProductBySlug } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
+import { useStock } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones } from "lucide-react";
+import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
@@ -10,6 +11,7 @@ export default function ProductDetail() {
   const { slug } = useParams();
   const product = getProductBySlug(slug || "");
   const { addItem } = useCart();
+  const { qty: stockQty, outOfStock, loaded: stockLoaded } = useStock(product?.id);
 
   if (!product) {
     return (
@@ -74,16 +76,35 @@ export default function ProductDetail() {
               </div>
             </div>
 
+            {stockLoaded && (
+              <div className="mb-4">
+                {outOfStock ? (
+                  <p className="text-sm text-destructive flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" /> Out of stock — check back later or contact us.
+                  </p>
+                ) : stockQty >= 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    {stockQty === 1 ? "Only 1 left in stock." : `${stockQty} in stock.`}
+                  </p>
+                ) : null}
+              </div>
+            )}
+
             <button
               onClick={() => {
+                if (outOfStock) {
+                  toast.error("This item is currently out of stock.");
+                  return;
+                }
                 addItem(product);
                 toast.success(`${product.shortName} added to cart`);
               }}
-              className="cta-primary w-full mb-4"
+              disabled={outOfStock}
+              className="cta-primary w-full mb-4 disabled:opacity-50 disabled:pointer-events-none"
             >
               <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
             </button>
-            <p className="text-xs text-muted-foreground text-center mb-8">Prices include VAT. Free shipping on orders over €250.</p>
+            <p className="text-xs text-muted-foreground text-center mb-8">Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout.</p>
 
             {/* What's included */}
             <div className="mb-6">
@@ -139,7 +160,7 @@ export default function ProductDetail() {
               "@type": "Offer",
               price: product.priceEUR,
               priceCurrency: "EUR",
-              availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              availability: outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
               seller: { "@type": "Organization", name: "Speeduino.eu" },
             },
           }),
