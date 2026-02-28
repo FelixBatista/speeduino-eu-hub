@@ -17,6 +17,8 @@ export interface Product {
   inStock: boolean;
   images: string[];
   specs: Record<string, string>;
+  /** Stripe Payment Link URL — create in Stripe Dashboard → Payment Links */
+  stripePaymentLink?: string;
 }
 
 export const products: Product[] = [
