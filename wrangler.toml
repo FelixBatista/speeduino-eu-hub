@@ -9,8 +9,8 @@ pages_build_output_dir = "dist"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "speeduino-eu-hub-db"
-database_id = ""  # Replace after: wrangler d1 create speeduino-eu-hub-db
+database_name = "store_db"
+database_id = "61a84bcb-79b4-4397-ba0c-7eac700e56e3"
 
 # Env vars / secrets: set in Cloudflare dashboard or via wrangler secret
 # APP_URL, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ADMIN_TOKEN
