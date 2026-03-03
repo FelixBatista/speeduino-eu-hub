@@ -58,3 +58,17 @@ export async function getRecentOrders(db: D1Database, limit: number): Promise<{ 
   const { results } = await db.prepare("SELECT id, created_at, status, currency, amount_total, stripe_session_id, customer_email FROM orders ORDER BY created_at DESC LIMIT ?").bind(limit).all();
   return (results ?? []) as { id: string; created_at: string; status: string; currency: string; amount_total: number; stripe_session_id: string; customer_email: string | null }[];
 }
+
+/** Subscribe an email for newsletter/starter guide. Idempotent: same email can re-submit (no error). */
+export async function subscribeEmail(db: D1Database, email: string, source = "starter_guide"): Promise<{ ok: true } | { ok: false; error: "invalid" }> {
+  const trimmed = email.trim().toLowerCase();
+  if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return { ok: false, error: "invalid" };
+  try {
+    await db.prepare("INSERT INTO subscribers (email, source) VALUES (?, ?)").bind(trimmed, source).run();
+    return { ok: true };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("UNIQUE") || msg.includes("unique")) return { ok: true };
+    throw e;
+  }
+}

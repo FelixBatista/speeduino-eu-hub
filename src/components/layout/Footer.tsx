@@ -1,7 +1,43 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, Mail, MapPin, Truck } from "lucide-react";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    const value = email.trim();
+    if (!value) {
+      setStatus("error");
+      setMessage("Please enter your email.");
+      return;
+    }
+    setStatus("loading");
+    setMessage("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: value }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus("error");
+        setMessage((data as { error?: string })?.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setStatus("success");
+      setEmail("");
+      setMessage("Thanks! Check your inbox for the starter guide.");
+    } catch {
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
+    }
+  }
+
   return (
     <footer className="border-t border-border bg-card">
       {/* CTA Band */}
@@ -27,13 +63,26 @@ export default function Footer() {
           <p className="text-muted-foreground text-sm mb-4">
             Get our free starter guide — practical tips for your first Speeduino install.
           </p>
-          <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-3 rounded-lg bg-secondary border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-            />
-            <button type="submit" className="cta-primary !px-6 !py-3 !text-sm">Get the Guide</button>
+          <form className="flex flex-col gap-2" onSubmit={handleSubscribe}>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading"}
+                className="flex-1 px-4 py-3 rounded-lg bg-secondary border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-60"
+                aria-label="Email for starter guide"
+              />
+              <button type="submit" disabled={status === "loading"} className="cta-primary !px-6 !py-3 !text-sm disabled:opacity-60">
+                {status === "loading" ? "Sending…" : "Get the Guide"}
+              </button>
+            </div>
+            {message && (
+              <p className={`text-sm ${status === "success" ? "text-green-600 dark:text-green-400" : status === "error" ? "text-destructive" : "text-muted-foreground"}`}>
+                {message}
+              </p>
+            )}
           </form>
         </div>
       </div>
