@@ -169,11 +169,27 @@ Use the printed webhook signing secret in `.dev.vars` as `STRIPE_WEBHOOK_SECRET`
 
 ---
 
-## 7. Checklist
+## 7. Troubleshooting
 
-- [ ] Cloudflare Pages project created and connected to repo (or deploy via CLI).
-- [ ] D1 database created; `wrangler.toml` updated with `database_id`.
-- [ ] Schema and seed applied to D1 (remote and/or local).
-- [ ] Env vars set in Cloudflare: `APP_URL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `ADMIN_TOKEN`.
-- [ ] Stripe webhook endpoint added with URL `https://<your-domain>/api/stripe-webhook`, event `checkout.session.completed`.
-- [ ] `robots.txt` and `sitemap.xml` updated with your domain.
+### "Server configuration error" when clicking Pay / checkout
+
+This means the **checkout** API (`POST /api/checkout`) is missing one or more of:
+
+| Required | Where to set it |
+|----------|-----------------|
+| **DB** (D1) | **Pages → your project → Settings → Functions** → scroll to **D1 database bindings** → add a binding: Variable name = `DB`, D1 database = your database (e.g. `store_db`). If you deploy via Git, `wrangler.toml` may provide this automatically; if not, add the binding in the dashboard. |
+| **APP_URL** | **Pages → Settings → Environment variables** → add `APP_URL` = your site URL (e.g. `https://speeduino-eu-hub.pages.dev` or your custom domain). Apply to **Production** (and **Preview** if you test preview deploys). |
+| **STRIPE_SECRET_KEY** | **Pages → Settings → Environment variables** → add `STRIPE_SECRET_KEY` = your Stripe secret key (`sk_test_...` or `sk_live_...`). Prefer **Encrypt** so it’s stored as a secret. |
+
+Redeploy or wait for the next deployment after changing env vars or bindings. If you use a custom domain, set `APP_URL` to that (e.g. `https://yourdomain.com`).
+
+---
+
+## 8. Checklist
+
+- [x] Cloudflare Pages project created and connected to repo (or deploy via CLI).
+- [x] D1 database created; `wrangler.toml` updated with `database_id`.
+- [x] Schema and seed applied to D1 (remote and/or local).
+- [x] Env vars set in Cloudflare: `APP_URL`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `ADMIN_TOKEN`.
+- [x] Stripe webhook endpoint added with URL `https://<your-domain>/api/stripe-webhook`, event `checkout.session.completed`.
+- [x] `robots.txt` and `sitemap.xml` updated with your domain.
