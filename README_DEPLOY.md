@@ -78,7 +78,7 @@ This app uses **Stripe Checkout Sessions** with server-computed `price_data`. Yo
 2. **Add endpoint:**  
    URL: `https://<your-pages-domain>/api/stripe-webhook`  
    Events to send: `checkout.session.completed` (and optionally `checkout.session.expired`).
-3. After creating the endpoint, open it and reveal the **Signing secret** (`whsec_...`). Set it as `STRIPE_WEBHOOK_SECRET` in Cloudflare.
+3. After creating the endpoint, open that endpoint and reveal the **Signing secret** (starts with `whsec_...`). Set that value as `STRIPE_WEBHOOK_SECRET` in Cloudflare — not your API key (`sk_...`), only this endpoint’s signing secret.
 
 Stripe will send `checkout.session.completed` after a successful payment. The webhook handler will:
 
@@ -182,6 +182,25 @@ This means the **checkout** API (`POST /api/checkout`) is missing one or more of
 | **STRIPE_SECRET_KEY** | **Pages → Settings → Environment variables** → add `STRIPE_SECRET_KEY` = your Stripe secret key (`sk_test_...` or `sk_live_...`). Prefer **Encrypt** so it’s stored as a secret. |
 
 Redeploy or wait for the next deployment after changing env vars or bindings. If you use a custom domain, set `APP_URL` to that (e.g. `https://yourdomain.com`).
+
+### Webhook returns 400 "Invalid signature" → "Order not found" after payment
+
+Payment succeeds in Stripe but the webhook fails with **400 Bad Request** and response `{"error": "Invalid signature"}`. Then the success page can’t find the order because it was never written to D1.
+
+**Cause:** `STRIPE_WEBHOOK_SECRET` in Cloudflare does not match the **Signing secret** for that webhook endpoint in Stripe.
+
+**Fix:**
+
+1. In Stripe go to [Developers → Webhooks](https://dashboard.stripe.com/webhooks).
+2. Open the endpoint whose URL is `https://speeduino-eu-hub.pages.dev/api/stripe-webhook` (or your domain).
+3. In **Signing secret**, click **Reveal** and copy the value (it starts with `whsec_`).  
+   Do **not** use your API secret key (`sk_...`) here — only the webhook signing secret.
+4. In Cloudflare **Pages → your project → Settings → Environment variables**, set **`STRIPE_WEBHOOK_SECRET`** to that exact value (no extra spaces). Use **Encrypt** if you want. Apply to **Production** (and **Preview** if you use it).
+5. Redeploy or wait for the next deployment so the new secret is used.
+
+If you recreated the webhook endpoint in Stripe, a new signing secret was generated — update Cloudflare with that new `whsec_...` value.
+
+**If the secret is correct and it still fails:** Cloudflare Pages runs on the Workers (edge) runtime, which uses the Web Crypto API. The webhook handler uses Stripe’s **async** verification (`constructEventAsync` + `createSubtleCryptoProvider`) so signature verification works in that environment. After pulling the latest code, redeploy so the updated handler is live.
 
 ---
 

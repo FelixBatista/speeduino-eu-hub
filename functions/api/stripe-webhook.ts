@@ -2,6 +2,10 @@ import Stripe from "stripe";
 import { createOrderAndDecrementInventory } from "../lib/db";
 import { jsonResponse, errorResponse } from "../lib/json";
 
+// Cloudflare Workers/Pages use Web Crypto (async). Sync constructEvent can fail verification;
+// use constructEventAsync + createSubtleCryptoProvider so signature verification works on the edge.
+const webCrypto = Stripe.createSubtleCryptoProvider();
+
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
   const { DB, STRIPE_WEBHOOK_SECRET, STRIPE_SECRET_KEY } = env;
@@ -20,7 +24,13 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   let event: Stripe.Event;
   try {
-    event = Stripe.webhooks.constructEvent(rawBody, signature, STRIPE_WEBHOOK_SECRET);
+    event = await Stripe.webhooks.constructEventAsync(
+      rawBody,
+      signature,
+      STRIPE_WEBHOOK_SECRET,
+      undefined,
+      webCrypto
+    );
   } catch (err) {
     return errorResponse("Invalid signature", 400);
   }
