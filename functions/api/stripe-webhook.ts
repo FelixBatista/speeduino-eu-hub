@@ -98,7 +98,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }
 
     // Emails: confirmation to customer, new-sale alert to seller (non-blocking best-effort)
-    const { getProductById } = await import("../lib/catalog");
     const orderForEmail = {
       id: orderId,
       created_at: new Date().toISOString(),
