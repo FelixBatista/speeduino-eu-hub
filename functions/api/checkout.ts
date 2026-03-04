@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { getProductById, getUnitAmount } from "../lib/catalog";
 import { getInventory } from "../lib/db";
-import { getShippingById, getShippingAmount } from "../lib/shipping";
+import { getShippingOptions, getShippingById, getShippingAmount } from "../lib/shipping";
 import { jsonResponse, errorResponse } from "../lib/json";
 
 const MIN_QTY = 1;
@@ -29,7 +29,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   if (!Array.isArray(items) || items.length === 0 || (currency !== "EUR" && currency !== "SEK")) {
     return errorResponse("Invalid input: items array and currency (EUR|SEK) required", 400);
   }
-  const shippingOption = getShippingById(shippingOptionId);
+  const shippingOptions = await getShippingOptions(DB);
+  const shippingOption = getShippingById(shippingOptions, shippingOptionId);
   if (!shippingOption) return errorResponse("Invalid shipping option", 400);
 
   const stripe = new Stripe(STRIPE_SECRET_KEY);
@@ -67,6 +68,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     },
   ];
 
+  const { getShippingAllowedCountries } = await import("../lib/shipping");
+  const allowedCountries = await getShippingAllowedCountries(DB);
   const cartMetadata = JSON.stringify(lineItems.map((i) => ({ productId: i.productId, quantity: i.quantity })));
   try {
     const session = await stripe.checkout.sessions.create({
@@ -75,7 +78,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
       success_url: `${APP_URL}/order/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/checkout`,
       metadata: { cart: cartMetadata, currency, shipping_option_id: shippingOption.id, shipping_option_label: shippingOption.label },
-      shipping_address_collection: { allowed_countries: ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "GB", "NO", "CH", "IS", "LI"] },
+      shipping_address_collection: { allowed_countries: allowedCountries.length > 0 ? allowedCountries : ["AT"] },
     });
     const url = session.url;
     if (!url) return errorResponse("Failed to create checkout session", 500);

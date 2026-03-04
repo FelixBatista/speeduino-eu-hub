@@ -53,3 +53,9 @@ CREATE TABLE IF NOT EXISTS subscribers (
 );
 CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
 CREATE INDEX IF NOT EXISTS idx_subscribers_created_at ON subscribers(created_at DESC);
+
+-- Site config (e.g. shipping options, allowed countries) – editable from Admin
+CREATE TABLE IF NOT EXISTS config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);

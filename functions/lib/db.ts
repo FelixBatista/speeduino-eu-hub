@@ -1,3 +1,14 @@
+/** Get config value by key. Returns null if not set. */
+export async function getConfig(db: D1Database, key: string): Promise<string | null> {
+  const row = await db.prepare("SELECT value FROM config WHERE key = ?").bind(key).first<{ value: string }>();
+  return row?.value ?? null;
+}
+
+/** Set config value (insert or replace). */
+export async function setConfig(db: D1Database, key: string, value: string): Promise<void> {
+  await db.prepare("INSERT INTO config (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").bind(key, value).run();
+}
+
 export async function getInventory(db: D1Database, productId: string): Promise<number> {
   const row = await db.prepare("SELECT qty FROM inventory WHERE product_id = ?").bind(productId).first<{ qty: number }>();
   return row?.qty ?? 0;

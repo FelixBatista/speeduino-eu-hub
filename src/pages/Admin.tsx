@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle } from "lucide-react";
+import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle, Settings2, Plus, Trash2 } from "lucide-react";
 
 const ADMIN_TOKEN_KEY = "speeduino-admin-token";
 
@@ -19,6 +19,8 @@ type Order = {
 };
 type InventoryRow = { product_id: string; qty: number; updated_at: string };
 
+type ShippingOptionRow = { id: string; label: string; amountEUR: number; amountSEK: number };
+
 export default function Admin() {
   const [token, setTokenState] = useState("");
   const [inputToken, setInputToken] = useState("");
@@ -32,6 +34,10 @@ export default function Admin() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [trackingCarrier, setTrackingCarrier] = useState("");
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
+  const [shippingOptions, setShippingOptions] = useState<ShippingOptionRow[]>([]);
+  const [shippingCountries, setShippingCountries] = useState("");
+  const [shippingConfigSaving, setShippingConfigSaving] = useState(false);
+  const [shippingConfigError, setShippingConfigError] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(ADMIN_TOKEN_KEY);
@@ -50,11 +56,12 @@ export default function Admin() {
     setError(null);
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [ordersRes, invRes] = await Promise.all([
+      const [ordersRes, invRes, shippingRes] = await Promise.all([
         fetch("/api/admin/orders", { headers }),
         fetch("/api/admin/inventory", { headers }),
+        fetch("/api/admin/shipping-config", { headers }),
       ]);
-      if (ordersRes.status === 401 || invRes.status === 401) {
+      if (ordersRes.status === 401 || invRes.status === 401 || shippingRes.status === 401) {
         setToken("");
         setTokenState("");
         setError("Invalid or expired token.");
@@ -68,6 +75,11 @@ export default function Admin() {
       const invData = await invRes.json();
       setOrders(ordersData.orders ?? []);
       setInventory(invData.inventory ?? []);
+      if (shippingRes.ok) {
+        const shippingData = await shippingRes.json();
+        setShippingOptions(shippingData.shipping_options ?? []);
+        setShippingCountries(Array.isArray(shippingData.shipping_allowed_countries) ? shippingData.shipping_allowed_countries.join(", ") : "");
+      }
     } catch {
       setError("Network error.");
     } finally {
@@ -77,8 +89,48 @@ export default function Admin() {
 
   useEffect(() => {
     if (token) fetchData();
-    else { setOrders([]); setInventory([]); }
+    else { setOrders([]); setInventory([]); setShippingOptions([]); setShippingCountries(""); }
   }, [token]);
+
+  const handleSaveShippingConfig = async () => {
+    setShippingConfigError(null);
+    setShippingConfigSaving(true);
+    try {
+      const countries = shippingCountries
+        .split(/[\s,]+/)
+        .map((c) => c.trim().toUpperCase())
+        .filter((c) => c.length === 2);
+      const res = await fetch("/api/admin/shipping-config", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          shipping_options: shippingOptions.filter((o) => o.id.trim() && o.label.trim()),
+          shipping_allowed_countries: countries,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setShippingConfigError(data?.error ?? "Failed to save.");
+        return;
+      }
+    } catch {
+      setShippingConfigError("Network error.");
+    } finally {
+      setShippingConfigSaving(false);
+    }
+  };
+
+  const addShippingOption = () => {
+    setShippingOptions((prev) => [...prev, { id: "", label: "", amountEUR: 0, amountSEK: 0 }]);
+  };
+  const removeShippingOption = (index: number) => {
+    setShippingOptions((prev) => prev.filter((_, i) => i !== index));
+  };
+  const updateShippingOption = (index: number, field: keyof ShippingOptionRow, value: string | number) => {
+    setShippingOptions((prev) =>
+      prev.map((o, i) => (i !== index ? o : { ...o, [field]: value }))
+    );
+  };
 
   const handleMarkShipped = async (orderId: string) => {
     setUpdatingOrderId(orderId);
@@ -333,6 +385,91 @@ export default function Admin() {
                 </table>
               </div>
             )}
+          </section>
+
+          <section className="card-motorsport p-6 mb-8">
+            <h2 className="font-display text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+              <Settings2 className="w-5 h-5" /> Shipping settings
+            </h2>
+            <p className="text-muted-foreground text-sm mb-4">
+              Shipping options shown at checkout. Prices: EUR in cents (e.g. 500 = €5.00), SEK in öre (e.g. 4900 = 49 SEK). Allowed countries: 2-letter codes, comma-separated.
+            </p>
+            {shippingConfigError && (
+              <div className="p-3 mb-4 rounded bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+                {shippingConfigError}
+              </div>
+            )}
+            <div className="space-y-4 mb-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-foreground">Shipping options</span>
+                <button type="button" onClick={addShippingOption} className="text-xs text-primary hover:underline inline-flex items-center gap-1">
+                  <Plus className="w-3.5 h-3.5" /> Add option
+                </button>
+              </div>
+              {shippingOptions.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No options. Add one so customers can choose shipping at checkout.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {shippingOptions.map((opt, index) => (
+                    <li key={index} className="flex flex-wrap items-center gap-2 p-3 rounded-lg border border-border bg-background/50">
+                      <input
+                        type="text"
+                        placeholder="ID (e.g. standard)"
+                        value={opt.id}
+                        onChange={(e) => updateShippingOption(index, "id", e.target.value)}
+                        className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm font-mono"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Label"
+                        value={opt.label}
+                        onChange={(e) => updateShippingOption(index, "label", e.target.value)}
+                        className="flex-1 min-w-[140px] px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm"
+                      />
+                      <input
+                        type="number"
+                        min={0}
+                        step={1}
+                        placeholder="EUR cents"
+                        value={opt.amountEUR || ""}
+                        onChange={(e) => updateShippingOption(index, "amountEUR", parseInt(e.target.value, 10) || 0)}
+                        className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right"
+                      />
+                      <input
+                        type="number"
+                        min={0}
+                        step={1}
+                        placeholder="SEK öre"
+                        value={opt.amountSEK || ""}
+                        onChange={(e) => updateShippingOption(index, "amountSEK", parseInt(e.target.value, 10) || 0)}
+                        className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right"
+                      />
+                      <button type="button" onClick={() => removeShippingOption(index)} className="p-1.5 text-muted-foreground hover:text-destructive" title="Remove">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-foreground mb-1">Allowed countries (2-letter codes, comma-separated)</label>
+              <input
+                type="text"
+                placeholder="AT, BE, DE, SE, GB, ..."
+                value={shippingCountries}
+                onChange={(e) => setShippingCountries(e.target.value)}
+                className="w-full px-3 py-2 rounded border border-border bg-background text-foreground text-sm font-mono"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleSaveShippingConfig}
+              disabled={shippingConfigSaving || shippingOptions.length === 0}
+              className="cta-primary !py-2 !text-sm disabled:opacity-50"
+            >
+              {shippingConfigSaving ? "Saving…" : "Save shipping settings"}
+            </button>
           </section>
 
           <section className="card-motorsport p-6">

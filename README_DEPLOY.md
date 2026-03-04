@@ -38,6 +38,7 @@ This guide covers deploying the frontend to **Cloudflare Pages**, wiring **Strip
    npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/schema.sql
    npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/schema-order-tracking.sql
    npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/seed-inventory.sql
+   (optional) npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/seed-config.sql
    ```
    If your database name differs, replace `speeduino-eu-hub-db` with the name you used in `wrangler d1 create`.  
    **Existing DBs:** run `schema-order-tracking.sql` once to add shipped/delivered/tracking columns.
@@ -79,7 +80,9 @@ This app uses **Stripe Checkout Sessions** with server-computed `price_data`. Yo
 
 ### Shipping
 
-Checkout includes **shipping options** (e.g. Standard / Express) and **address collection**. Customers choose a shipping method on your site; the chosen price is added as a line item so Stripe captures the full amount (products + shipping). Stripe’s hosted checkout then collects **name, email, and shipping address**. After payment, the webhook saves this into the order’s `shipping_json` so you can use it to ship and see it in Admin. Shipping options and allowed countries are defined in `functions/lib/shipping.ts` and `functions/api/checkout.ts`; adjust them to match your carriers and regions.
+Checkout includes **shipping options** (e.g. Standard / Express) and **address collection**. Customers choose a shipping method on your site; the chosen price is added as a line item so Stripe captures the full amount (products + shipping). Stripe’s hosted checkout then collects **name, email, and shipping address**. After payment, the webhook saves this into the order’s `shipping_json` so you can use it to ship and see it in Admin.
+
+**Shipping is configured in Admin**, not in code: open **Admin → Shipping settings** to add or edit shipping options (ID, label, EUR cents, SEK öre) and allowed countries (2-letter codes, comma-separated). The config is stored in the `config` table. If no config exists yet, the site uses built-in defaults until you save from Admin. Optionally run `db/seed-config.sql` to pre-fill default options and EU/EEA countries.
 
 ### Webhook
 
