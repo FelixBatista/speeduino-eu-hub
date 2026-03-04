@@ -55,6 +55,30 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     const customerEmail = session.customer_email ?? session.customer_details?.email ?? null;
     const amountTotal = session.amount_total ?? 0;
 
+    const details = session.customer_details;
+    const address = details?.address;
+    const shippingOptionId = (session.metadata?.shipping_option_id as string) || null;
+    const shippingOptionLabel = (session.metadata?.shipping_option_label as string) || null;
+    const shippingJson =
+      details || address || shippingOptionId
+        ? JSON.stringify({
+            name: details?.name ?? null,
+            email: customerEmail,
+            address: address
+              ? {
+                  line1: address.line1 ?? null,
+                  line2: address.line2 ?? null,
+                  city: address.city ?? null,
+                  state: address.state ?? null,
+                  postal_code: address.postal_code ?? null,
+                  country: address.country ?? null,
+                }
+              : null,
+            shipping_option_id: shippingOptionId,
+            shipping_option_label: shippingOptionLabel,
+          })
+        : null;
+
     const { getProductById, getUnitAmount } = await import("../lib/catalog");
     const items: { productId: string; qty: number; unitAmount: number; lineAmount: number }[] = [];
     for (const row of cart) {
@@ -67,7 +91,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     if (items.length === 0) return jsonResponse({ received: true });
 
     try {
-      await createOrderAndDecrementInventory(DB, orderId, stripeSessionId, stripePaymentIntent, customerEmail, currency, amountTotal, items);
+      await createOrderAndDecrementInventory(DB, orderId, stripeSessionId, stripePaymentIntent, customerEmail, currency, amountTotal, items, shippingJson);
     } catch (e) {
       console.error("Webhook createOrder failed", e);
       return errorResponse("Order processing failed", 500);

@@ -1,12 +1,17 @@
 import Stripe from "stripe";
 import { getProductById, getUnitAmount } from "../lib/catalog";
 import { getInventory } from "../lib/db";
+import { getShippingById, getShippingAmount } from "../lib/shipping";
 import { jsonResponse, errorResponse } from "../lib/json";
 
 const MIN_QTY = 1;
 const MAX_QTY = 20;
 
-type CheckoutBody = { items: { productId: string; quantity: number }[]; currency: "EUR" | "SEK" };
+type CheckoutBody = {
+  items: { productId: string; quantity: number }[];
+  currency: "EUR" | "SEK";
+  shippingOptionId: string;
+};
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
@@ -20,10 +25,12 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return errorResponse("Invalid JSON", 400);
   }
 
-  const { items, currency } = body;
+  const { items, currency, shippingOptionId } = body;
   if (!Array.isArray(items) || items.length === 0 || (currency !== "EUR" && currency !== "SEK")) {
     return errorResponse("Invalid input: items array and currency (EUR|SEK) required", 400);
   }
+  const shippingOption = getShippingById(shippingOptionId);
+  if (!shippingOption) return errorResponse("Invalid shipping option", 400);
 
   const stripe = new Stripe(STRIPE_SECRET_KEY);
 
@@ -41,14 +48,24 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     lineItems.push({ productId: item.productId, quantity: qty, product });
   }
 
-  const stripeLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = lineItems.map(({ product, quantity }) => ({
-    price_data: {
-      currency: currency.toLowerCase(),
-      product_data: { name: product!.name },
-      unit_amount: getUnitAmount(product!, currency),
+  const stripeLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+    ...lineItems.map(({ product, quantity }) => ({
+      price_data: {
+        currency: currency.toLowerCase(),
+        product_data: { name: product!.name },
+        unit_amount: getUnitAmount(product!, currency),
+      },
+      quantity,
+    })),
+    {
+      price_data: {
+        currency: currency.toLowerCase(),
+        product_data: { name: `Shipping: ${shippingOption.label}` },
+        unit_amount: getShippingAmount(shippingOption, currency),
+      },
+      quantity: 1,
     },
-    quantity,
-  }));
+  ];
 
   const cartMetadata = JSON.stringify(lineItems.map((i) => ({ productId: i.productId, quantity: i.quantity })));
   try {
@@ -57,7 +74,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
       line_items: stripeLineItems,
       success_url: `${APP_URL}/order/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/checkout`,
-      metadata: { cart: cartMetadata, currency },
+      metadata: { cart: cartMetadata, currency, shipping_option_id: shippingOption.id, shipping_option_label: shippingOption.label },
+      shipping_address_collection: { allowed_countries: ["AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "GB", "NO", "CH", "IS", "LI"] },
     });
     const url = session.url;
     if (!url) return errorResponse("Failed to create checkout session", 500);

@@ -29,12 +29,13 @@ export async function createOrderAndDecrementInventory(
   customerEmail: string | null,
   currency: string,
   amountTotal: number,
-  items: { productId: string; qty: number; unitAmount: number; lineAmount: number }[]
+  items: { productId: string; qty: number; unitAmount: number; lineAmount: number }[],
+  shippingJson: string | null = null
 ): Promise<void> {
   await db.batch([
     db.prepare(
-      "INSERT INTO orders (id, status, currency, amount_total, stripe_session_id, stripe_payment_intent, customer_email) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    ).bind(orderId, "PAID", currency, amountTotal, stripeSessionId, stripePaymentIntent ?? null, customerEmail ?? null),
+      "INSERT INTO orders (id, status, currency, amount_total, stripe_session_id, stripe_payment_intent, customer_email, shipping_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    ).bind(orderId, "PAID", currency, amountTotal, stripeSessionId, stripePaymentIntent ?? null, customerEmail ?? null, shippingJson ?? null),
     ...items.flatMap((item) => [
       db.prepare("INSERT INTO order_items (order_id, product_id, qty, unit_amount, line_amount) VALUES (?, ?, ?, ?, ?)").bind(orderId, item.productId, item.qty, item.unitAmount, item.lineAmount),
       db.prepare("UPDATE inventory SET qty = qty - ?, updated_at = datetime('now') WHERE product_id = ?").bind(item.qty, item.productId),
@@ -43,7 +44,7 @@ export async function createOrderAndDecrementInventory(
 }
 
 const orderSelectCols =
-  "id, created_at, status, currency, amount_total, customer_email, shipped_at, delivered_at, tracking_number, tracking_carrier";
+  "id, created_at, status, currency, amount_total, customer_email, shipping_json, shipped_at, delivered_at, tracking_number, tracking_carrier";
 
 export type OrderRow = {
   id: string;
@@ -52,6 +53,7 @@ export type OrderRow = {
   currency: string;
   amount_total: number;
   customer_email: string | null;
+  shipping_json: string | null;
   shipped_at: string | null;
   delivered_at: string | null;
   tracking_number: string | null;

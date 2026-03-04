@@ -11,6 +11,7 @@ type Order = {
   amount_total: number;
   stripe_session_id: string;
   customer_email: string | null;
+  shipping_json?: string | null;
   shipped_at: string | null;
   delivered_at: string | null;
   tracking_number: string | null;
@@ -142,6 +143,12 @@ export default function Admin() {
     }
   };
 
+  const submitToken = () => {
+    const trimmed = inputToken.trim();
+    setError(null);
+    setToken(trimmed);
+  };
+
   if (!token) {
     return (
       <main className="pt-32 pb-20 container max-w-md mx-auto">
@@ -149,16 +156,21 @@ export default function Admin() {
           <Lock className="w-10 h-10 text-primary mx-auto mb-4" />
           <h1 className="font-display text-xl font-bold text-foreground mb-2 text-center">Admin</h1>
           <p className="text-muted-foreground text-sm mb-4 text-center">Enter the admin token to continue.</p>
+          {error && (
+            <div className="p-3 mb-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm text-center">
+              {error}
+            </div>
+          )}
           <input
             type="password"
             value={inputToken}
-            onChange={(e) => setInputToken(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && setToken(inputToken)}
+            onChange={(e) => { setInputToken(e.target.value); setError(null); }}
+            onKeyDown={(e) => e.key === "Enter" && submitToken()}
             placeholder="Token"
             className="w-full px-3 py-2 rounded border border-border bg-background text-foreground mb-4"
           />
           <button
-            onClick={() => setToken(inputToken)}
+            onClick={submitToken}
             className="w-full cta-primary !py-2.5"
           >
             Continue
@@ -208,6 +220,7 @@ export default function Admin() {
                       <th className="text-left py-2 font-medium">Status</th>
                       <th className="text-right py-2 font-medium">Total</th>
                       <th className="text-left py-2 font-medium">Email</th>
+                      <th className="text-left py-2 font-medium">Ship to</th>
                       <th className="text-left py-2 font-medium">Tracking</th>
                       <th className="text-right py-2 font-medium">Actions</th>
                     </tr>
@@ -230,6 +243,24 @@ export default function Admin() {
                           {o.currency === "SEK" ? `${(o.amount_total / 100).toLocaleString("sv-SE")} SEK` : `€${(o.amount_total / 100).toFixed(2)}`}
                         </td>
                         <td className="py-2 text-muted-foreground truncate max-w-[160px]">{o.customer_email ?? "—"}</td>
+                        <td className="py-2 text-muted-foreground max-w-[200px]">
+                          {o.shipping_json ? (() => {
+                            try {
+                              const s = JSON.parse(o.shipping_json);
+                              const name = [s.name?.trim()].filter(Boolean).join(" ") || "—";
+                              const addr = s.address;
+                              const line = addr ? [addr.line1, addr.line2, addr.city, addr.postal_code, addr.country].filter(Boolean).join(", ") : "";
+                              return (
+                                <span title={line || undefined} className="block truncate text-xs">
+                                  {name}
+                                  {line ? ` · ${line}` : ""}
+                                </span>
+                              );
+                            } catch {
+                              return "—";
+                            }
+                          })() : "—"}
+                        </td>
                         <td className="py-2 text-muted-foreground text-xs max-w-[140px]">
                           {o.tracking_number ? (
                             <span title={o.tracking_carrier ?? undefined}>

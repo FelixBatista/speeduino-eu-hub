@@ -1,15 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
-import { ArrowLeft, Lock, CreditCard, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Lock, CreditCard, Loader2, AlertCircle, Truck } from "lucide-react";
 
 type CheckoutError = "invalid" | "out_of_stock" | "server" | null;
+
+type ShippingOption = { id: string; label: string; amountEUR: number; amountSEK: number };
 
 export default function Checkout() {
   const { items, totalEUR, totalSEK } = useCart();
   const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
+  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
+  const [selectedShippingId, setSelectedShippingId] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<CheckoutError>(null);
+
+  useEffect(() => {
+    fetch("/api/shipping-options")
+      .then((r) => r.json())
+      .then((data) => {
+        const opts = data?.options ?? [];
+        setShippingOptions(opts);
+        if (opts.length > 0 && !selectedShippingId) setSelectedShippingId(opts[0].id);
+      })
+      .catch(() => {});
+  }, []);
+
+  const selectedShipping = shippingOptions.find((o) => o.id === selectedShippingId);
+  const shippingEUR = selectedShipping ? selectedShipping.amountEUR / 100 : 0;
+  const shippingSEK = selectedShipping ? selectedShipping.amountSEK / 100 : 0;
+  const totalWithShippingEUR = totalEUR + shippingEUR;
+  const totalWithShippingSEK = totalSEK + shippingSEK;
+  const totalDisplay =
+    currency === "EUR"
+      ? `€${totalWithShippingEUR.toFixed(2)}`
+      : `${totalWithShippingSEK.toFixed(0)} SEK`;
 
   if (items.length === 0) {
     return (
@@ -20,9 +45,8 @@ export default function Checkout() {
     );
   }
 
-  const total = currency === "EUR" ? `€${totalEUR}` : `${totalSEK} SEK`;
-
   const handlePayNow = async () => {
+    if (!selectedShippingId) return;
     setError(null);
     setLoading(true);
     try {
@@ -32,6 +56,7 @@ export default function Checkout() {
         body: JSON.stringify({
           items: items.map((i) => ({ productId: i.product.id, quantity: i.quantity })),
           currency,
+          shippingOptionId: selectedShippingId,
         }),
       });
       const data = await res.json().catch(() => ({}));
@@ -57,7 +82,7 @@ export default function Checkout() {
     error === "out_of_stock"
       ? "One or more items are out of stock or quantity is too high. Please reduce quantity or remove items and try again."
       : error === "invalid"
-        ? "Your cart is invalid. Please refresh and try again."
+        ? "Please select a shipping option and try again."
         : error === "server"
           ? "Something went wrong. Please try again later."
           : null;
@@ -89,6 +114,41 @@ export default function Checkout() {
           </div>
         </div>
 
+        <div className="card-motorsport p-6 mb-6">
+          <h2 className="font-display text-lg font-bold text-foreground mb-4">Shipping</h2>
+          <p className="text-muted-foreground text-sm mb-3">Choose delivery speed. Your name, email, and address will be collected on the next page (Stripe checkout).</p>
+          {shippingOptions.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Loading options…</p>
+          ) : (
+            <div className="space-y-2">
+              {shippingOptions.map((opt) => {
+                const price =
+                  currency === "EUR" ? `€${(opt.amountEUR / 100).toFixed(2)}` : `${(opt.amountSEK / 100).toFixed(0)} SEK`;
+                return (
+                  <label
+                    key={opt.id}
+                    className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      selectedShippingId === opt.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="shipping"
+                      value={opt.id}
+                      checked={selectedShippingId === opt.id}
+                      onChange={() => setSelectedShippingId(opt.id)}
+                      className="sr-only"
+                    />
+                    <Truck className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                    <span className="flex-1 text-sm text-foreground">{opt.label}</span>
+                    <span className="font-mono text-sm font-medium text-foreground">{price}</span>
+                  </label>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         <div className="card-motorsport p-6 mb-8">
           <h2 className="font-display text-lg font-bold text-foreground mb-4">Order Summary</h2>
           <div className="space-y-3 mb-4">
@@ -105,10 +165,18 @@ export default function Checkout() {
                 </div>
               );
             })}
+            {selectedShipping && (
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>Shipping ({selectedShipping.label})</span>
+                <span className="font-mono text-foreground">
+                  {currency === "EUR" ? `€${shippingEUR.toFixed(2)}` : `${shippingSEK} SEK`}
+                </span>
+              </div>
+            )}
           </div>
           <div className="border-t border-border pt-3 flex justify-between">
             <span className="font-medium text-foreground">Total</span>
-            <span className="font-mono text-xl font-bold text-foreground">{total}</span>
+            <span className="font-mono text-xl font-bold text-foreground">{totalDisplay}</span>
           </div>
         </div>
 
@@ -127,11 +195,11 @@ export default function Checkout() {
           </p>
           <button
             onClick={handlePayNow}
-            disabled={loading}
-            className="cta-primary !px-10 !py-3.5 !text-base inline-flex items-center justify-center gap-2 min-w-[180px]"
+            disabled={loading || !selectedShippingId || shippingOptions.length === 0}
+            className="cta-primary !px-10 !py-3.5 !text-base inline-flex items-center justify-center gap-2 min-w-[180px] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <CreditCard className="w-5 h-5" />}
-            {loading ? "Redirecting…" : `Pay ${total}`}
+            {loading ? "Redirecting…" : `Pay ${totalDisplay}`}
           </button>
           <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-4">
             <Lock className="w-3 h-3" />

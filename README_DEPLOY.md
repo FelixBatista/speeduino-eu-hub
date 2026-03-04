@@ -77,6 +77,10 @@ Do **not** put these in client code or commit them to git.
 
 This app uses **Stripe Checkout Sessions** with server-computed `price_data`. You do **not** need to create Products or Payment Links in the Dashboard for the main flow. The backend builds line items from the server catalog and creates a session on `POST /api/checkout`.
 
+### Shipping
+
+Checkout includes **shipping options** (e.g. Standard / Express) and **address collection**. Customers choose a shipping method on your site; the chosen price is added as a line item so Stripe captures the full amount (products + shipping). Stripe’s hosted checkout then collects **name, email, and shipping address**. After payment, the webhook saves this into the order’s `shipping_json` so you can use it to ship and see it in Admin. Shipping options and allowed countries are defined in `functions/lib/shipping.ts` and `functions/api/checkout.ts`; adjust them to match your carriers and regions.
+
 ### Webhook
 
 1. Go to [Stripe Dashboard → Developers → Webhooks](https://dashboard.stripe.com/webhooks).
@@ -153,6 +157,11 @@ If these env vars are missing, the app still works; only the emails are skipped 
 - **Auth:** The page prompts for a token. Set `ADMIN_TOKEN` in Cloudflare; users must enter that value (store in sessionStorage for the session).
 - **Features:** List recent orders (with status, tracking, shipped/delivered timestamps), mark orders as **Shipped** (with optional tracking) or **Delivered** (sends customer emails); edit inventory quantities via PATCH `/api/admin/inventory`.
 - **Security:** This is a simple MVP (token in header). For production, consider [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/) or another auth layer.
+
+**Admin login not working?**
+- Ensure `ADMIN_TOKEN` is set in **Pages → your project → Settings → Environment variables** (Production and Preview if you test on branches). If it’s missing, the API returns 401 and you’ll see “Invalid or expired token” after entering any value.
+- Use the exact same value when logging in (no extra spaces; the app trims whitespace automatically).
+- For local dev, admin APIs only work when running with Cloudflare (e.g. `npx wrangler pages dev`); `npm run dev` alone does not run the Functions that check the token.
 
 ---
 
