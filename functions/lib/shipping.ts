@@ -21,7 +21,12 @@ const DEFAULT_ALLOWED_COUNTRIES = [
 ];
 
 export async function getShippingOptions(db: D1Database): Promise<ShippingOption[]> {
-  const raw = await getConfig(db, "shipping_options");
+  let raw: string | null = null;
+  try {
+    raw = await getConfig(db, "shipping_options");
+  } catch {
+    return DEFAULT_OPTIONS;
+  }
   if (!raw?.trim()) return DEFAULT_OPTIONS;
   try {
     const parsed = JSON.parse(raw) as unknown;
@@ -37,7 +42,12 @@ export async function getShippingOptions(db: D1Database): Promise<ShippingOption
 }
 
 export async function getShippingAllowedCountries(db: D1Database): Promise<string[]> {
-  const raw = await getConfig(db, "shipping_allowed_countries");
+  let raw: string | null = null;
+  try {
+    raw = await getConfig(db, "shipping_allowed_countries");
+  } catch {
+    return DEFAULT_ALLOWED_COUNTRIES;
+  }
   if (!raw?.trim()) return DEFAULT_ALLOWED_COUNTRIES;
   try {
     const parsed = JSON.parse(raw) as unknown;
