@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react";
-import { Lock, Loader2, LogOut, Package, ShoppingBag } from "lucide-react";
+import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle } from "lucide-react";
 
 const ADMIN_TOKEN_KEY = "speeduino-admin-token";
 
-type Order = { id: string; created_at: string; status: string; currency: string; amount_total: number; stripe_session_id: string; customer_email: string | null };
+type Order = {
+  id: string;
+  created_at: string;
+  status: string;
+  currency: string;
+  amount_total: number;
+  stripe_session_id: string;
+  customer_email: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  tracking_number: string | null;
+  tracking_carrier: string | null;
+};
 type InventoryRow = { product_id: string; qty: number; updated_at: string };
 
 export default function Admin() {
@@ -15,6 +27,10 @@ export default function Admin() {
   const [error, setError] = useState<string | null>(null);
   const [editingQty, setEditingQty] = useState<Record<string, number>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [shippingOrderId, setShippingOrderId] = useState<string | null>(null);
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [trackingCarrier, setTrackingCarrier] = useState("");
+  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(ADMIN_TOKEN_KEY);
@@ -62,6 +78,50 @@ export default function Admin() {
     if (token) fetchData();
     else { setOrders([]); setInventory([]); }
   }, [token]);
+
+  const handleMarkShipped = async (orderId: string) => {
+    setUpdatingOrderId(orderId);
+    try {
+      const res = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: "SHIPPED",
+          tracking_number: trackingNumber.trim() || undefined,
+          tracking_carrier: trackingCarrier.trim() || undefined,
+        }),
+      });
+      if (res.ok) {
+        setShippingOrderId(null);
+        setTrackingNumber("");
+        setTrackingCarrier("");
+        fetchData();
+      }
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
+
+  const handleMarkDelivered = async (orderId: string) => {
+    if (!confirm("Mark this order as delivered? The customer will receive an email.")) return;
+    setUpdatingOrderId(orderId);
+    try {
+      const res = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: "DELIVERED" }),
+      });
+      if (res.ok) fetchData();
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
 
   const handleSaveQty = async (productId: string) => {
     const qty = editingQty[productId];
@@ -148,18 +208,94 @@ export default function Admin() {
                       <th className="text-left py-2 font-medium">Status</th>
                       <th className="text-right py-2 font-medium">Total</th>
                       <th className="text-left py-2 font-medium">Email</th>
+                      <th className="text-left py-2 font-medium">Tracking</th>
+                      <th className="text-right py-2 font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orders.map((o) => (
-                      <tr key={o.id} className="border-b border-border/50">
+                      <tr key={o.id} className="border-b border-border/50 align-top">
                         <td className="py-2 font-mono text-xs">{o.id}</td>
                         <td className="py-2 text-muted-foreground">{o.created_at}</td>
-                        <td className="py-2">{o.status}</td>
+                        <td className="py-2">
+                          <span className="font-medium">{o.status}</span>
+                          {o.shipped_at && (
+                            <span className="block text-xs text-muted-foreground">Shipped {o.shipped_at}</span>
+                          )}
+                          {o.delivered_at && (
+                            <span className="block text-xs text-muted-foreground">Delivered {o.delivered_at}</span>
+                          )}
+                        </td>
                         <td className="py-2 text-right font-mono">
                           {o.currency === "SEK" ? `${(o.amount_total / 100).toLocaleString("sv-SE")} SEK` : `€${(o.amount_total / 100).toFixed(2)}`}
                         </td>
                         <td className="py-2 text-muted-foreground truncate max-w-[160px]">{o.customer_email ?? "—"}</td>
+                        <td className="py-2 text-muted-foreground text-xs max-w-[140px]">
+                          {o.tracking_number ? (
+                            <span title={o.tracking_carrier ?? undefined}>
+                              {o.tracking_carrier && `${o.tracking_carrier}: `}{o.tracking_number}
+                            </span>
+                          ) : (
+                            "—"
+                          )}
+                        </td>
+                        <td className="py-2 text-right">
+                          {shippingOrderId === o.id ? (
+                            <div className="flex flex-col gap-1 items-end">
+                              <input
+                                type="text"
+                                placeholder="Tracking number"
+                                value={trackingNumber}
+                                onChange={(e) => setTrackingNumber(e.target.value)}
+                                className="w-32 px-2 py-1 rounded border border-border bg-background text-foreground text-xs"
+                              />
+                              <input
+                                type="text"
+                                placeholder="Carrier (e.g. Postnord)"
+                                value={trackingCarrier}
+                                onChange={(e) => setTrackingCarrier(e.target.value)}
+                                className="w-32 px-2 py-1 rounded border border-border bg-background text-foreground text-xs"
+                              />
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => handleMarkShipped(o.id)}
+                                  disabled={updatingOrderId === o.id}
+                                  className="text-xs text-primary hover:underline disabled:opacity-50"
+                                >
+                                  {updatingOrderId === o.id ? "Saving…" : "Confirm shipped"}
+                                </button>
+                                <button
+                                  onClick={() => { setShippingOrderId(null); setTrackingNumber(""); setTrackingCarrier(""); }}
+                                  className="text-xs text-muted-foreground hover:underline"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex flex-wrap gap-1 justify-end">
+                              {o.status !== "SHIPPED" && o.status !== "DELIVERED" && (
+                                <button
+                                  onClick={() => setShippingOrderId(o.id)}
+                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                                  title="Mark as shipped and send customer an email"
+                                >
+                                  <Truck className="w-3.5 h-3.5" /> Shipped
+                                </button>
+                              )}
+                              {(o.status === "SHIPPED" || o.status === "PAID") && o.status !== "DELIVERED" && (
+                                <button
+                                  onClick={() => handleMarkDelivered(o.id)}
+                                  disabled={updatingOrderId === o.id}
+                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline disabled:opacity-50"
+                                  title="Mark as delivered and send customer an email"
+                                >
+                                  <CheckCircle className="w-3.5 h-3.5" /> Delivered
+                                </button>
+                              )}
+                            </div>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

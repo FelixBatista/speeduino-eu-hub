@@ -33,12 +33,14 @@ This guide covers deploying the frontend to **Cloudflare Pages**, wiring **Strip
    database_id = "<paste-database_id-here>"
    ```
 
-5. Apply the schema and seed (run from repo root):
+5. Apply the schema, order-tracking migration, and seed (run from repo root):
    ```bash
    npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/schema.sql
+   npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/schema-order-tracking.sql
    npx wrangler d1 execute speeduino-eu-hub-db --remote --file=./db/seed-inventory.sql
    ```
-   If your database name differs, replace `speeduino-eu-hub-db` with the name you used in `wrangler d1 create`.
+   If your database name differs, replace `speeduino-eu-hub-db` with the name you used in `wrangler d1 create`.  
+   **Existing DBs:** run `schema-order-tracking.sql` once to add shipped/delivered/tracking columns.
 
 6. Deploy:
    - **Via Git:** Push to the connected branch; Pages will build and deploy.
@@ -55,6 +57,9 @@ In **Pages → your project → Settings → Environment variables**, add:
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret (see Stripe section below) | `whsec_...` |
 | `ADMIN_TOKEN` | Secret token to access `/admin` | Any long random string |
 | `DEFAULT_CURRENCY` | (Optional) Default currency | `EUR` or `SEK` |
+| `RESEND_API_KEY` | Resend API key for order emails (see Order notifications below) | `re_...` |
+| `MAIL_FROM` | Sender for transactional emails | `Speeduino EU Hub <orders@yourdomain.com>` |
+| `SELLER_EMAIL` | Email that receives "new sale" notifications | `you@yourdomain.com` |
 
 Do **not** put these in client code or commit them to git.
 
@@ -85,10 +90,40 @@ Stripe will send `checkout.session.completed` after a successful payment. The we
 - Create an order in D1
 - Insert order items
 - Decrement inventory in the same transaction
+- Send **order confirmation** to the customer (if email configured) and **new sale alert** to you (see Order notifications below)
+
+Stripe does **not** send order-confirmation or shipping emails for one-time Checkout; this app sends those via Resend.
 
 ---
 
-## 3. D1 database
+## 3. Order notifications and tracking
+
+You get an email when something is sold, and customers get emails when their order is confirmed, shipped, and delivered. Everything is tracked in one place (Admin).
+
+### Flow
+
+1. **Sale** → Stripe webhook runs → order is created → **you** get a "New sale" email; **customer** gets an "Order confirmed" email (if they entered an email at checkout).
+2. **You ship** → In Admin, click **Shipped** for that order (optionally add tracking number and carrier) → **customer** gets a "Your order has shipped" email.
+3. **Delivered** → In Admin, click **Delivered** → **customer** gets a "Order delivered" email.
+
+### Resend setup
+
+1. Sign up at [resend.com](https://resend.com) and create an API key.
+2. Set **RESEND_API_KEY** in Cloudflare (e.g. `re_...`).
+3. Set **MAIL_FROM** to the sender address Resend allows (e.g. `Speeduino EU Hub <onboarding@resend.dev>` for testing, or your verified domain).
+4. Set **SELLER_EMAIL** to the address that should receive "new sale" emails.
+
+If these env vars are missing, the app still works; only the emails are skipped (and errors logged).
+
+### Admin: mark shipped / delivered
+
+- **Recent orders** table shows Status, Tracking, and **Actions**: **Shipped** and **Delivered**.
+- Click **Shipped** → enter optional tracking number and carrier → **Confirm shipped**. The order status and timestamps are saved and the customer is emailed.
+- Click **Delivered** → confirm → order is marked delivered and the customer is emailed.
+
+---
+
+## 4. D1 database
 
 ### Schema
 
@@ -112,16 +147,16 @@ Stripe will send `checkout.session.completed` after a successful payment. The we
 
 ---
 
-## 4. Admin area
+## 5. Admin area
 
 - **URL:** `https://<your-domain>/admin`
 - **Auth:** The page prompts for a token. Set `ADMIN_TOKEN` in Cloudflare; users must enter that value (store in sessionStorage for the session).
-- **Features:** List recent orders and inventory; edit inventory quantities via PATCH `/api/admin/inventory`.
+- **Features:** List recent orders (with status, tracking, shipped/delivered timestamps), mark orders as **Shipped** (with optional tracking) or **Delivered** (sends customer emails); edit inventory quantities via PATCH `/api/admin/inventory`.
 - **Security:** This is a simple MVP (token in header). For production, consider [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/) or another auth layer.
 
 ---
 
-## 5. Local development
+## 6. Local development
 
 ### Frontend only (no API)
 
@@ -162,14 +197,14 @@ Use the printed webhook signing secret in `.dev.vars` as `STRIPE_WEBHOOK_SECRET`
 
 ---
 
-## 6. SEO
+## 7. SEO
 
 - **robots.txt:** In `public/robots.txt`, replace `https://your-domain.com` in the Sitemap line with your real domain.
 - **sitemap.xml:** In `public/sitemap.xml`, replace all `https://your-domain.com` with your real domain. You can regenerate this at build time if needed (e.g. from product slugs in `src/data/products.ts`).
 
 ---
 
-## 7. Troubleshooting
+## 8. Troubleshooting
 
 ### "Server configuration error" when clicking Pay / checkout
 
@@ -204,7 +239,7 @@ If you recreated the webhook endpoint in Stripe, a new signing secret was genera
 
 ---
 
-## 8. Checklist
+## 9. Checklist
 
 - [x] Cloudflare Pages project created and connected to repo (or deploy via CLI).
 - [x] D1 database created; `wrangler.toml` updated with `database_id`.

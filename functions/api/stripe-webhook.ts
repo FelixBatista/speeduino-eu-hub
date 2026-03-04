@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { createOrderAndDecrementInventory } from "../lib/db";
 import { jsonResponse, errorResponse } from "../lib/json";
+import { sendOrderConfirmationToCustomer, sendNewSaleAlertToSeller } from "../lib/email";
 
 // Cloudflare Workers/Pages use Web Crypto (async). Sync constructEvent can fail verification;
 // use constructEventAsync + createSubtleCryptoProvider so signature verification works on the edge.
@@ -70,6 +71,35 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     } catch (e) {
       console.error("Webhook createOrder failed", e);
       return errorResponse("Order processing failed", 500);
+    }
+
+    // Emails: confirmation to customer, new-sale alert to seller (non-blocking best-effort)
+    const { getProductById } = await import("../lib/catalog");
+    const orderForEmail = {
+      id: orderId,
+      created_at: new Date().toISOString(),
+      status: "PAID",
+      currency,
+      amount_total: amountTotal,
+      customer_email: customerEmail,
+    };
+    const itemsForEmail = items.map((item) => {
+      const product = getProductById(item.productId);
+      return {
+        product_id: item.productId,
+        name: product?.name ?? item.productId,
+        qty: item.qty,
+        unit_amount: item.unitAmount,
+        line_amount: item.lineAmount,
+      };
+    });
+    try {
+      await Promise.all([
+        sendOrderConfirmationToCustomer(env, orderForEmail, itemsForEmail),
+        sendNewSaleAlertToSeller(env, orderForEmail, itemsForEmail),
+      ]);
+    } catch (e) {
+      console.error("Order emails failed", e);
     }
   }
 

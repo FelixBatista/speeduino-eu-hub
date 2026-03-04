@@ -21,4 +21,10 @@ interface Env {
   STRIPE_WEBHOOK_SECRET: string;
   ADMIN_TOKEN?: string;
   DEFAULT_CURRENCY?: string;
+  /** Resend API key for order emails (confirmation, shipped, delivered, seller alert) */
+  RESEND_API_KEY?: string;
+  /** Sender for transactional emails, e.g. "Speeduino EU Hub <orders@yourdomain.com>" */
+  MAIL_FROM?: string;
+  /** Email that receives "new sale" notifications */
+  SELLER_EMAIL?: string;
 }

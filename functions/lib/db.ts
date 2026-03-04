@@ -42,21 +42,83 @@ export async function createOrderAndDecrementInventory(
   ]);
 }
 
+const orderSelectCols =
+  "id, created_at, status, currency, amount_total, customer_email, shipped_at, delivered_at, tracking_number, tracking_carrier";
+
+export type OrderRow = {
+  id: string;
+  created_at: string;
+  status: string;
+  currency: string;
+  amount_total: number;
+  customer_email: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  tracking_number: string | null;
+  tracking_carrier: string | null;
+};
+
 export async function getOrderBySessionId(
   db: D1Database,
   stripeSessionId: string
-): Promise<{ order: { id: string; created_at: string; status: string; currency: string; amount_total: number; customer_email: string | null }; items: { product_id: string; qty: number; unit_amount: number; line_amount: number }[] } | null> {
-  const orderRow = await db.prepare("SELECT id, created_at, status, currency, amount_total, customer_email FROM orders WHERE stripe_session_id = ?").bind(stripeSessionId).first();
+): Promise<{ order: OrderRow; items: { product_id: string; qty: number; unit_amount: number; line_amount: number }[] } | null> {
+  const orderRow = await db
+    .prepare(`SELECT ${orderSelectCols} FROM orders WHERE stripe_session_id = ?`)
+    .bind(stripeSessionId)
+    .first();
   if (!orderRow) return null;
-  const order = orderRow as { id: string; created_at: string; status: string; currency: string; amount_total: number; customer_email: string | null };
+  const order = orderRow as OrderRow;
   const { results: itemRows } = await db.prepare("SELECT product_id, qty, unit_amount, line_amount FROM order_items WHERE order_id = ? ORDER BY product_id").bind(order.id).all();
   const items = (itemRows ?? []) as { product_id: string; qty: number; unit_amount: number; line_amount: number }[];
   return { order, items };
 }
 
-export async function getRecentOrders(db: D1Database, limit: number): Promise<{ id: string; created_at: string; status: string; currency: string; amount_total: number; stripe_session_id: string; customer_email: string | null }[]> {
-  const { results } = await db.prepare("SELECT id, created_at, status, currency, amount_total, stripe_session_id, customer_email FROM orders ORDER BY created_at DESC LIMIT ?").bind(limit).all();
-  return (results ?? []) as { id: string; created_at: string; status: string; currency: string; amount_total: number; stripe_session_id: string; customer_email: string | null }[];
+export async function getOrderById(
+  db: D1Database,
+  orderId: string
+): Promise<{ order: OrderRow; items: { product_id: string; qty: number; unit_amount: number; line_amount: number }[] } | null> {
+  const orderRow = await db.prepare(`SELECT ${orderSelectCols} FROM orders WHERE id = ?`).bind(orderId).first();
+  if (!orderRow) return null;
+  const order = orderRow as OrderRow;
+  const { results: itemRows } = await db.prepare("SELECT product_id, qty, unit_amount, line_amount FROM order_items WHERE order_id = ? ORDER BY product_id").bind(order.id).all();
+  const items = (itemRows ?? []) as { product_id: string; qty: number; unit_amount: number; line_amount: number }[];
+  return { order, items };
+}
+
+export async function getRecentOrders(
+  db: D1Database,
+  limit: number
+): Promise<(OrderRow & { stripe_session_id: string })[]> {
+  const { results } = await db
+    .prepare(`SELECT ${orderSelectCols}, stripe_session_id FROM orders ORDER BY created_at DESC LIMIT ?`)
+    .bind(limit)
+    .all();
+  return (results ?? []) as (OrderRow & { stripe_session_id: string })[];
+}
+
+export async function updateOrderShipped(
+  db: D1Database,
+  orderId: string,
+  trackingNumber?: string | null,
+  trackingCarrier?: string | null
+): Promise<boolean> {
+  const r = await db
+    .prepare(
+      "UPDATE orders SET status = ?, shipped_at = datetime('now'), tracking_number = ?, tracking_carrier = ? WHERE id = ?"
+    )
+    .bind("SHIPPED", trackingNumber ?? null, trackingCarrier ?? null, orderId)
+    .run();
+  const meta = r as { meta?: { changes?: number; rows_written?: number } };
+  return (meta.meta?.changes ?? meta.meta?.rows_written ?? 0) > 0;
+}
+
+export async function updateOrderDelivered(db: D1Database, orderId: string): Promise<boolean> {
+  const r = await db
+    .prepare("UPDATE orders SET status = ?, delivered_at = datetime('now') WHERE id = ?")
+    .bind("DELIVERED", orderId)
+    .run();
+  const meta = r as { meta?: { changes?: number; rows_written?: number } };
+  return (meta.meta?.changes ?? meta.meta?.rows_written ?? 0) > 0;
 }
 
 /** Subscribe an email for newsletter/starter guide. Idempotent: same email can re-submit (no error). */
