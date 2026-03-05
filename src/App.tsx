@@ -17,8 +17,6 @@ import OrderSuccess from "./pages/OrderSuccess";
 import Admin from "./pages/Admin";
 import Compare from "./pages/Compare";
 import Compatibility from "./pages/Compatibility";
-import Vehicles from "./pages/Vehicles";
-import VehicleDetail from "./pages/VehicleDetail";
 import Guides from "./pages/Guides";
 import BlogArticle from "./pages/BlogArticle";
 import Support from "./pages/Support";
@@ -50,8 +48,6 @@ const App = () => (
             <Route path="/admin" element={<Admin />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/compatibility" element={<Compatibility />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/vehicles/:slug" element={<VehicleDetail />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/guides/:slug" element={<BlogArticle />} />
             <Route path="/support" element={<Support />} />
