@@ -41,7 +41,7 @@ export default function CaseStudy() {
               <img src={dynoChart} alt="Before and after dyno comparison chart" className="w-full" loading="lazy" />
             </div>
             <p className="text-xs text-muted-foreground mt-2 text-center italic">
-              Placeholder dyno data — actual results vary by setup. Shown for illustration purposes.
+              Example dyno data — actual results vary by setup. Shown for illustration purposes.
             </p>
           </motion.div>
 
