@@ -101,7 +101,6 @@ export const wizardSteps: WizardStep[] = [
   },
 ];
 
-// Recommendation engine: maps wizard selections to product bundles
 export interface BundleRecommendation {
   productIds: string[];
   reason: string;
@@ -113,33 +112,36 @@ export interface BundleRecommendation {
 export function getRecommendation(selections: Record<string, string[]>): BundleRecommendation {
   const goals = selections.goals?.[0];
   const hasExtras = selections.extras || [];
-  
+  const hasTurbo = selections.induction?.includes("turbo") || selections.induction?.includes("supercharged");
+
+  const base = ["v04-pcb", "arduino-mega", "map-sensor"];
+
   if (goals === "track-rally") {
     return {
-      productIds: ["assembled-ecu", "harness-kit", "sensor-pack"],
-      reason: "Full track/rally setup with all sensors and boost control for maximum performance and data.",
+      productIds: [...base, "wideband-controller", "wideband-o2", "relay-pack", ...(hasTurbo ? ["boost-solenoid"] : [])],
+      reason: "Full track/rally setup with wideband tuning, relay power distribution, and boost control for maximum performance.",
       installDifficulty: "Advanced",
       estimatedTime: "8–16 hours",
-      additionalNeeds: ["Vehicle-specific adapter harness", "Data logging software (TunerStudio)", "Laptop for tuning"],
+      additionalNeeds: ["IAT & CLT sensors (if not reusing OEM)", "TunerStudio for tuning", "Laptop", "VR conditioner (if your engine uses VR sensors)"],
     };
   }
-  
-  if (goals === "street-performance" || hasExtras.includes("boost-control")) {
+
+  if (goals === "street-performance" || hasExtras.includes("boost-control") || hasTurbo) {
     return {
-      productIds: ["assembled-ecu", "harness-kit"],
-      reason: "Performance street build with assembled ECU and complete harness. Add sensor pack for wideband and boost control.",
+      productIds: [...base, "wideband-controller", "wideband-o2", "relay-pack"],
+      reason: "Performance street build with wideband AFR tuning. Add boost solenoid if running forced induction.",
       installDifficulty: "Medium",
       estimatedTime: "6–12 hours",
-      additionalNeeds: ["Wideband O2 (if not adding sensor pack)", "TunerStudio for tuning"],
+      additionalNeeds: ["Boost solenoid (if turbo/supercharged)", "IAT & CLT sensors", "TunerStudio for tuning"],
     };
   }
-  
+
   return {
-    productIds: ["assembled-ecu", "harness-kit"],
-    reason: "Reliable daily driver setup. Assembled ECU saves build time, harness includes core sensors.",
+    productIds: [...base, "relay-pack"],
+    reason: "Reliable daily driver setup. Start with the essentials and add wideband + sensors as needed.",
     installDifficulty: "Medium",
     estimatedTime: "4–8 hours",
-    additionalNeeds: ["TunerStudio (free version available)", "Basic hand tools", "Multimeter"],
+    additionalNeeds: ["Wideband controller (strongly recommended for tuning)", "IAT & CLT sensors", "TunerStudio (free version available)", "Basic hand tools", "Multimeter"],
   };
 }
 

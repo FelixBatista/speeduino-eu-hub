@@ -26,12 +26,12 @@ export default function BundleShowcase() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="data-label text-primary mb-3">Featured Bundles</p>
+          <p className="data-label text-primary mb-3">Featured Products</p>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
-            Kits Built for Real Builds
+            Everything You Need to Build
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Each bundle is curated for a specific use case. Pick one, or use the wizard to get a custom recommendation.
+            Boards, sensors, and modules — pick what your build needs, or use the configurator to get a shopping list.
           </p>
         </motion.div>
 

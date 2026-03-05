@@ -1,42 +1,77 @@
--- Seed products, inventory (100 each), and mock orders (run after schema.sql)
+-- Seed products, inventory, and mock orders (run after schema.sql)
 -- Usage: wrangler d1 execute store_db --remote --file=./db/seed-inventory.sql
 -- Local:  wrangler d1 execute store_db --local --file=./db/seed-inventory.sql
 
--- Products (from website/catalog: EUR cents, SEK öre)
+-- Products (from catalog: EUR cents, SEK öre)
 INSERT OR REPLACE INTO products (id, slug, name, currency_prices, active) VALUES
-  ('diy-kit', 'speeduino-diy-kit', 'Speeduino DIY Kit (Unsoldered PCB + Components)', '{"EUR":8900,"SEK":99900}', 1),
-  ('assembled-ecu', 'speeduino-assembled-ecu', 'Speeduino Assembled & Tested ECU', '{"EUR":22900,"SEK":249900}', 1),
-  ('harness-kit', 'speeduino-wiring-harness-kit', 'Universal Wiring Harness + Sensor Starter Pack', '{"EUR":14900,"SEK":159900}', 1),
-  ('sensor-pack', 'speeduino-sensor-pack', 'Sensor Upgrade Pack', '{"EUR":19900,"SEK":219900}', 1),
-  ('volvo-p2-bundle', 'speeduino-volvo-p2-bundle', 'Volvo P2 5-Cylinder Turbo Starter Bundle', '{"EUR":39900,"SEK":429900}', 1);
+  ('v03-pcb', 'speeduino-v03-pcb', 'Speeduino v0.3 PCB (DIY Kit)', '{"EUR":2100,"SEK":23900}', 1),
+  ('v04-pcb', 'speeduino-v04-pcb', 'Speeduino v0.4 PCB (DIY Kit)', '{"EUR":2500,"SEK":28900}', 1),
+  ('arduino-mega', 'arduino-mega-2560', 'Arduino Mega 2560 R3 (ATmega16U2)', '{"EUR":2500,"SEK":28900}', 1),
+  ('vr-conditioner', 'vr-conditioner-max9926', 'VR Conditioner Module (MAX9926)', '{"EUR":3500,"SEK":39900}', 1),
+  ('wideband-controller', 'wideband-controller-spartan', 'Wideband Controller (14Point7 Spartan 3 Lite)', '{"EUR":8900,"SEK":102900}', 1),
+  ('ignition-driver', 'ignition-driver-4ch-211', 'Ignition Driver Module (4-Channel, Bosch 211 Style)', '{"EUR":4200,"SEK":47900}', 1),
+  ('drv8825-stepper', 'drv8825-stepper-driver', 'Stepper Driver Module (DRV8825)', '{"EUR":700,"SEK":7900}', 1),
+  ('ballast-resistor', 'ballast-resistor-pack', 'Injector Ballast Resistor Pack (4x4.7Ω)', '{"EUR":4900,"SEK":56900}', 1),
+  ('map-sensor', 'map-sensor-mpx4250', 'MAP Sensor (MPX4250, 2.5 Bar)', '{"EUR":3500,"SEK":39900}', 1),
+  ('iat-sensor', 'iat-sensor-gm', 'Intake Air Temperature Sensor (GM Open Element)', '{"EUR":1500,"SEK":17500}', 1),
+  ('clt-sensor', 'clt-sensor-gm', 'Coolant Temperature Sensor (GM Style)', '{"EUR":1500,"SEK":17500}', 1),
+  ('tps-sensor', 'tps-sensor-3wire', 'TPS Sensor (3-Wire Potentiometer)', '{"EUR":2500,"SEK":28900}', 1),
+  ('wideband-o2', 'wideband-o2-lsu49', 'Wideband O2 Sensor (Bosch LSU 4.9)', '{"EUR":9900,"SEK":113900}', 1),
+  ('flex-fuel-sensor', 'flex-fuel-sensor-gm', 'Flex Fuel Sensor (GM/Continental)', '{"EUR":16500,"SEK":189900}', 1),
+  ('boost-solenoid', 'boost-control-solenoid-mac', 'Boost Control Solenoid (MAC 3-Port)', '{"EUR":7900,"SEK":90900}', 1),
+  ('relay-pack', 'relay-pack-4x-30a', 'Relay Pack (4x Bosch 30A 5-Pin + Fuse Box)', '{"EUR":2500,"SEK":28900}', 1),
+  ('idc40-plug', 'idc40-plug-pins-v04', 'IDC40 Plug + Pins (v0.4)', '{"EUR":600,"SEK":6900}', 1),
+  ('lsu49-connector', 'lsu49-connector-6pin', 'LSU 4.9 Wideband Connector (6-Pin)', '{"EUR":800,"SEK":8900}', 1),
+  ('coil-connector-pack', 'smart-coil-connector-pack', 'Smart Coil Connector Pack (4-Pin, VW/Audi Style)', '{"EUR":600,"SEK":6900}', 1);
 
 -- Inventory: 100 units per product
 INSERT OR REPLACE INTO inventory (product_id, qty, updated_at) VALUES
-  ('diy-kit', 100, datetime('now')),
-  ('assembled-ecu', 100, datetime('now')),
-  ('harness-kit', 100, datetime('now')),
-  ('sensor-pack', 100, datetime('now')),
-  ('volvo-p2-bundle', 100, datetime('now'));
+  ('v03-pcb', 100, datetime('now')),
+  ('v04-pcb', 100, datetime('now')),
+  ('arduino-mega', 100, datetime('now')),
+  ('vr-conditioner', 100, datetime('now')),
+  ('wideband-controller', 100, datetime('now')),
+  ('ignition-driver', 100, datetime('now')),
+  ('drv8825-stepper', 100, datetime('now')),
+  ('ballast-resistor', 100, datetime('now')),
+  ('map-sensor', 100, datetime('now')),
+  ('iat-sensor', 100, datetime('now')),
+  ('clt-sensor', 100, datetime('now')),
+  ('tps-sensor', 100, datetime('now')),
+  ('wideband-o2', 100, datetime('now')),
+  ('flex-fuel-sensor', 100, datetime('now')),
+  ('boost-solenoid', 100, datetime('now')),
+  ('relay-pack', 100, datetime('now')),
+  ('idc40-plug', 100, datetime('now')),
+  ('lsu49-connector', 100, datetime('now')),
+  ('coil-connector-pack', 100, datetime('now'));
 
--- Mock order 1 (EUR): 1x Assembled ECU + 1x Harness kit = 37800 cents
+-- Mock order 1 (EUR): v0.4 PCB + Arduino + MAP sensor + relays
 INSERT OR REPLACE INTO orders (id, created_at, status, currency, amount_total, stripe_session_id, stripe_payment_intent, customer_email, shipping_json) VALUES
-  ('ord_mock_001', '2025-02-15 10:30:00', 'PAID', 'EUR', 37800, 'cs_mock_001', 'pi_mock_001', 'customer@example.com', '{"name":"Test Customer","address":{"line1":"Example St 1","city":"Stockholm","postal_code":"11122","country":"SE"}}');
+  ('ord_mock_001', '2025-02-15 10:30:00', 'PAID', 'EUR', 11000, 'cs_mock_001', 'pi_mock_001', 'customer@example.com', '{"name":"Test Customer","address":{"line1":"Example St 1","city":"Stockholm","postal_code":"11122","country":"SE"}}');
 
 INSERT OR REPLACE INTO order_items (order_id, product_id, qty, unit_amount, line_amount) VALUES
-  ('ord_mock_001', 'assembled-ecu', 1, 22900, 22900),
-  ('ord_mock_001', 'harness-kit', 1, 14900, 14900);
+  ('ord_mock_001', 'v04-pcb', 1, 2500, 2500),
+  ('ord_mock_001', 'arduino-mega', 1, 2500, 2500),
+  ('ord_mock_001', 'map-sensor', 1, 3500, 3500),
+  ('ord_mock_001', 'relay-pack', 1, 2500, 2500);
 
--- Mock order 2 (SEK): 1x DIY Kit + 1x Sensor Pack = 319800 öre
+-- Mock order 2 (SEK): v0.3 PCB + Arduino + VR conditioner + sensors
 INSERT OR REPLACE INTO orders (id, created_at, status, currency, amount_total, stripe_session_id, stripe_payment_intent, customer_email, shipping_json) VALUES
-  ('ord_mock_002', '2025-02-20 14:00:00', 'PAID', 'SEK', 319800, 'cs_mock_002', 'pi_mock_002', 'buyer@example.se', NULL);
+  ('ord_mock_002', '2025-02-20 14:00:00', 'PAID', 'SEK', 125200, 'cs_mock_002', 'pi_mock_002', 'buyer@example.se', NULL);
 
 INSERT OR REPLACE INTO order_items (order_id, product_id, qty, unit_amount, line_amount) VALUES
-  ('ord_mock_002', 'diy-kit', 1, 99900, 99900),
-  ('ord_mock_002', 'sensor-pack', 1, 219900, 219900);
+  ('ord_mock_002', 'v03-pcb', 1, 23900, 23900),
+  ('ord_mock_002', 'arduino-mega', 1, 28900, 28900),
+  ('ord_mock_002', 'vr-conditioner', 1, 39900, 39900),
+  ('ord_mock_002', 'iat-sensor', 1, 17500, 17500),
+  ('ord_mock_002', 'clt-sensor', 1, 17500, 17500);
 
--- Mock order 3 (EUR): Volvo P2 bundle only
+-- Mock order 3 (EUR): Wideband setup
 INSERT OR REPLACE INTO orders (id, created_at, status, currency, amount_total, stripe_session_id, stripe_payment_intent, customer_email, shipping_json) VALUES
-  ('ord_mock_003', '2025-03-01 09:15:00', 'PAID', 'EUR', 39900, 'cs_mock_003', 'pi_mock_003', 'volvo.fan@example.com', NULL);
+  ('ord_mock_003', '2025-03-01 09:15:00', 'PAID', 'EUR', 19700, 'cs_mock_003', 'pi_mock_003', 'tuner@example.com', NULL);
 
 INSERT OR REPLACE INTO order_items (order_id, product_id, qty, unit_amount, line_amount) VALUES
-  ('ord_mock_003', 'volvo-p2-bundle', 1, 39900, 39900);
+  ('ord_mock_003', 'wideband-controller', 1, 8900, 8900),
+  ('ord_mock_003', 'wideband-o2', 1, 9900, 9900),
+  ('ord_mock_003', 'lsu49-connector', 1, 800, 800);

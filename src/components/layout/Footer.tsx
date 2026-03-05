@@ -56,7 +56,7 @@ export default function Footer() {
             Ready to Take Control of Your Engine?
           </h2>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Find the right Speeduino kit for your build, or explore our shop for individual components.
+            Browse boards, sensors, and modules — everything you need to build your own Speeduino ECU.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/compatibility" className="cta-primary">Find My Kit</Link>
@@ -103,10 +103,10 @@ export default function Footer() {
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Shop</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/shop" className="hover:text-foreground transition-colors">All Products</Link></li>
-              <li><Link to="/shop" className="hover:text-foreground transition-colors">ECU Kits</Link></li>
-              <li><Link to="/shop" className="hover:text-foreground transition-colors">Harnesses</Link></li>
+              <li><Link to="/shop" className="hover:text-foreground transition-colors">Boards</Link></li>
               <li><Link to="/shop" className="hover:text-foreground transition-colors">Sensors</Link></li>
-              <li><Link to="/shop" className="hover:text-foreground transition-colors">Bundles</Link></li>
+              <li><Link to="/shop" className="hover:text-foreground transition-colors">Modules & Drivers</Link></li>
+              <li><Link to="/shop" className="hover:text-foreground transition-colors">Accessories</Link></li>
             </ul>
           </div>
           <div>

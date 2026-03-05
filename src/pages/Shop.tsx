@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { products, Product } from "@/data/products";
+import { products, Product, ProductCategory } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 import { useAvailability } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
@@ -8,16 +8,16 @@ import { Filter, ArrowRight, ShoppingCart, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
-const categories = [
+const categories: { id: "all" | ProductCategory; label: string }[] = [
   { id: "all", label: "All Products" },
-  { id: "ecu", label: "ECU Kits" },
-  { id: "harness", label: "Harnesses" },
-  { id: "sensors", label: "Sensors" },
-  { id: "bundle", label: "Bundles" },
+  { id: "board", label: "Boards" },
+  { id: "sensor", label: "Sensors" },
+  { id: "module", label: "Modules & Drivers" },
+  { id: "accessory", label: "Accessories" },
 ];
 
 export default function Shop() {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | ProductCategory>("all");
   const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
   const { addItem } = useCart();
   const { availability } = useAvailability();
@@ -41,7 +41,7 @@ export default function Shop() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">Shop</h1>
-            <p className="text-muted-foreground mt-2">Speeduino ECU kits, harnesses, sensors, and bundles — shipped from the EU.</p>
+            <p className="text-muted-foreground mt-2">Speeduino boards, sensors, modules, and accessories — everything you need for your DIY build, shipped from the EU.</p>
           </div>
           <div className="flex items-center gap-2">
             <span className="data-label text-xs">Currency</span>
@@ -100,11 +100,18 @@ export default function Shop() {
                     loading="lazy"
                   />
                 </div>
-                {product.badge && (
-                  <span className="self-start text-xs font-mono font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded mb-2">
-                    {product.badge}
-                  </span>
-                )}
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {product.badge && (
+                    <span className="text-xs font-mono font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                      {product.badge}
+                    </span>
+                  )}
+                  {product.boardCompatibility.length > 0 && (
+                    <span className="text-xs font-mono text-muted-foreground bg-secondary px-2 py-0.5 rounded">
+                      {product.boardCompatibility.join(" / ")}
+                    </span>
+                  )}
+                </div>
                 {outOfStock(product.id) && (
                   <span className="self-start text-xs font-medium text-destructive bg-destructive/10 px-2 py-0.5 rounded mb-2 flex items-center gap-1">
                     <AlertCircle className="w-3 h-3" /> Out of stock

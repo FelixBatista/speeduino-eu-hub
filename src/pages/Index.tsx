@@ -32,7 +32,7 @@ export default function Index() {
             "@type": "Organization",
             name: "Speeduino.eu",
             url: "https://speeduino.eu",
-            description: "Open-source Speeduino ECU kits for Europe. Assembled ECUs, DIY kits, harnesses, and sensors with EU shipping.",
+            description: "Open-source Speeduino ECU components for Europe. DIY boards, sensors, modules, and accessories with EU shipping.",
             address: { "@type": "PostalAddress", addressCountry: "SE" },
           }),
         }}

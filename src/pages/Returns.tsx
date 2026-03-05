@@ -13,9 +13,9 @@ export default function Returns() {
           <p>We offer a 14-day right of withdrawal in accordance with EU consumer protection regulations. Items must be unused, in original packaging, and returned at the buyer's expense. Contact support@speeduino.eu to initiate a return.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Warranty</h2>
           <ul className="list-disc pl-6 space-y-1">
-            <li><strong className="text-foreground">Assembled ECUs:</strong> 12-month warranty covering manufacturing defects. Does not cover damage from improper wiring, incorrect voltage, or physical damage.</li>
-            <li><strong className="text-foreground">DIY Kits:</strong> Components are warranted as delivered. Once soldered, assembly quality is the buyer's responsibility. We're happy to help troubleshoot.</li>
-            <li><strong className="text-foreground">Harnesses & Sensors:</strong> 12-month warranty covering manufacturing defects.</li>
+            <li><strong className="text-foreground">PCBs & DIY Kits:</strong> Components are warranted as delivered. Once soldered, assembly quality is the buyer's responsibility. We're happy to help troubleshoot.</li>
+            <li><strong className="text-foreground">Sensors & Modules:</strong> 12-month warranty covering manufacturing defects. Does not cover damage from improper wiring, incorrect voltage, or physical damage.</li>
+            <li><strong className="text-foreground">Connectors & Accessories:</strong> Warranted as delivered. No returns on crimp pins once used.</li>
           </ul>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">How to Claim</h2>
           <p>Email support@speeduino.eu with your order number, a description of the issue, and photos if applicable. We'll respond within 2 business days.</p>
