@@ -54,7 +54,7 @@ export default function ConfigSnapshot() {
         </div>
 
         <div className="text-center">
-          <Link to="/compatibility" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline">
+          <Link to="/find-my-kit" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline">
             View full compatibility details <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

@@ -59,7 +59,7 @@ export default function Footer() {
             Browse boards, sensors, and modules — everything you need to build your own Speeduino ECU.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/compatibility" className="cta-primary">Find My Kit</Link>
+            <Link to="/find-my-kit" className="cta-primary">Find My Kit</Link>
             <Link to="/shop" className="cta-secondary">Shop Now</Link>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Resources</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/compatibility" className="hover:text-foreground transition-colors">Compatibility</Link></li>
+              <li><Link to="/find-my-kit" className="hover:text-foreground transition-colors">Find My Kit</Link></li>
               <li><Link to="/compare" className="hover:text-foreground transition-colors">ECU Comparison</Link></li>
               <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides & Blog</Link></li>
               <li><Link to="/support" className="hover:text-foreground transition-colors">Support</Link></li>

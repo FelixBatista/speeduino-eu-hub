@@ -82,7 +82,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     const { getProductById, getUnitAmount } = await import("../lib/catalog");
     const items: { productId: string; qty: number; unitAmount: number; lineAmount: number }[] = [];
     for (const row of cart) {
-      const product = getProductById(row.productId);
+      const product = await getProductById(DB, row.productId);
       if (!product) continue;
       const unitAmount = getUnitAmount(product, currency === "SEK" ? "SEK" : "EUR");
       const qty = Math.max(1, Math.min(20, Math.floor(row.quantity)));
@@ -106,8 +106,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
       amount_total: amountTotal,
       customer_email: customerEmail,
     };
-    const itemsForEmail = items.map((item) => {
-      const product = getProductById(item.productId);
+    const itemsForEmail = await Promise.all(items.map(async (item) => {
+      const product = await getProductById(DB, item.productId);
       return {
         product_id: item.productId,
         name: product?.name ?? item.productId,
@@ -115,7 +115,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
         unit_amount: item.unitAmount,
         line_amount: item.lineAmount,
       };
-    });
+    }));
     try {
       await Promise.all([
         sendOrderConfirmationToCustomer(env, orderForEmail, itemsForEmail),

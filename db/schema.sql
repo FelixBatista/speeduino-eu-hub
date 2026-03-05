@@ -1,24 +1,41 @@
 -- Speeduino EU Hub – D1 schema for products, inventory, orders
 -- Run: wrangler d1 execute DB --remote --file=./db/schema.sql
 
--- Product catalog snapshot (optional; server-truth prices are in code via catalog.ts)
--- Useful for admin and order display
 CREATE TABLE IF NOT EXISTS products (
   id TEXT PRIMARY KEY,
-  slug TEXT NOT NULL,
+  slug TEXT NOT NULL UNIQUE,
   name TEXT NOT NULL,
-  currency_prices TEXT NOT NULL, -- JSON: {"EUR":8900,"SEK":99900} (cents/öre)
-  active INTEGER NOT NULL DEFAULT 1
+  short_name TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  long_description TEXT NOT NULL DEFAULT '',
+  price_eur INTEGER NOT NULL DEFAULT 0,       -- cents
+  price_sek INTEGER NOT NULL DEFAULT 0,       -- öre
+  category TEXT NOT NULL DEFAULT 'accessory', -- board | sensor | module | accessory
+  board_compatibility TEXT NOT NULL DEFAULT '[]',   -- JSON string array
+  connects_to TEXT NOT NULL DEFAULT '',
+  requirement_level TEXT NOT NULL DEFAULT 'optional', -- required | recommended | optional
+  show_conditions TEXT NOT NULL DEFAULT '[]',  -- JSON: array of condition objects
+  skill_level TEXT NOT NULL DEFAULT 'Beginner',
+  lead_time_days TEXT NOT NULL DEFAULT '3-7',
+  included TEXT NOT NULL DEFAULT '[]',         -- JSON string array
+  not_included TEXT NOT NULL DEFAULT '[]',     -- JSON string array
+  badge TEXT,
+  featured INTEGER NOT NULL DEFAULT 0,
+  in_stock INTEGER NOT NULL DEFAULT 1,
+  image_url TEXT,
+  specs TEXT NOT NULL DEFAULT '{}',            -- JSON key-value object
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Inventory per product
 CREATE TABLE IF NOT EXISTS inventory (
   product_id TEXT PRIMARY KEY,
   qty INTEGER NOT NULL DEFAULT 0,
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
--- Orders (created by webhook on checkout.session.completed)
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -31,7 +48,6 @@ CREATE TABLE IF NOT EXISTS orders (
   shipping_json TEXT
 );
 
--- Order line items
 CREATE TABLE IF NOT EXISTS order_items (
   order_id TEXT NOT NULL,
   product_id TEXT NOT NULL,
@@ -44,7 +60,6 @@ CREATE TABLE IF NOT EXISTS order_items (
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_orders_stripe_session_id ON orders(stripe_session_id);
 
--- Newsletter / starter guide signups (opt-in emails)
 CREATE TABLE IF NOT EXISTS subscribers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT NOT NULL UNIQUE,
@@ -54,7 +69,6 @@ CREATE TABLE IF NOT EXISTS subscribers (
 CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
 CREATE INDEX IF NOT EXISTS idx_subscribers_created_at ON subscribers(created_at DESC);
 
--- Site config (e.g. shipping options, allowed countries) – editable from Admin
 CREATE TABLE IF NOT EXISTS config (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL

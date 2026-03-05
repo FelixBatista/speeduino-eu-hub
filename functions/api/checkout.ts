@@ -35,14 +35,14 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   const stripe = new Stripe(STRIPE_SECRET_KEY);
 
-  const lineItems: { productId: string; quantity: number; product: ReturnType<typeof getProductById> }[] = [];
+  const lineItems: { productId: string; quantity: number; product: Awaited<ReturnType<typeof getProductById>> }[] = [];
   for (const item of items) {
     if (typeof item.productId !== "string" || typeof item.quantity !== "number") {
       return errorResponse("Invalid item: productId and quantity required", 400);
     }
     const qty = Math.floor(item.quantity);
     if (qty < MIN_QTY || qty > MAX_QTY) return errorResponse(`Quantity must be between ${MIN_QTY} and ${MAX_QTY}`, 400);
-    const product = getProductById(item.productId);
+    const product = await getProductById(DB, item.productId);
     if (!product) return errorResponse(`Unknown product: ${item.productId}`, 400);
     const available = await getInventory(DB, item.productId);
     if (available < qty) return errorResponse("Insufficient stock for one or more items", 409);

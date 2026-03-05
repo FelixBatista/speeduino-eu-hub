@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { label: "Shop", href: "/shop" },
-  { label: "Compatibility", href: "/compatibility" },
   { label: "Compare", href: "/compare" },
   { label: "Guides", href: "/guides" },
   { label: "Support", href: "/support" },
@@ -81,7 +80,7 @@ export default function Header() {
               </span>
             )}
           </Link>
-          <Link to="/compatibility" className="cta-primary !px-5 !py-2.5 !text-sm">
+          <Link to="/find-my-kit" className="cta-primary !px-5 !py-2.5 !text-sm">
             Find My Kit
           </Link>
         </div>
@@ -127,7 +126,7 @@ export default function Header() {
                 <Link to="/cart" className="cta-secondary flex-1 !py-3 !text-sm text-center">
                   <ShoppingCart className="w-4 h-4 inline mr-2" /> Cart
                 </Link>
-                <Link to="/compatibility" className="cta-primary flex-1 !py-3 !text-sm text-center">
+                <Link to="/find-my-kit" className="cta-primary flex-1 !py-3 !text-sm text-center">
                   Find My Kit
                 </Link>
               </div>

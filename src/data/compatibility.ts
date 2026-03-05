@@ -101,50 +101,6 @@ export const wizardSteps: WizardStep[] = [
   },
 ];
 
-export interface BundleRecommendation {
-  productIds: string[];
-  reason: string;
-  installDifficulty: "Easy" | "Medium" | "Advanced";
-  estimatedTime: string;
-  additionalNeeds: string[];
-}
-
-export function getRecommendation(selections: Record<string, string[]>): BundleRecommendation {
-  const goals = selections.goals?.[0];
-  const hasExtras = selections.extras || [];
-  const hasTurbo = selections.induction?.includes("turbo") || selections.induction?.includes("supercharged");
-
-  const base = ["v04-pcb", "arduino-mega", "map-sensor"];
-
-  if (goals === "track-rally") {
-    return {
-      productIds: [...base, "wideband-controller", "wideband-o2", "relay-pack", ...(hasTurbo ? ["boost-solenoid"] : [])],
-      reason: "Full track/rally setup with wideband tuning, relay power distribution, and boost control for maximum performance.",
-      installDifficulty: "Advanced",
-      estimatedTime: "8–16 hours",
-      additionalNeeds: ["IAT & CLT sensors (if not reusing OEM)", "TunerStudio for tuning", "Laptop", "VR conditioner (if your engine uses VR sensors)"],
-    };
-  }
-
-  if (goals === "street-performance" || hasExtras.includes("boost-control") || hasTurbo) {
-    return {
-      productIds: [...base, "wideband-controller", "wideband-o2", "relay-pack"],
-      reason: "Performance street build with wideband AFR tuning. Add boost solenoid if running forced induction.",
-      installDifficulty: "Medium",
-      estimatedTime: "6–12 hours",
-      additionalNeeds: ["Boost solenoid (if turbo/supercharged)", "IAT & CLT sensors", "TunerStudio for tuning"],
-    };
-  }
-
-  return {
-    productIds: [...base, "relay-pack"],
-    reason: "Reliable daily driver setup. Start with the essentials and add wideband + sensors as needed.",
-    installDifficulty: "Medium",
-    estimatedTime: "4–8 hours",
-    additionalNeeds: ["Wideband controller (strongly recommended for tuning)", "IAT & CLT sensors", "TunerStudio (free version available)", "Basic hand tools", "Multimeter"],
-  };
-}
-
 // Supported configurations summary (for specs page & homepage)
 export const supportedConfigs = {
   cylinders: { range: "1–8", common: ["4", "5", "6", "8"], notes: "Most common: 4-cylinder and 5-cylinder (Volvo)" },

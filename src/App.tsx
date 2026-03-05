@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -16,7 +16,7 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import Admin from "./pages/Admin";
 import Compare from "./pages/Compare";
-import Compatibility from "./pages/Compatibility";
+import FindMyKit from "./pages/FindMyKit";
 import Guides from "./pages/Guides";
 import BlogArticle from "./pages/BlogArticle";
 import Support from "./pages/Support";
@@ -47,7 +47,8 @@ const App = () => (
             <Route path="/order/success" element={<OrderSuccess />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/compare" element={<Compare />} />
-            <Route path="/compatibility" element={<Compatibility />} />
+            <Route path="/find-my-kit" element={<FindMyKit />} />
+            <Route path="/compatibility" element={<Navigate to="/find-my-kit" replace />} />
             <Route path="/guides" element={<Guides />} />
             <Route path="/guides/:slug" element={<BlogArticle />} />
             <Route path="/support" element={<Support />} />

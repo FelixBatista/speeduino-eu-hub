@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Product } from "@/data/products";
+import { toast } from "sonner";
 
 export interface CartItem {
   product: Product;
@@ -32,10 +33,42 @@ function loadCart(): CartItem[] {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(loadCart);
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
+
+  useEffect(() => {
+    if (validated || items.length === 0) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) return;
+        const data = await res.json();
+        const activeIds = new Set((data.products as Product[]).map((p) => p.id));
+
+        if (cancelled) return;
+
+        setItems((prev) => {
+          const valid = prev.filter((i) => activeIds.has(i.product.id));
+          const removed = prev.length - valid.length;
+          if (removed > 0) {
+            toast.info(`${removed} item${removed > 1 ? "s" : ""} removed from cart (no longer available).`);
+          }
+          return valid;
+        });
+      } catch {
+        /* network error: keep cart as-is */
+      } finally {
+        if (!cancelled) setValidated(true);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [validated, items.length]);
 
   const addItem = (product: Product, quantity = 1) => {
     setItems((prev) => {

@@ -4,7 +4,7 @@ import CompatibilityWizard from "@/components/home/CompatibilityWizard";
 import { motion } from "framer-motion";
 import { Check, X, Info } from "lucide-react";
 
-export default function Compatibility() {
+export default function FindMyKit() {
   const { sensors, control, transmission } = supportedConfigs;
 
   return (
@@ -13,24 +13,21 @@ export default function Compatibility() {
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-foreground">Compatibility</span>
+          <span className="text-foreground">Find My Kit</span>
         </nav>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Compatibility & Supported Configurations
+            Find My Kit
           </h1>
           <p className="text-muted-foreground max-w-2xl mb-12">
-            Everything Speeduino can run — cylinders, injection modes, ignition types, sensors, and more. All data is verified and kept up to date.
+            Answer a few questions about your engine setup. We'll show you exactly which components you need, recommend, and can optionally add.
           </p>
         </motion.div>
 
-        {/* Wizard embed */}
         <CompatibilityWizard />
 
-        {/* Detailed specs tables */}
         <section className="mt-20 max-w-4xl mx-auto space-y-12">
-          {/* Sensors */}
           <div>
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">Sensors</h2>
             <div className="grid md:grid-cols-3 gap-4">
@@ -49,7 +46,6 @@ export default function Compatibility() {
             </div>
           </div>
 
-          {/* Control outputs */}
           <div>
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">Control Outputs</h2>
             <div className="space-y-2">
@@ -65,7 +61,6 @@ export default function Compatibility() {
             </div>
           </div>
 
-          {/* Transmission */}
           <div>
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">Transmission</h2>
             <div className="space-y-2">

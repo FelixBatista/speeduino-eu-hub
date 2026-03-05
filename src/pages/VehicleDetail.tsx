@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { getVehicleBySlug, vehicles } from "@/data/vehicles";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { motion } from "framer-motion";
 import { Check, ShoppingCart, Wrench, Clock, Users, ArrowLeft, ArrowRight, AlertTriangle } from "lucide-react";
@@ -21,7 +21,8 @@ export default function VehicleDetail() {
     );
   }
 
-  const bundle = products.find((p) => p.id === vehicle.recommendedBundleId);
+  const { data: allProducts = [] } = useProducts();
+  const bundle = allProducts.find((p) => p.id === vehicle.recommendedBundleId);
 
   return (
     <main className="pt-24 pb-20">

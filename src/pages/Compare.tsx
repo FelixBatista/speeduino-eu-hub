@@ -62,7 +62,7 @@ export default function Compare() {
         </div>
 
         <div className="mt-12 text-center">
-          <Link to="/compatibility" className="cta-primary">Find My Kit</Link>
+          <Link to="/find-my-kit" className="cta-primary">Find My Kit</Link>
         </div>
       </div>
     </main>

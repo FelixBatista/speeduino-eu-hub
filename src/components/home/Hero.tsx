@@ -48,7 +48,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-14">
-            <Link to="/compatibility" className="cta-primary">
+            <Link to="/find-my-kit" className="cta-primary">
               Find My Kit
             </Link>
             <Link to="/shop" className="cta-secondary">

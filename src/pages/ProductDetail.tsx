@@ -1,18 +1,26 @@
 import { useParams, Link } from "react-router-dom";
-import { getProductBySlug } from "@/data/products";
+import { useProduct } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useStock } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle } from "lucide-react";
+import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle, Loader2, Layers } from "lucide-react";
 import { SPEEDUINO_WIKI, SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const product = getProductBySlug(slug || "");
+  const { data: product, isLoading } = useProduct(slug || "");
   const { addItem } = useCart();
   const { qty: stockQty, outOfStock, loaded: stockLoaded } = useStock(product?.id);
+
+  if (isLoading) {
+    return (
+      <main className="pt-32 pb-20 container flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </main>
+    );
+  }
 
   if (!product) {
     return (
@@ -26,7 +34,6 @@ export default function ProductDetail() {
   return (
     <main className="pt-24 pb-20">
       <div className="container">
-        {/* Breadcrumb */}
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>
@@ -40,14 +47,12 @@ export default function ProductDetail() {
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-10">
-          {/* Image */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className="aspect-square rounded-xl overflow-hidden bg-secondary/50 border border-border">
               <img src={ecuProduct} alt={product.name} className="w-full h-full object-cover" />
             </div>
           </motion.div>
 
-          {/* Info */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
             {product.badge && (
               <span className="inline-block text-xs font-mono font-semibold text-primary bg-primary/10 px-3 py-1 rounded mb-3">
@@ -101,10 +106,19 @@ export default function ProductDetail() {
                 toast.success(`${product.shortName} added to cart`);
               }}
               disabled={outOfStock}
-              className="cta-primary w-full mb-4 disabled:opacity-50 disabled:pointer-events-none"
+              className="cta-primary w-full mb-3 disabled:opacity-50 disabled:pointer-events-none"
             >
               <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
             </button>
+
+            <Link
+              to="/find-my-kit"
+              className="w-full mb-4 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-primary/30 text-primary hover:bg-primary/10 transition-colors px-6 py-3 text-sm font-semibold"
+            >
+              <Layers className="w-4 h-4" /> Make a Bundle
+              <span className="text-xs font-normal text-muted-foreground ml-1">— build a complete kit</span>
+            </Link>
+
             <p className="text-xs text-muted-foreground text-center mb-4">Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout.</p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-muted-foreground">
@@ -117,7 +131,6 @@ export default function ProductDetail() {
               </a>
             </div>
 
-            {/* What's included */}
             <div className="mb-6">
               <h2 className="font-display text-lg font-bold text-foreground mb-3">What's Included</h2>
               <ul className="space-y-2">
@@ -129,7 +142,7 @@ export default function ProductDetail() {
               </ul>
             </div>
 
-            {product.notIncluded && (
+            {product.notIncluded && product.notIncluded.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-display text-sm font-bold text-muted-foreground mb-2">Not Included</h3>
                 <ul className="space-y-1">
@@ -142,7 +155,6 @@ export default function ProductDetail() {
               </div>
             )}
 
-            {/* Specs */}
             <div>
               <h2 className="font-display text-lg font-bold text-foreground mb-3">Specifications</h2>
               <div className="space-y-2">
@@ -158,7 +170,6 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* JSON-LD Product */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

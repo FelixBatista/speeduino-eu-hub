@@ -22,7 +22,7 @@ export default function Vehicles() {
 
         <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">Supported Vehicles</h1>
         <p className="text-muted-foreground max-w-2xl mb-10">
-          Browse vehicle-specific guides, wiring notes, and recommended kits. Can't find your vehicle? Speeduino supports most engines — <Link to="/compatibility" className="text-primary hover:underline">check compatibility</Link>.
+          Browse vehicle-specific guides, wiring notes, and recommended kits. Can't find your vehicle? Speeduino supports most engines — <Link to="/find-my-kit" className="text-primary hover:underline">check compatibility</Link>.
         </p>
 
         {/* Search */}
@@ -68,7 +68,7 @@ export default function Vehicles() {
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <p className="text-muted-foreground mb-4">No vehicles match your search.</p>
-            <Link to="/compatibility" className="text-primary hover:underline">Use the compatibility wizard instead →</Link>
+            <Link to="/find-my-kit" className="text-primary hover:underline">Use the Find My Kit wizard instead →</Link>
           </div>
         )}
       </div>
