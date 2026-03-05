@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { blogPosts } from "@/data/blogPosts";
 import { motion } from "framer-motion";
-import { Clock, ArrowRight } from "lucide-react";
+import { Clock, ArrowRight, BookOpen } from "lucide-react";
+import { SPEEDUINO_WIKI } from "@/data/speeduinoLinks";
 
 export default function Guides() {
   return (
@@ -14,8 +15,15 @@ export default function Guides() {
         </nav>
 
         <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">Guides & Blog</h1>
-        <p className="text-muted-foreground max-w-2xl mb-12">
+        <p className="text-muted-foreground max-w-2xl mb-6">
           Practical, technical guides for Speeduino builds — wiring, tuning, sensor selection, and more.
+        </p>
+        <p className="text-sm text-muted-foreground mb-12 flex flex-wrap items-center gap-1">
+          <BookOpen className="w-4 h-4 text-primary flex-shrink-0" />
+          The official, up-to-date manual lives on the project:{" "}
+          <a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+            Official Speeduino documentation
+          </a>
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">

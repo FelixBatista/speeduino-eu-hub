@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Zap, Mail, MapPin, Truck } from "lucide-react";
+import {
+  SPEEDUINO_MAIN,
+  SPEEDUINO_FORUM,
+  SPEEDUINO_WIKI,
+  SPEEDUINO_DISCORD,
+  SPEEDUINO_SPEEDYLOADER,
+  SPEEDUINO_FIRMWARE_RELEASES,
+  SPEEDUINO_HARDWARE,
+} from "@/data/speeduinoLinks";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -89,7 +98,7 @@ export default function Footer() {
 
       {/* Links */}
       <div className="container py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div>
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Shop</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
@@ -107,6 +116,26 @@ export default function Footer() {
               <li><Link to="/compare" className="hover:text-foreground transition-colors">ECU Comparison</Link></li>
               <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides & Blog</Link></li>
               <li><Link to="/support" className="hover:text-foreground transition-colors">Support</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Speeduino project</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <a href={SPEEDUINO_MAIN} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+                  Speeduino.com
+                </a>
+                <span className="block text-xs text-muted-foreground/80">Project home (no boards sold here)</span>
+              </li>
+              <li><a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Documentation</a></li>
+              <li>
+                <a href={SPEEDUINO_SPEEDYLOADER} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Software (Official)</a>
+                <span className="block text-xs text-muted-foreground/80">SpeedyLoader + firmware — pre-compiled, no compiling needed</span>
+              </li>
+              <li><a href={SPEEDUINO_FIRMWARE_RELEASES} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Firmware releases</a></li>
+              <li><a href={SPEEDUINO_FORUM} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Forum</a></li>
+              <li><a href={SPEEDUINO_DISCORD} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Discord</a></li>
+              <li><a href={SPEEDUINO_HARDWARE} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Hardware designs / license</a></li>
             </ul>
           </div>
           <div>
@@ -135,11 +164,11 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Speeduino.eu — Open-source engine management for Europe
+              © {new Date().getFullYear()} Speeduino.eu — Speeduino-compatible engine management for Europe
             </span>
           </div>
           <p className="text-xs text-muted-foreground max-w-md text-center md:text-right">
-            Speeduino is an open-source project. Product names mentioned are trademarks of their respective owners. All prices include VAT for EU customers.
+            Independent EU seller of Speeduino-compatible hardware — not affiliated with the Speeduino project. Product names mentioned are trademarks of their respective owners. All prices include VAT for EU customers.
           </p>
         </div>
       </div>

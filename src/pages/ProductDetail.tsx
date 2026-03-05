@@ -3,7 +3,8 @@ import { getProductBySlug } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 import { useStock } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle } from "lucide-react";
+import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle } from "lucide-react";
+import { SPEEDUINO_WIKI, SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 
@@ -104,7 +105,17 @@ export default function ProductDetail() {
             >
               <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
             </button>
-            <p className="text-xs text-muted-foreground text-center mb-8">Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout.</p>
+            <p className="text-xs text-muted-foreground text-center mb-4">Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout.</p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">Official docs & community:</span>
+              <a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary hover:underline">
+                <BookOpen className="w-4 h-4 flex-shrink-0" /> Wiki
+              </a>
+              <a href={SPEEDUINO_DISCORD} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-primary hover:underline">
+                <MessageCircle className="w-4 h-4 flex-shrink-0" /> Discord
+              </a>
+            </div>
 
             {/* What's included */}
             <div className="mb-6">

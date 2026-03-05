@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart, Zap } from "lucide-react";
+import { Menu, X, ShoppingCart, Zap, MessageCircle } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -64,6 +65,15 @@ export default function Header() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3">
+          <a
+            href={SPEEDUINO_DISCORD}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Join Speeduino Discord"
+          >
+            <MessageCircle className="w-5 h-5" />
+          </a>
           <Link to="/cart" className="relative p-2 text-muted-foreground hover:text-foreground transition-colors">
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
@@ -107,6 +117,14 @@ export default function Header() {
                 </Link>
               ))}
               <div className="mt-3 pt-3 border-t border-border flex gap-3">
+                <a
+                  href={SPEEDUINO_DISCORD}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta-secondary flex-1 !py-3 !text-sm text-center"
+                >
+                  <MessageCircle className="w-4 h-4 inline mr-2" /> Discord
+                </a>
                 <Link to="/cart" className="cta-secondary flex-1 !py-3 !text-sm text-center">
                   <ShoppingCart className="w-4 h-4 inline mr-2" /> Cart
                 </Link>

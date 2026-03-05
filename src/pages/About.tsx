@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Truck, Heart, Github } from "lucide-react";
+import { SPEEDUINO_MAIN } from "@/data/speeduinoLinks";
 
 export default function About() {
   return (
@@ -15,7 +16,9 @@ export default function About() {
 
         <div className="prose prose-invert max-w-none space-y-6 text-secondary-foreground">
           <p className="text-lg">
-            We're an EU-based shop dedicated to making open-source engine management accessible to European enthusiasts. Based in Sweden, we source, assemble, test, and ship Speeduino ECU kits across Europe.
+            We're an EU-based shop dedicated to making open-source engine management accessible to European enthusiasts. Based in Sweden, we source, assemble, test, and ship Speeduino ECU kits across Europe. The official Speeduino project and community are at{" "}
+            <a href={SPEEDUINO_MAIN} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">speeduino.com</a>
+            {" "}— they don't sell boards; Speeduino.eu is an independent EU shop.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 not-prose my-8">
