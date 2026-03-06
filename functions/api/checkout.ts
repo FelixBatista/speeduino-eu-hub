@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import { getProductById, getUnitAmount } from "../lib/catalog";
 import { getInventory } from "../lib/db";
-import { getShippingOptions, getShippingById, getShippingAmount } from "../lib/shipping";
+import { getShippingOptions, getShippingById, getShippingAmount, getShippingAllowedCountries } from "../lib/shipping";
 import { jsonResponse, errorResponse } from "../lib/json";
 
 const MIN_QTY = 1;
@@ -33,7 +33,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   const shippingOption = getShippingById(shippingOptions, shippingOptionId);
   if (!shippingOption) return errorResponse("Invalid shipping option", 400);
 
-  const stripe = new Stripe(STRIPE_SECRET_KEY);
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { httpClient: Stripe.createFetchHttpClient() });
 
   const lineItems: { productId: string; quantity: number; product: Awaited<ReturnType<typeof getProductById>> }[] = [];
   for (const item of items) {
@@ -68,7 +68,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     },
   ];
 
-  const { getShippingAllowedCountries } = await import("../lib/shipping");
   const allowedCountries = await getShippingAllowedCountries(DB);
   const cartMetadata = JSON.stringify(lineItems.map((i) => ({ productId: i.productId, quantity: i.quantity })));
   try {
@@ -84,8 +83,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     if (!url) return errorResponse("Failed to create checkout session", 500);
     return jsonResponse({ url });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "Unknown error";
-    if (msg.includes("Stripe") || msg.includes("api")) return errorResponse("Payment service error", 500);
-    return errorResponse("Checkout failed", 500);
+    console.error("Stripe checkout.sessions.create failed:", e);
+    return errorResponse("Payment service error", 500);
   }
 }
