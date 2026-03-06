@@ -1,4 +1,5 @@
 import { useState, useRef, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { configuratorSteps, isProductVisible, ConfiguratorInputs, Product } from "@/data/products";
 import { useProducts } from "@/hooks/useProducts";
@@ -17,6 +18,7 @@ const levelLabels: Record<string, { title: string; color: string }> = {
 };
 
 export default function CompatibilityWizard() {
+  const navigate = useNavigate();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const [currentStep, setCurrentStep] = useState(0);
@@ -83,6 +85,7 @@ export default function CompatibilityWizard() {
       }
     });
     toast.success(`${added} item${added !== 1 ? "s" : ""} added to cart`);
+    navigate("/cart");
   };
 
   return (
@@ -252,6 +255,7 @@ export default function CompatibilityWizard() {
                                       onClick={() => {
                                         addItem(product);
                                         toast.success(`${product.shortName} added to cart`);
+                                        navigate("/cart");
                                       }}
                                       className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors flex-shrink-0"
                                       aria-label={`Add ${product.shortName} to cart`}
