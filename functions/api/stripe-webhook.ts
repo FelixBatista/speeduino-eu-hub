@@ -43,10 +43,22 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     if (!cartStr) return jsonResponse({ received: true });
 
     let cart: { productId: string; quantity: number }[];
-    try {
-      cart = JSON.parse(cartStr) as { productId: string; quantity: number }[];
-    } catch {
-      return jsonResponse({ received: true });
+    if (cartStr.startsWith("[")) {
+      // Legacy JSON format
+      try {
+        cart = JSON.parse(cartStr) as { productId: string; quantity: number }[];
+      } catch {
+        return jsonResponse({ received: true });
+      }
+    } else {
+      // Compact format: "id:qty|id:qty"
+      cart = cartStr
+        .split("|")
+        .map((entry) => {
+          const colon = entry.lastIndexOf(":");
+          return { productId: entry.slice(0, colon), quantity: parseInt(entry.slice(colon + 1), 10) || 1 };
+        })
+        .filter((e) => e.productId);
     }
 
     const orderId = `ord_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;

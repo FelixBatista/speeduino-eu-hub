@@ -69,7 +69,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   ];
 
   const allowedCountries = await getShippingAllowedCountries(DB);
-  const cartMetadata = JSON.stringify(lineItems.map((i) => ({ productId: i.productId, quantity: i.quantity })));
+  // Compact format "id:qty|id:qty" keeps the value well under Stripe's 500-char metadata limit.
+  const cartMetadata = lineItems.map((i) => `${i.productId}:${i.quantity}`).join("|");
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
