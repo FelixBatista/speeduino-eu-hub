@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle, Settings2, Plus, Trash2, Pencil, X, Save, ChevronDown, ChevronUp, Tag } from "lucide-react";
+import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle, Settings2, Plus, Trash2, Pencil, X, Save, ChevronDown, ChevronUp, Tag, Bell } from "lucide-react";
 
 const ADMIN_TOKEN_KEY = "speeduino-admin-token";
 
@@ -47,7 +47,9 @@ interface AdminProduct {
   active: boolean;
 }
 
-type Tab = "orders" | "products" | "inventory" | "shipping";
+type WaitlistEntry = { id: number; product_id: string; product_name: string; email: string; created_at: string };
+
+type Tab = "orders" | "products" | "inventory" | "shipping" | "waitlist";
 
 const emptyProduct: AdminProduct = {
   id: "", slug: "", name: "", shortName: "", description: "", longDescription: "",
@@ -82,6 +84,8 @@ export default function Admin() {
   const [productSaving, setProductSaving] = useState(false);
   const [productError, setProductError] = useState<string | null>(null);
   const [showConditionsRaw, setShowConditionsRaw] = useState("[]");
+  const [waitlistEntries, setWaitlistEntries] = useState<WaitlistEntry[]>([]);
+  const [waitlistLoading, setWaitlistLoading] = useState(false);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(ADMIN_TOKEN_KEY);
@@ -125,6 +129,7 @@ export default function Admin() {
         const productsData = await productsRes.json();
         setAdminProducts(productsData.products ?? []);
       }
+      // Waitlist is fetched on demand (tab switch) to keep initial load fast
     } catch {
       setError("Network error.");
     } finally {
@@ -313,7 +318,25 @@ export default function Admin() {
     { id: "products", label: "Products", icon: <Tag className="w-4 h-4" /> },
     { id: "inventory", label: "Inventory", icon: <Package className="w-4 h-4" /> },
     { id: "shipping", label: "Shipping", icon: <Settings2 className="w-4 h-4" /> },
+    {
+      id: "waitlist",
+      label: `Waitlist${waitlistEntries.length > 0 ? ` (${waitlistEntries.length})` : ""}`,
+      icon: <Bell className="w-4 h-4" />,
+    },
   ];
+
+  const fetchWaitlist = async () => {
+    setWaitlistLoading(true);
+    try {
+      const res = await fetch("/api/admin/waitlist", { headers: { Authorization: `Bearer ${token}` } });
+      if (res.ok) {
+        const data = await res.json();
+        setWaitlistEntries(data.waitlist ?? []);
+      }
+    } finally {
+      setWaitlistLoading(false);
+    }
+  };
 
   return (
     <main className="pt-24 pb-20 container max-w-5xl">
@@ -331,7 +354,10 @@ export default function Admin() {
         {tabs.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActiveTab(t.id)}
+            onClick={() => {
+              setActiveTab(t.id);
+              if (t.id === "waitlist") fetchWaitlist();
+            }}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-md transition-colors whitespace-nowrap ${
               activeTab === t.id ? "bg-primary/10 text-primary border-b-2 border-primary -mb-px" : "text-muted-foreground hover:text-foreground"
             }`}
@@ -688,6 +714,57 @@ export default function Admin() {
                 <input type="text" placeholder="AT, BE, DE, SE, GB, ..." value={shippingCountries} onChange={(e) => setShippingCountries(e.target.value)} className="w-full px-3 py-2 rounded border border-border bg-background text-foreground text-sm font-mono" />
               </div>
               <button type="button" onClick={handleSaveShippingConfig} disabled={shippingConfigSaving || shippingOptions.length === 0} className="cta-primary !py-2 !text-sm disabled:opacity-50">{shippingConfigSaving ? "Saving…" : "Save shipping settings"}</button>
+            </section>
+          )}
+          {/* ── WAITLIST ──────────────────────────────────────────── */}
+          {activeTab === "waitlist" && (
+            <section className="card-motorsport p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-display text-lg font-bold text-foreground flex items-center gap-2">
+                  <Bell className="w-5 h-5" /> Waitlist sign-ups
+                </h2>
+                <button
+                  onClick={fetchWaitlist}
+                  disabled={waitlistLoading}
+                  className="text-xs text-primary hover:underline disabled:opacity-50 flex items-center gap-1"
+                >
+                  {waitlistLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+                  Refresh
+                </button>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Customers who asked to be notified when an out-of-stock product is back. Email them manually or restock the product in Inventory.
+              </p>
+              {waitlistLoading ? (
+                <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+              ) : waitlistEntries.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-4 text-center">No waitlist entries yet.</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-left">
+                        <th className="pb-2 font-semibold text-muted-foreground pr-4">Email</th>
+                        <th className="pb-2 font-semibold text-muted-foreground pr-4">Product</th>
+                        <th className="pb-2 font-semibold text-muted-foreground pr-4">Product ID</th>
+                        <th className="pb-2 font-semibold text-muted-foreground">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/50">
+                      {waitlistEntries.map((entry) => (
+                        <tr key={entry.id} className="hover:bg-secondary/20">
+                          <td className="py-2.5 pr-4 font-mono text-xs">{entry.email}</td>
+                          <td className="py-2.5 pr-4">{entry.product_name}</td>
+                          <td className="py-2.5 pr-4 font-mono text-xs text-muted-foreground">{entry.product_id}</td>
+                          <td className="py-2.5 text-muted-foreground text-xs whitespace-nowrap">
+                            {new Date(entry.created_at).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           )}
         </>

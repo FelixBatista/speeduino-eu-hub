@@ -134,6 +134,37 @@ export async function updateOrderDelivered(db: D1Database, orderId: string): Pro
   return (meta.meta?.changes ?? meta.meta?.rows_written ?? 0) > 0;
 }
 
+export type WaitlistRow = { id: number; product_id: string; product_name: string; email: string; created_at: string };
+
+/** Add an email to the waitlist for a specific out-of-stock product. Idempotent (same email+product = silent success). */
+export async function addToWaitlist(
+  db: D1Database,
+  productId: string,
+  productName: string,
+  email: string
+): Promise<{ ok: true; alreadyExists: boolean } | { ok: false; error: "invalid" }> {
+  const trimmed = email.trim().toLowerCase();
+  if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return { ok: false, error: "invalid" };
+  try {
+    await db.prepare("INSERT INTO waitlist (product_id, product_name, email) VALUES (?, ?, ?)")
+      .bind(productId, productName, trimmed)
+      .run();
+    return { ok: true, alreadyExists: false };
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.toLowerCase().includes("unique")) return { ok: true, alreadyExists: true };
+    throw e;
+  }
+}
+
+/** Get all waitlist entries, newest first. */
+export async function getWaitlistEntries(db: D1Database): Promise<WaitlistRow[]> {
+  const { results } = await db
+    .prepare("SELECT id, product_id, product_name, email, created_at FROM waitlist ORDER BY created_at DESC")
+    .all();
+  return (results ?? []) as WaitlistRow[];
+}
+
 /** Subscribe an email for newsletter/starter guide. Idempotent: same email can re-submit (no error). */
 export async function subscribeEmail(db: D1Database, email: string, source = "starter_guide"): Promise<{ ok: true } | { ok: false; error: "invalid" }> {
   const trimmed = email.trim().toLowerCase();

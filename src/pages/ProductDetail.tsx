@@ -1,18 +1,21 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProduct } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useStock } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle, Loader2, Layers } from "lucide-react";
+import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle, Loader2, Layers, Bell } from "lucide-react";
 import { SPEEDUINO_WIKI, SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
+import WaitlistDialog from "@/components/WaitlistDialog";
 
 export default function ProductDetail() {
   const { slug } = useParams();
   const { data: product, isLoading } = useProduct(slug || "");
   const { addItem } = useCart();
   const { qty: stockQty, outOfStock, loaded: stockLoaded } = useStock(product?.id);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -48,8 +51,15 @@ export default function ProductDetail() {
 
         <div className="grid lg:grid-cols-2 gap-10">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <div className="aspect-square rounded-xl overflow-hidden bg-secondary/50 border border-border">
+            <div className={`aspect-square rounded-xl overflow-hidden bg-secondary/50 border border-border relative ${outOfStock && stockLoaded ? "opacity-70" : ""}`}>
               <img src={ecuProduct} alt={product.name} className="w-full h-full object-cover" />
+              {outOfStock && stockLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="bg-destructive text-destructive-foreground text-sm font-bold px-4 py-2 rounded-lg shadow-lg rotate-[-8deg]">
+                    Out of Stock
+                  </span>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -82,12 +92,17 @@ export default function ProductDetail() {
               </div>
             </div>
 
+            {/* Stock status */}
             {stockLoaded && (
               <div className="mb-4">
                 {outOfStock ? (
-                  <p className="text-sm text-destructive flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" /> Out of stock — check back later or contact us.
-                  </p>
+                  <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                    <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-destructive">Out of Stock</p>
+                      <p className="text-xs text-muted-foreground">Join the waitlist and we'll notify you when it's available.</p>
+                    </div>
+                  </div>
                 ) : stockQty >= 0 ? (
                   <p className="text-sm text-muted-foreground">
                     {stockQty === 1 ? "Only 1 left in stock." : `${stockQty} in stock.`}
@@ -96,20 +111,29 @@ export default function ProductDetail() {
               </div>
             )}
 
-            <button
-              onClick={() => {
-                if (outOfStock) {
-                  toast.error("This item is currently out of stock.");
-                  return;
-                }
-                addItem(product);
-                toast.success(`${product.shortName} added to cart`);
-              }}
-              disabled={outOfStock}
-              className="cta-primary w-full mb-3 disabled:opacity-50 disabled:pointer-events-none"
-            >
-              <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
-            </button>
+            {/* CTA buttons */}
+            {stockLoaded && outOfStock ? (
+              <button
+                onClick={() => setWaitlistOpen(true)}
+                className="w-full mb-3 inline-flex items-center justify-center gap-2 rounded-lg bg-destructive/10 border-2 border-destructive/30 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors px-6 py-3 font-semibold"
+              >
+                <Bell className="w-5 h-5" /> Add me to the waitlist
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  addItem(product);
+                  toast.success(`${product.shortName} added to cart`);
+                }}
+                className="cta-primary w-full mb-3"
+              >
+                <ShoppingCart className="w-5 h-5 mr-2 inline" /> Add to Cart — €{product.priceEUR}
+              </button>
+            )}
+
+            {!stockLoaded && (
+              <div className="w-full mb-3 h-12 rounded-lg bg-secondary/50 animate-pulse" />
+            )}
 
             <Link
               to="/find-my-kit"
@@ -119,7 +143,11 @@ export default function ProductDetail() {
               <span className="text-xs font-normal text-muted-foreground ml-1">— build a complete kit</span>
             </Link>
 
-            <p className="text-xs text-muted-foreground text-center mb-4">Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout.</p>
+            <p className="text-xs text-muted-foreground text-center mb-4">
+              {outOfStock && stockLoaded
+                ? "Join the waitlist — one email when stock returns, nothing else."
+                : "Prices include VAT. Free shipping on orders over €250. Stock is reserved at checkout."}
+            </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 mb-8 text-sm text-muted-foreground">
               <span className="font-medium text-foreground">Official docs & community:</span>
@@ -169,6 +197,14 @@ export default function ProductDetail() {
           </motion.div>
         </div>
       </div>
+
+      {/* Waitlist dialog */}
+      <WaitlistDialog
+        open={waitlistOpen}
+        onOpenChange={setWaitlistOpen}
+        productId={product.id}
+        productName={product.name}
+      />
 
       <script
         type="application/ld+json"

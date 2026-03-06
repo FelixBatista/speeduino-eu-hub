@@ -175,6 +175,36 @@ export async function sendOrderDeliveredToCustomer(
   return sendEmail(apiKey, from, email.trim(), `Order delivered — ${order.id}`, html);
 }
 
+export async function sendWaitlistAlertToSeller(
+  env: { RESEND_API_KEY?: string; MAIL_FROM?: string; SELLER_EMAIL?: string; APP_URL?: string },
+  productId: string,
+  productName: string,
+  customerEmail: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const to = env.SELLER_EMAIL;
+  if (!to?.trim()) return { ok: false, error: "SELLER_EMAIL not set" };
+  const apiKey = env.RESEND_API_KEY;
+  const from = env.MAIL_FROM;
+  if (!apiKey || !from) return { ok: false, error: "Email not configured" };
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Waitlist signup</title></head>
+<body style="font-family: system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+  <h1 style="font-size: 1.25rem;">📋 New waitlist signup</h1>
+  <p><strong>${escapeHtml(customerEmail)}</strong> signed up for back-in-stock notifications.</p>
+  <table style="width: 100%; border-collapse: collapse; margin: 16px 0; border: 1px solid #e5e7eb; border-radius: 8px;">
+    <tr style="background: #f9fafb;"><td style="padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #e5e7eb;">Product</td><td style="padding: 10px 14px; border-bottom: 1px solid #e5e7eb;">${escapeHtml(productName)}</td></tr>
+    <tr><td style="padding: 10px 14px; font-weight: 600;">Product ID</td><td style="padding: 10px 14px; font-family: monospace;">${escapeHtml(productId)}</td></tr>
+  </table>
+  <p>When you restock this item, email them or use the waitlist in your <a href="${escapeHtml((env.APP_URL ?? "") + "/admin")}">Admin panel</a>.</p>
+  <p style="color: #6b7280; font-size: 0.875rem;">Speeduino EU Hub</p>
+</body>
+</html>`;
+  return sendEmail(apiKey, from, to.trim(), `[Waitlist] ${productName} — ${customerEmail}`, html);
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")

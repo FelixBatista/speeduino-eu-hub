@@ -4,8 +4,9 @@ import { configuratorSteps, isProductVisible, ConfiguratorInputs, Product } from
 import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useAvailability } from "@/hooks/useAvailability";
-import { ChevronRight, ChevronLeft, Check, ShoppingCart, Plus, Loader2, AlertTriangle } from "lucide-react";
+import { ChevronRight, ChevronLeft, Check, ShoppingCart, Plus, Loader2, AlertTriangle, Bell } from "lucide-react";
 import { toast } from "sonner";
+import WaitlistDialog from "@/components/WaitlistDialog";
 
 type Selections = Partial<ConfiguratorInputs>;
 
@@ -68,6 +69,8 @@ export default function CompatibilityWizard() {
     });
     return groups;
   }, [filteredProducts]);
+
+  const [waitlistProduct, setWaitlistProduct] = useState<Product | null>(null);
 
   const totalEUR = filteredProducts.reduce((sum, p) => sum + p.priceEUR, 0);
 
@@ -210,37 +213,52 @@ export default function CompatibilityWizard() {
                               const stock = typeof availability[product.id] === "number" ? availability[product.id] : -1;
                               const oos = stock === 0;
                               return (
-                                <div key={product.id} className="flex items-start gap-4 p-4 rounded-lg bg-secondary/30 border border-border/50">
-                                  <div className="w-10 h-10 rounded bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                    <ShoppingCart className="w-4 h-4 text-primary" />
+                                <div
+                                  key={product.id}
+                                  className={`flex items-start gap-4 p-4 rounded-lg border transition-opacity ${
+                                    oos
+                                      ? "bg-secondary/10 border-border/30 opacity-60"
+                                      : "bg-secondary/30 border-border/50"
+                                  }`}
+                                >
+                                  <div className={`w-10 h-10 rounded flex items-center justify-center flex-shrink-0 ${oos ? "bg-muted" : "bg-primary/10"}`}>
+                                    <ShoppingCart className={`w-4 h-4 ${oos ? "text-muted-foreground" : "text-primary"}`} />
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <p className="font-medium text-foreground">{product.shortName}</p>
+                                    <p className={`font-medium ${oos ? "text-muted-foreground" : "text-foreground"}`}>{product.shortName}</p>
                                     <p className="text-sm text-muted-foreground truncate">{product.description}</p>
                                     <div className="flex items-center gap-3 mt-1">
-                                      <span className="font-mono text-primary font-semibold text-sm">€{product.priceEUR}</span>
+                                      <span className={`font-mono font-semibold text-sm ${oos ? "text-muted-foreground line-through" : "text-primary"}`}>
+                                        €{product.priceEUR}
+                                      </span>
                                       {oos && (
-                                        <span className="text-xs text-destructive flex items-center gap-1">
+                                        <span className="text-xs text-destructive font-medium flex items-center gap-1">
                                           <AlertTriangle className="w-3 h-3" /> Out of stock
                                         </span>
                                       )}
                                     </div>
                                   </div>
-                                  <button
-                                    onClick={() => {
-                                      if (oos) {
-                                        toast.error("This item is out of stock.");
-                                        return;
-                                      }
-                                      addItem(product);
-                                      toast.success(`${product.shortName} added to cart`);
-                                    }}
-                                    disabled={oos}
-                                    className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-50 disabled:pointer-events-none flex-shrink-0"
-                                    aria-label={`Add ${product.shortName} to cart`}
-                                  >
-                                    <Plus className="w-4 h-4" />
-                                  </button>
+                                  {oos ? (
+                                    <button
+                                      onClick={() => setWaitlistProduct(product)}
+                                      className="p-2 rounded-md bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors flex-shrink-0"
+                                      aria-label={`Join waitlist for ${product.shortName}`}
+                                      title="Join waitlist"
+                                    >
+                                      <Bell className="w-4 h-4" />
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        addItem(product);
+                                        toast.success(`${product.shortName} added to cart`);
+                                      }}
+                                      className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors flex-shrink-0"
+                                      aria-label={`Add ${product.shortName} to cart`}
+                                    >
+                                      <Plus className="w-4 h-4" />
+                                    </button>
+                                  )}
                                 </div>
                               );
                             })}
@@ -271,6 +289,12 @@ export default function CompatibilityWizard() {
           </AnimatePresence>
         </motion.div>
       </div>
+      <WaitlistDialog
+        open={!!waitlistProduct}
+        onOpenChange={(open) => { if (!open) setWaitlistProduct(null); }}
+        productId={waitlistProduct?.id ?? ""}
+        productName={waitlistProduct?.name ?? ""}
+      />
     </section>
   );
 }
