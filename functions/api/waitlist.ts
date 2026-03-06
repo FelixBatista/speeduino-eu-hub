@@ -2,7 +2,7 @@ import { jsonResponse, errorResponse } from "../lib/json";
 import { addToWaitlist } from "../lib/db";
 import { sendWaitlistAlertToSeller } from "../lib/email";
 
-export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
+export async function onRequestPost(context: { request: Request; env: Env; waitUntil: (p: Promise<unknown>) => void }): Promise<Response> {
   const { request, env } = context;
   const { DB } = env;
   if (!DB) return errorResponse("Database not configured", 500);
@@ -24,9 +24,10 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   if (!result.alreadyExists) {
-    // Non-blocking: fire-and-forget seller notification
-    sendWaitlistAlertToSeller(env, productId, productName || productId, email).catch((e) =>
-      console.error("Waitlist email failed", e)
+    context.waitUntil(
+      sendWaitlistAlertToSeller(env, productId, productName || productId, email).catch((e) =>
+        console.error("Waitlist email failed", e)
+      )
     );
   }
 

@@ -4,7 +4,7 @@ import { useProduct } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useStock } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle, Loader2, Layers, Bell } from "lucide-react";
+import { ShoppingCart, Check, X, ArrowLeft, Truck, Shield, Headphones, AlertCircle, BookOpen, MessageCircle, Layers, Bell } from "lucide-react";
 import { SPEEDUINO_WIKI, SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
@@ -19,8 +19,35 @@ export default function ProductDetail() {
 
   if (isLoading) {
     return (
-      <main className="pt-32 pb-20 container flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <main className="pt-24 pb-20">
+        <div className="container animate-pulse">
+          <div className="h-4 w-48 rounded bg-secondary mb-8" />
+          <div className="h-4 w-28 rounded bg-secondary mb-6" />
+          <div className="grid lg:grid-cols-2 gap-10">
+            <div className="aspect-square rounded-xl bg-secondary/70" />
+            <div className="flex flex-col gap-4">
+              <div className="h-5 w-20 rounded bg-secondary" />
+              <div className="h-9 w-3/4 rounded bg-secondary" />
+              <div className="h-4 w-full rounded bg-secondary/60" />
+              <div className="h-4 w-5/6 rounded bg-secondary/60" />
+              <div className="h-4 w-2/3 rounded bg-secondary/60 mb-2" />
+              <div className="h-10 w-40 rounded bg-secondary" />
+              <div className="grid grid-cols-3 gap-3">
+                <div className="h-16 rounded-lg bg-secondary/70" />
+                <div className="h-16 rounded-lg bg-secondary/70" />
+                <div className="h-16 rounded-lg bg-secondary/70" />
+              </div>
+              <div className="h-12 rounded-lg bg-secondary mt-2" />
+              <div className="h-12 rounded-lg bg-secondary/50" />
+              <div className="mt-4 space-y-2">
+                <div className="h-5 w-36 rounded bg-secondary" />
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="h-4 w-full rounded bg-secondary/50" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     );
   }
