@@ -5,11 +5,10 @@ import { ArrowLeft, Lock, CreditCard, Loader2, AlertCircle, Truck } from "lucide
 
 type CheckoutError = "invalid" | "out_of_stock" | "server" | null;
 
-type ShippingOption = { id: string; label: string; amountEUR: number; amountSEK: number };
+type ShippingOption = { id: string; label: string; amountEUR: number };
 
 export default function Checkout() {
-  const { items, totalEUR, totalSEK } = useCart();
-  const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
+  const { items, totalEUR } = useCart();
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
   const [selectedShippingId, setSelectedShippingId] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -28,13 +27,8 @@ export default function Checkout() {
 
   const selectedShipping = shippingOptions.find((o) => o.id === selectedShippingId);
   const shippingEUR = selectedShipping ? selectedShipping.amountEUR / 100 : 0;
-  const shippingSEK = selectedShipping ? selectedShipping.amountSEK / 100 : 0;
   const totalWithShippingEUR = totalEUR + shippingEUR;
-  const totalWithShippingSEK = totalSEK + shippingSEK;
-  const totalDisplay =
-    currency === "EUR"
-      ? `€${totalWithShippingEUR.toFixed(2)}`
-      : `${totalWithShippingSEK.toFixed(0)} SEK`;
+  const totalDisplay = `€${totalWithShippingEUR.toFixed(2)}`;
 
   if (items.length === 0) {
     return (
@@ -55,7 +49,7 @@ export default function Checkout() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: items.map((i) => ({ productId: i.product.id, quantity: i.quantity })),
-          currency,
+          currency: "EUR",
           shippingOptionId: selectedShippingId,
         }),
       });
@@ -96,23 +90,6 @@ export default function Checkout() {
 
         <h1 className="font-display text-4xl font-bold text-foreground mb-8">Checkout</h1>
 
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Currency</span>
-          <div className="flex rounded-lg overflow-hidden border border-border">
-            {(["EUR", "SEK"] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setCurrency(c)}
-                disabled={loading}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold transition-colors ${
-                  currency === c ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-        </div>
 
         <div className="card-motorsport p-6 mb-6">
           <h2 className="font-display text-lg font-bold text-foreground mb-4">Shipping</h2>
@@ -123,8 +100,7 @@ export default function Checkout() {
           ) : (
             <div className="space-y-2">
               {shippingOptions.map((opt) => {
-                const price =
-                  currency === "EUR" ? `€${(opt.amountEUR / 100).toFixed(2)}` : `${(opt.amountSEK / 100).toFixed(0)} SEK`;
+                const price = `€${(opt.amountEUR / 100).toFixed(2)}`;
                 return (
                   <label
                     key={opt.id}
@@ -154,9 +130,7 @@ export default function Checkout() {
           <h2 className="font-display text-lg font-bold text-foreground mb-4">Order Summary</h2>
           <div className="space-y-3 mb-4">
             {items.map((item) => {
-              const price = currency === "EUR"
-                ? `€${item.product.priceEUR * item.quantity}`
-                : `${item.product.priceSEK * item.quantity} SEK`;
+              const price = `€${item.product.priceEUR * item.quantity}`;
               return (
                 <div key={item.product.id} className="flex justify-between text-sm">
                   <span className="text-secondary-foreground">
@@ -170,7 +144,7 @@ export default function Checkout() {
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>Shipping ({selectedShipping.label})</span>
                 <span className="font-mono text-foreground">
-                  {currency === "EUR" ? `€${shippingEUR.toFixed(2)}` : `${shippingSEK} SEK`}
+                  {`€${shippingEUR.toFixed(2)}`}
                 </span>
               </div>
             )}

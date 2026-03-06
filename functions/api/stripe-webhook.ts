@@ -96,7 +96,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     for (const row of cart) {
       const product = await getProductById(DB, row.productId);
       if (!product) continue;
-      const unitAmount = getUnitAmount(product, currency === "SEK" ? "SEK" : "EUR");
+      const unitAmount = getUnitAmount(product, "EUR");
       const qty = Math.max(1, Math.min(20, Math.floor(row.quantity)));
       items.push({ productId: row.productId, qty, unitAmount, lineAmount: unitAmount * qty });
     }

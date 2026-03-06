@@ -19,7 +19,6 @@ function mapRow(row: ProductRow) {
     description: row.description,
     longDescription: row.long_description,
     priceEUR: (row.price_eur as number) / 100,
-    priceSEK: (row.price_sek as number) / 100,
     category: row.category,
     boardCompatibility: JSON.parse((row.board_compatibility as string) || "[]"),
     connectsTo: row.connects_to,
@@ -69,7 +68,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   if (!id || !slug) return errorResponse("id and slug are required", 400);
 
   try {
-    await DB.prepare(`INSERT INTO products (id, slug, name, short_name, description, long_description, price_eur, price_sek, category, board_compatibility, connects_to, requirement_level, show_conditions, skill_level, lead_time_days, included, not_included, badge, featured, in_stock, specs, sort_order, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`)
+    await DB.prepare(`INSERT INTO products (id, slug, name, short_name, description, long_description, price_eur, category, board_compatibility, connects_to, requirement_level, show_conditions, skill_level, lead_time_days, included, not_included, badge, featured, in_stock, specs, sort_order, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`)
       .bind(
         id,
         slug,
@@ -78,7 +77,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
         (body.description as string) || "",
         (body.longDescription as string) || "",
         Math.round(((body.priceEUR as number) || 0) * 100),
-        Math.round(((body.priceSEK as number) || 0) * 100),
         (body.category as string) || "accessory",
         JSON.stringify(body.boardCompatibility || []),
         (body.connectsTo as string) || "",
@@ -132,7 +130,6 @@ export async function onRequestPatch(context: { request: Request; env: Env }): P
     description: { col: "description" },
     longDescription: { col: "long_description" },
     priceEUR: { col: "price_eur", transform: (v) => Math.round((v as number) * 100) },
-    priceSEK: { col: "price_sek", transform: (v) => Math.round((v as number) * 100) },
     category: { col: "category" },
     boardCompatibility: { col: "board_compatibility", transform: (v) => JSON.stringify(v) },
     connectsTo: { col: "connects_to" },

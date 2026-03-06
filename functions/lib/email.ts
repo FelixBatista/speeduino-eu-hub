@@ -29,7 +29,6 @@ export type LineItemForEmail = {
 };
 
 function formatMoney(amount: number, currency: string): string {
-  if (currency === "SEK") return `${(amount / 100).toLocaleString("sv-SE")} SEK`;
   return `€${(amount / 100).toLocaleString("de-DE", { minimumFractionDigits: 2 })}`;
 }
 

@@ -7,12 +7,11 @@ export interface ShippingOption {
   id: string;
   label: string;
   amountEUR: number; // cents
-  amountSEK: number; // öre
 }
 
 const DEFAULT_OPTIONS: ShippingOption[] = [
-  { id: "standard", label: "Standard delivery (5–7 days)", amountEUR: 500, amountSEK: 4900 },
-  { id: "express", label: "Express delivery (2–3 days)", amountEUR: 1200, amountSEK: 12900 },
+  { id: "standard", label: "Standard delivery (5–7 days)", amountEUR: 500 },
+  { id: "express", label: "Express delivery (2–3 days)", amountEUR: 1200 },
 ];
 
 const DEFAULT_ALLOWED_COUNTRIES = [
@@ -34,7 +33,7 @@ export async function getShippingOptions(db: D1Database): Promise<ShippingOption
     return parsed.filter(
       (o): o is ShippingOption =>
         o && typeof o.id === "string" && typeof o.label === "string" &&
-        typeof o.amountEUR === "number" && typeof o.amountSEK === "number"
+        typeof o.amountEUR === "number"
     );
   } catch {
     return DEFAULT_OPTIONS;
@@ -62,6 +61,6 @@ export function getShippingById(options: ShippingOption[], id: string): Shipping
   return options.find((o) => o.id === id);
 }
 
-export function getShippingAmount(option: ShippingOption, currency: "EUR" | "SEK"): number {
-  return currency === "EUR" ? option.amountEUR : option.amountSEK;
+export function getShippingAmount(option: ShippingOption, currency: "EUR" = "EUR"): number {
+  return option.amountEUR;
 }

@@ -19,7 +19,6 @@ export interface Product {
   description: string;
   longDescription: string;
   priceEUR: number;
-  priceSEK: number;
   category: ProductCategory;
   boardCompatibility: ("v0.3" | "v0.4")[];
   connectsTo: string;

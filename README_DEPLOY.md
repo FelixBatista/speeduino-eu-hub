@@ -57,7 +57,7 @@ In **Pages → your project → Settings → Environment variables**, add:
 | `STRIPE_SECRET_KEY` | Stripe secret key (live or test) | `sk_live_...` or `sk_test_...` |
 | `STRIPE_WEBHOOK_SECRET` | Webhook signing secret (see Stripe section below) | `whsec_...` |
 | `ADMIN_TOKEN` | Secret token to access `/admin` | Any long random string |
-| `DEFAULT_CURRENCY` | (Optional) Default currency | `EUR` or `SEK` |
+| `DEFAULT_CURRENCY` | (Optional) Default currency | `EUR` |
 | `RESEND_API_KEY` | Resend API key for order emails (see Order notifications below) | `re_...` |
 | `MAIL_FROM` | Sender for transactional emails | `Speeduino EU Hub <orders@yourdomain.com>` |
 | `SELLER_EMAIL` | Email that receives "new sale" notifications | `you@yourdomain.com` |
@@ -90,7 +90,7 @@ This app uses **Stripe Checkout Sessions** with server-computed `price_data`. Yo
 
 Checkout includes **shipping options** (e.g. Standard / Express) and **address collection**. Customers choose a shipping method on your site; the chosen price is added as a line item so Stripe captures the full amount (products + shipping). Stripe’s hosted checkout then collects **name, email, and shipping address**. After payment, the webhook saves this into the order’s `shipping_json` so you can use it to ship and see it in Admin.
 
-**Shipping is configured in Admin**, not in code: open **Admin → Shipping settings** to add or edit shipping options (ID, label, EUR cents, SEK öre) and allowed countries (2-letter codes, comma-separated). The config is stored in the `config` table. If no config exists yet, the site uses built-in defaults until you save from Admin. Optionally run `db/seed-config.sql` to pre-fill default options and EU/EEA countries.
+**Shipping is configured in Admin**, not in code: open **Admin → Shipping settings** to add or edit shipping options (ID, label, EUR cents) and allowed countries (2-letter codes, comma-separated). The config is stored in the `config` table. If no config exists yet, the site uses built-in defaults until you save from Admin. Optionally run `db/seed-config.sql` to pre-fill default options and EU/EEA countries.
 
 ### Webhook
 

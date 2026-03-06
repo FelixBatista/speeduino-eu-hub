@@ -20,7 +20,6 @@ const categories: { id: "all" | ProductCategory; label: string }[] = [
 
 export default function Shop() {
   const [activeCategory, setActiveCategory] = useState<"all" | ProductCategory>("all");
-  const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
   const [waitlistProduct, setWaitlistProduct] = useState<Product | null>(null);
   const { addItem } = useCart();
   const { availability } = useAvailability();
@@ -28,7 +27,7 @@ export default function Shop() {
 
   const filtered = activeCategory === "all" ? products : products.filter((p) => p.category === activeCategory);
 
-  const price = (p: Product) => currency === "EUR" ? `€${p.priceEUR}` : `${p.priceSEK} SEK`;
+  const price = (p: Product) => `€${p.priceEUR}`;
   const stockQty = (productId: string) => typeof availability[productId] === "number" ? availability[productId] : -1;
   const outOfStock = (productId: string) => stockQty(productId) === 0;
   return (
@@ -44,22 +43,6 @@ export default function Shop() {
           <div>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">Shop</h1>
             <p className="text-muted-foreground mt-2">Speeduino boards, sensors, modules, and accessories — everything you need for your DIY build, shipped from the EU.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="data-label text-xs">Currency</span>
-            <div className="flex rounded-lg overflow-hidden border border-border">
-              {(["EUR", "SEK"] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCurrency(c)}
-                  className={`px-3 py-1.5 text-xs font-mono font-semibold transition-colors ${
-                    currency === c ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 

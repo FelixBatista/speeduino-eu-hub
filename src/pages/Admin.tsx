@@ -19,7 +19,7 @@ type Order = {
   tracking_carrier: string | null;
 };
 type InventoryRow = { product_id: string; qty: number; updated_at: string };
-type ShippingOptionRow = { id: string; label: string; amountEUR: number; amountSEK: number };
+type ShippingOptionRow = { id: string; label: string; amountEUR: number };
 
 interface AdminProduct {
   id: string;
@@ -29,7 +29,6 @@ interface AdminProduct {
   description: string;
   longDescription: string;
   priceEUR: number;
-  priceSEK: number;
   category: string;
   boardCompatibility: string[];
   connectsTo: string;
@@ -58,7 +57,7 @@ type ConfiguratorInfoData = Record<string, ConfiguratorStepInfo>;
 
 const emptyProduct: AdminProduct = {
   id: "", slug: "", name: "", shortName: "", description: "", longDescription: "",
-  priceEUR: 0, priceSEK: 0, category: "accessory", boardCompatibility: [],
+  priceEUR: 0, category: "accessory", boardCompatibility: [],
   connectsTo: "", requirementLevel: "optional", showConditions: [], skillLevel: "Beginner",
   leadTimeDays: "3-7", included: [], notIncluded: [], badge: null, featured: false,
   inStock: true, imageUrl: null, specs: {}, sortOrder: 0, active: true,
@@ -171,7 +170,7 @@ export default function Admin() {
       if (!res.ok) { const data = await res.json().catch(() => ({})); setShippingConfigError((data as Record<string, string>)?.error ?? "Failed to save."); }
     } catch { setShippingConfigError("Network error."); } finally { setShippingConfigSaving(false); }
   };
-  const addShippingOption = () => setShippingOptions((prev) => [...prev, { id: "", label: "", amountEUR: 0, amountSEK: 0 }]);
+  const addShippingOption = () => setShippingOptions((prev) => [...prev, { id: "", label: "", amountEUR: 0 }]);
   const removeShippingOption = (index: number) => setShippingOptions((prev) => prev.filter((_, i) => i !== index));
   const updateShippingOption = (index: number, field: keyof ShippingOptionRow, value: string | number) => {
     setShippingOptions((prev) => prev.map((o, i) => (i !== index ? o : { ...o, [field]: value })));
@@ -465,7 +464,7 @@ export default function Admin() {
                             {o.shipped_at && <span className="block text-xs text-muted-foreground">Shipped {o.shipped_at}</span>}
                             {o.delivered_at && <span className="block text-xs text-muted-foreground">Delivered {o.delivered_at}</span>}
                           </td>
-                          <td className="py-2 text-right font-mono">{o.currency === "SEK" ? `${(o.amount_total / 100).toLocaleString("sv-SE")} SEK` : `€${(o.amount_total / 100).toFixed(2)}`}</td>
+                          <td className="py-2 text-right font-mono">{`€${(o.amount_total / 100).toFixed(2)}`}</td>
                           <td className="py-2 text-muted-foreground truncate max-w-[160px]">{o.customer_email ?? "—"}</td>
                           <td className="py-2 text-muted-foreground max-w-[200px]">
                             {o.shipping_json ? (() => {
@@ -566,10 +565,7 @@ export default function Admin() {
                       <label className="block text-xs font-medium text-muted-foreground mb-1">Price EUR</label>
                       <input type="number" min={0} step={0.01} value={editProduct.priceEUR} onChange={(e) => setEditProduct({ ...editProduct, priceEUR: parseFloat(e.target.value) || 0 })} className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right" />
                     </div>
-                    <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Price SEK</label>
-                      <input type="number" min={0} step={1} value={editProduct.priceSEK} onChange={(e) => setEditProduct({ ...editProduct, priceSEK: parseFloat(e.target.value) || 0 })} className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right" />
-                    </div>
+                    <div />
                     <div>
                       <label className="block text-xs font-medium text-muted-foreground mb-1">Category</label>
                       <select value={editProduct.category} onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })} className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm">
@@ -694,7 +690,6 @@ export default function Admin() {
                         <th className="text-left py-2 font-medium">Name</th>
                         <th className="text-left py-2 font-medium">Category</th>
                         <th className="text-right py-2 font-medium">EUR</th>
-                        <th className="text-right py-2 font-medium">SEK</th>
                         <th className="text-center py-2 font-medium">Active</th>
                         <th className="text-right py-2 font-medium">Actions</th>
                       </tr>
@@ -708,7 +703,6 @@ export default function Admin() {
                           </td>
                           <td className="py-2 text-muted-foreground capitalize">{p.category}</td>
                           <td className="py-2 text-right font-mono">€{p.priceEUR}</td>
-                          <td className="py-2 text-right font-mono">{p.priceSEK}</td>
                           <td className="py-2 text-center">
                             <button onClick={() => handleToggleActive(p)} className={`text-xs px-2 py-0.5 rounded ${p.active ? "bg-green-500/20 text-green-600" : "bg-destructive/10 text-destructive"}`}>
                               {p.active ? "Active" : "Hidden"}
@@ -753,7 +747,7 @@ export default function Admin() {
           {activeTab === "shipping" && (
             <section className="card-motorsport p-6">
               <h2 className="font-display text-lg font-bold text-foreground mb-4 flex items-center gap-2"><Settings2 className="w-5 h-5" /> Shipping settings</h2>
-              <p className="text-muted-foreground text-sm mb-4">Prices: EUR in cents (e.g. 500 = €5.00), SEK in öre (e.g. 4900 = 49 SEK). Allowed countries: 2-letter codes, comma-separated.</p>
+              <p className="text-muted-foreground text-sm mb-4">Prices: EUR in cents (e.g. 500 = €5.00). Allowed countries: 2-letter codes, comma-separated.</p>
               {shippingConfigError && <div className="p-3 mb-4 rounded bg-destructive/10 border border-destructive/20 text-destructive text-sm">{shippingConfigError}</div>}
               <div className="space-y-4 mb-4">
                 <div className="flex items-center justify-between">
@@ -767,7 +761,6 @@ export default function Admin() {
                         <input type="text" placeholder="ID (e.g. standard)" value={opt.id} onChange={(e) => updateShippingOption(index, "id", e.target.value)} className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm font-mono" />
                         <input type="text" placeholder="Label" value={opt.label} onChange={(e) => updateShippingOption(index, "label", e.target.value)} className="flex-1 min-w-[140px] px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm" />
                         <input type="number" min={0} step={1} placeholder="EUR cents" value={opt.amountEUR || ""} onChange={(e) => updateShippingOption(index, "amountEUR", parseInt(e.target.value, 10) || 0)} className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right" />
-                        <input type="number" min={0} step={1} placeholder="SEK öre" value={opt.amountSEK || ""} onChange={(e) => updateShippingOption(index, "amountSEK", parseInt(e.target.value, 10) || 0)} className="w-24 px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm text-right" />
                         <button type="button" onClick={() => removeShippingOption(index)} className="p-1.5 text-muted-foreground hover:text-destructive" title="Remove"><Trash2 className="w-4 h-4" /></button>
                       </li>
                     ))}

@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT NOT NULL DEFAULT '',
   long_description TEXT NOT NULL DEFAULT '',
   price_eur INTEGER NOT NULL DEFAULT 0,       -- cents
-  price_sek INTEGER NOT NULL DEFAULT 0,       -- öre
   category TEXT NOT NULL DEFAULT 'accessory', -- board | sensor | module | accessory
   board_compatibility TEXT NOT NULL DEFAULT '[]',   -- JSON string array
   connects_to TEXT NOT NULL DEFAULT '',

@@ -11,7 +11,6 @@ function mapRow(row: ProductRow) {
     description: row.description,
     longDescription: row.long_description,
     priceEUR: (row.price_eur as number) / 100,
-    priceSEK: (row.price_sek as number) / 100,
     category: row.category,
     boardCompatibility: JSON.parse((row.board_compatibility as string) || "[]"),
     connectsTo: row.connects_to,

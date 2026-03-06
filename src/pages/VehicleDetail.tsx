@@ -128,7 +128,6 @@ export default function VehicleDetail() {
                 <p className="text-sm text-muted-foreground mb-4">{bundle.description}</p>
                 <div className="flex items-baseline gap-3 mb-4">
                   <span className="font-mono text-2xl font-bold text-foreground">€{bundle.priceEUR}</span>
-                  <span className="font-mono text-sm text-muted-foreground">{bundle.priceSEK} SEK</span>
                 </div>
                 <div className="flex gap-3">
                   <button

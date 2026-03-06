@@ -15,7 +15,7 @@ export default function Terms() {
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Products</h2>
           <p>Products are described as accurately as possible. Speeduino is an open-source project; firmware features may vary by version. We do not guarantee compatibility with every vehicle or configuration — please use the compatibility wizard and contact us with questions before ordering.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Pricing & Payment</h2>
-          <p>All prices are in EUR (or SEK where shown) and include VAT for EU customers. Payment is processed securely via Stripe. We reserve the right to update prices without prior notice.</p>
+          <p>All prices are in EUR and include VAT for EU customers. Payment is processed securely via Stripe. We reserve the right to update prices without prior notice.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Limitation of Liability</h2>
           <p>Speeduino.eu is not liable for damages resulting from improper installation, wiring, tuning, or use of products. Engine management modifications carry inherent risk — always verify your work and test in a safe environment.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Governing Law</h2>

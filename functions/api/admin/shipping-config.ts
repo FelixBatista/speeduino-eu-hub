@@ -17,12 +17,12 @@ export async function onRequestGet(context: { request: Request; env: Env }): Pro
   const options = await getShippingOptions(DB);
   const allowedCountries = await getShippingAllowedCountries(DB);
   return jsonResponse({
-    shipping_options: options.map((o) => ({ id: o.id, label: o.label, amountEUR: o.amountEUR, amountSEK: o.amountSEK })),
+    shipping_options: options.map((o) => ({ id: o.id, label: o.label, amountEUR: o.amountEUR })),
     shipping_allowed_countries: allowedCountries,
   });
 }
 
-type ShippingOptionInput = { id: string; label: string; amountEUR: number; amountSEK: number };
+type ShippingOptionInput = { id: string; label: string; amountEUR: number };
 
 export async function onRequestPatch(context: { request: Request; env: Env }): Promise<Response> {
   const auth = requireAdmin(context.request, context.env);
@@ -43,9 +43,8 @@ export async function onRequestPatch(context: { request: Request; env: Env }): P
     for (const o of opts) {
       if (!o || typeof o.id !== "string" || typeof o.label !== "string") continue;
       const amountEUR = typeof o.amountEUR === "number" ? Math.round(o.amountEUR) : 0;
-      const amountSEK = typeof o.amountSEK === "number" ? Math.round(o.amountSEK) : 0;
       if (o.id.trim() === "") continue;
-      valid.push({ id: o.id.trim(), label: String(o.label).trim(), amountEUR, amountSEK });
+      valid.push({ id: o.id.trim(), label: String(o.label).trim(), amountEUR });
     }
     if (valid.length === 0) return errorResponse("At least one shipping option with id and label is required", 400);
     await setConfig(DB, "shipping_options", JSON.stringify(valid));

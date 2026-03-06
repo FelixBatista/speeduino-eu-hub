@@ -53,10 +53,7 @@ export default function OrderSuccess() {
   }
 
   const { order, items } = data;
-  const totalFormatted =
-    order.currency === "SEK"
-      ? `${(order.amount_total / 100).toLocaleString("sv-SE")} SEK`
-      : `€${(order.amount_total / 100).toLocaleString("de-DE", { minimumFractionDigits: 2 })}`;
+  const totalFormatted = `€${(order.amount_total / 100).toLocaleString("de-DE", { minimumFractionDigits: 2 })}`;
 
   return (
     <main className="pt-24 pb-20">
@@ -78,9 +75,7 @@ export default function OrderSuccess() {
                   {item.name} × {item.qty}
                 </span>
                 <span className="font-mono">
-                  {order.currency === "SEK"
-                    ? `${(item.line_amount / 100).toLocaleString("sv-SE")} SEK`
-                    : `€${(item.line_amount / 100).toLocaleString("de-DE", { minimumFractionDigits: 2 })}`}
+                  {`€${(item.line_amount / 100).toLocaleString("de-DE", { minimumFractionDigits: 2 })}`}
                 </span>
               </li>
             ))}

@@ -9,7 +9,7 @@ const MAX_QTY = 20;
 
 type CheckoutBody = {
   items: { productId: string; quantity: number }[];
-  currency: "EUR" | "SEK";
+  currency: "EUR";
   shippingOptionId: string;
 };
 
@@ -26,8 +26,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const { items, currency, shippingOptionId } = body;
-  if (!Array.isArray(items) || items.length === 0 || (currency !== "EUR" && currency !== "SEK")) {
-    return errorResponse("Invalid input: items array and currency (EUR|SEK) required", 400);
+  if (!Array.isArray(items) || items.length === 0 || currency !== "EUR") {
+    return errorResponse("Invalid input: items array and currency (EUR) required", 400);
   }
   const shippingOptions = await getShippingOptions(DB);
   const shippingOption = getShippingById(shippingOptions, shippingOptionId);

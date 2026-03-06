@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { motion } from "framer-motion";
@@ -6,10 +5,9 @@ import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft, ArrowRight } from "lucide
 import ecuProduct from "@/assets/ecu-product.jpg";
 
 export default function Cart() {
-  const { items, removeItem, updateQuantity, clearCart, totalEUR, totalSEK } = useCart();
-  const [currency, setCurrency] = useState<"EUR" | "SEK">("EUR");
+  const { items, removeItem, updateQuantity, clearCart, totalEUR } = useCart();
 
-  const total = currency === "EUR" ? `€${totalEUR}` : `${totalSEK} SEK`;
+  const total = `€${totalEUR}`;
 
   if (items.length === 0) {
     return (
@@ -35,22 +33,6 @@ export default function Cart() {
 
         <div className="flex items-end justify-between mb-8">
           <h1 className="font-display text-4xl font-bold text-foreground">Cart</h1>
-          <div className="flex items-center gap-2">
-            <span className="data-label text-xs">Currency</span>
-            <div className="flex rounded-lg overflow-hidden border border-border">
-              {(["EUR", "SEK"] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCurrency(c)}
-                  className={`px-3 py-1.5 text-xs font-mono font-semibold transition-colors ${
-                    currency === c ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         <div className="space-y-4 mb-8">
@@ -82,7 +64,7 @@ export default function Cart() {
                 </button>
               </div>
               <span className="font-mono font-bold text-foreground w-24 text-right">
-                {currency === "EUR" ? `€${item.product.priceEUR * item.quantity}` : `${item.product.priceSEK * item.quantity} SEK`}
+                {`€${item.product.priceEUR * item.quantity}`}
               </span>
               <button onClick={() => removeItem(item.product.id)} className="p-2 text-muted-foreground hover:text-destructive transition-colors">
                 <Trash2 className="w-4 h-4" />

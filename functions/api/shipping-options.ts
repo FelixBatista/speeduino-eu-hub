@@ -10,7 +10,6 @@ export async function onRequestGet(context: { request: Request; env: Env }): Pro
       id: o.id,
       label: o.label,
       amountEUR: o.amountEUR,
-      amountSEK: o.amountSEK,
     })),
   });
 }

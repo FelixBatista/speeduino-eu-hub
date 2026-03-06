@@ -101,7 +101,6 @@ export default function ProductDetail() {
 
             <div className="flex items-baseline gap-4 mb-6">
               <span className="font-mono text-3xl font-bold text-foreground">€{product.priceEUR}</span>
-              <span className="font-mono text-lg text-muted-foreground">{product.priceSEK} SEK</span>
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-6">
