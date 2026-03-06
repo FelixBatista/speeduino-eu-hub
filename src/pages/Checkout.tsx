@@ -116,7 +116,8 @@ export default function Checkout() {
 
         <div className="card-motorsport p-6 mb-6">
           <h2 className="font-display text-lg font-bold text-foreground mb-4">Shipping</h2>
-          <p className="text-muted-foreground text-sm mb-3">Choose delivery speed. Your name, email, and address will be collected on the next page (Stripe checkout).</p>
+          <p className="text-muted-foreground text-sm mb-1">Choose delivery speed. Your name, email, and address will be collected on the next page (Stripe checkout).</p>
+          <p className="text-xs text-muted-foreground mb-3">We currently ship to EU countries, Norway, Switzerland, Iceland, Liechtenstein, and the United Kingdom only.</p>
           {shippingOptions.length === 0 ? (
             <p className="text-sm text-muted-foreground">Loading options…</p>
           ) : (
