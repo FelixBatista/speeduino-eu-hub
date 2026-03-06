@@ -9,6 +9,7 @@ import { ChevronRight, ChevronLeft, Check, ShoppingCart, Plus, Loader2, AlertTri
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { toast } from "sonner";
 import WaitlistDialog from "@/components/WaitlistDialog";
+import { useConfiguratorInfo } from "@/hooks/useConfiguratorInfo";
 
 type Selections = Partial<ConfiguratorInputs>;
 
@@ -26,6 +27,7 @@ export default function CompatibilityWizard() {
   const [selections, setSelections] = useState<Selections>({});
   const [showResult, setShowResult] = useState(false);
   const { data: allProducts = [], isLoading: productsLoading } = useProducts();
+  const { data: configuratorInfo = {} } = useConfiguratorInfo();
   const { addItem } = useCart();
   const { availability } = useAvailability();
 
@@ -137,12 +139,45 @@ export default function CompatibilityWizard() {
                 className="card-motorsport p-6 md:p-8"
               >
                 <p className="data-label text-primary mb-1">Step {currentStep + 1} of {configuratorSteps.length}</p>
-                <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">{step.label}</h3>
+                <div className="flex items-start gap-2 mb-2">
+                  <h3 className="font-display text-xl md:text-2xl font-bold text-foreground leading-tight">{step.label}</h3>
+                  {configuratorInfo[step.field] && (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          className="mt-1 p-0.5 rounded text-muted-foreground hover:text-primary transition-colors cursor-pointer flex-shrink-0"
+                          aria-label={`What is ${step.label}?`}
+                        >
+                          <Info className="w-4 h-4" />
+                        </span>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-72 text-sm" side="top" align="start">
+                        <p className="text-popover-foreground leading-relaxed">{configuratorInfo[step.field].stepInfo}</p>
+                        {configuratorInfo[step.field].docUrl && (
+                          <div className="mt-3 pt-3 border-t border-border/50">
+                            <a
+                              href={configuratorInfo[step.field].docUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                            >
+                              Official documentation
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+                        )}
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </div>
                 <p className="text-muted-foreground text-sm mb-6">{step.description}</p>
 
                 <div className="grid gap-3">
                   {step.options.map((opt) => {
                     const selected = selections[step.field] === opt.value;
+                    const optInfo = configuratorInfo[step.field]?.options?.[opt.value];
                     return (
                       <button
                         key={opt.value}
@@ -159,42 +194,34 @@ export default function CompatibilityWizard() {
                             {opt.hint && <p className="text-sm text-muted-foreground mt-1">{opt.hint}</p>}
                           </div>
                           <div className="flex items-center gap-1.5 flex-shrink-0">
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <span
-                                  role="button"
-                                  tabIndex={0}
+                            {optInfo && (
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <span
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") e.stopPropagation(); }}
+                                    className="p-0.5 rounded text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                                    aria-label={`Learn more about ${opt.label}`}
+                                  >
+                                    <Info className="w-4 h-4" />
+                                  </span>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                  className="w-72 text-sm"
+                                  side="top"
+                                  align="end"
                                   onClick={(e) => e.stopPropagation()}
-                                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") e.stopPropagation(); }}
-                                  className="p-0.5 rounded text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-                                  aria-label={`Learn more about ${opt.label}`}
                                 >
-                                  <Info className="w-4 h-4" />
-                                </span>
-                              </PopoverTrigger>
-                              <PopoverContent
-                                className="w-72 text-sm"
-                                side="top"
-                                align="end"
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                <p className="text-popover-foreground leading-relaxed">{opt.info}</p>
-                                {step.docUrl && (
+                                  <p className="text-popover-foreground leading-relaxed">{optInfo.info}</p>
                                   <div className="mt-3 pt-3 border-t border-border/50">
-                                    <a
-                                      href={step.docUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      onClick={(e) => e.stopPropagation()}
-                                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-                                    >
-                                      Official documentation
-                                      <ExternalLink className="w-3 h-3" />
-                                    </a>
+                                    <p className="text-xs font-semibold text-foreground mb-1">Is it for me?</p>
+                                    <p className="text-popover-foreground leading-relaxed">{optInfo.forMe}</p>
                                   </div>
-                                )}
-                              </PopoverContent>
-                            </Popover>
+                                </PopoverContent>
+                              </Popover>
+                            )}
                             {selected && <Check className="w-5 h-5 text-primary" />}
                           </div>
                         </div>

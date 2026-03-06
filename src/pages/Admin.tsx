@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle, Settings2, Plus, Trash2, Pencil, X, Save, ChevronDown, ChevronUp, Tag, Bell } from "lucide-react";
+import { Lock, Loader2, LogOut, Package, ShoppingBag, Truck, CheckCircle, Settings2, Plus, Trash2, Pencil, X, Save, ChevronDown, ChevronUp, Tag, Bell, HelpCircle } from "lucide-react";
+import { configuratorSteps } from "@/data/products";
 
 const ADMIN_TOKEN_KEY = "speeduino-admin-token";
 
@@ -49,7 +50,11 @@ interface AdminProduct {
 
 type WaitlistEntry = { id: number; product_id: string; product_name: string; email: string; created_at: string };
 
-type Tab = "orders" | "products" | "inventory" | "shipping" | "waitlist";
+type Tab = "orders" | "products" | "inventory" | "shipping" | "waitlist" | "configurator";
+
+type ConfiguratorOptionInfo = { info: string; forMe: string };
+type ConfiguratorStepInfo = { stepInfo: string; docUrl?: string; options: Record<string, ConfiguratorOptionInfo> };
+type ConfiguratorInfoData = Record<string, ConfiguratorStepInfo>;
 
 const emptyProduct: AdminProduct = {
   id: "", slug: "", name: "", shortName: "", description: "", longDescription: "",
@@ -87,6 +92,11 @@ export default function Admin() {
   const [waitlistEntries, setWaitlistEntries] = useState<WaitlistEntry[]>([]);
   const [waitlistLoading, setWaitlistLoading] = useState(false);
 
+  const [configuratorInfoData, setConfiguratorInfoData] = useState<ConfiguratorInfoData>({});
+  const [configuratorInfoSaving, setConfiguratorInfoSaving] = useState(false);
+  const [configuratorInfoError, setConfiguratorInfoError] = useState<string | null>(null);
+  const [configuratorInfoDirty, setConfiguratorInfoDirty] = useState(false);
+
   useEffect(() => {
     const stored = sessionStorage.getItem(ADMIN_TOKEN_KEY);
     if (stored) setTokenState(stored);
@@ -106,11 +116,12 @@ export default function Admin() {
     setError(null);
     try {
       const h = { Authorization: `Bearer ${token}` };
-      const [ordersRes, invRes, shippingRes, productsRes] = await Promise.all([
+      const [ordersRes, invRes, shippingRes, productsRes, configuratorInfoRes] = await Promise.all([
         fetch("/api/admin/orders", { headers: h }),
         fetch("/api/admin/inventory", { headers: h }),
         fetch("/api/admin/shipping-config", { headers: h }),
         fetch("/api/admin/products", { headers: h }),
+        fetch("/api/admin/configurator-info", { headers: h }),
       ]);
       if (ordersRes.status === 401 || invRes.status === 401) {
         setToken(""); setTokenState(""); setError("Invalid or expired token."); return;
@@ -129,6 +140,11 @@ export default function Admin() {
         const productsData = await productsRes.json();
         setAdminProducts(productsData.products ?? []);
       }
+      if (configuratorInfoRes.ok) {
+        const ciData = await configuratorInfoRes.json();
+        setConfiguratorInfoData((ciData.info as ConfiguratorInfoData) ?? {});
+        setConfiguratorInfoDirty(false);
+      }
       // Waitlist is fetched on demand (tab switch) to keep initial load fast
     } catch {
       setError("Network error.");
@@ -139,7 +155,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (token) fetchData();
-    else { setOrders([]); setInventory([]); setShippingOptions([]); setShippingCountries(""); setAdminProducts([]); }
+    else { setOrders([]); setInventory([]); setShippingOptions([]); setShippingCountries(""); setAdminProducts([]); setConfiguratorInfoData({}); }
   }, [token]);
 
   // Shipping config handlers
@@ -258,6 +274,54 @@ export default function Admin() {
     } catch { /* ignore */ }
   };
 
+  const handleSaveConfiguratorInfo = async () => {
+    setConfiguratorInfoError(null);
+    setConfiguratorInfoSaving(true);
+    try {
+      const res = await fetch("/api/admin/configurator-info", {
+        method: "PATCH",
+        headers: headers(),
+        body: JSON.stringify(configuratorInfoData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setConfiguratorInfoError((data as Record<string, string>)?.error ?? "Failed to save.");
+      } else {
+        setConfiguratorInfoDirty(false);
+      }
+    } catch { setConfiguratorInfoError("Network error."); } finally { setConfiguratorInfoSaving(false); }
+  };
+
+  const updateConfiguratorStepField = (field: string, key: "stepInfo" | "docUrl", value: string) => {
+    setConfiguratorInfoData((prev) => ({
+      ...prev,
+      [field]: { ...(prev[field] ?? { stepInfo: "", options: {} }), [key]: value },
+    }));
+    setConfiguratorInfoDirty(true);
+  };
+
+  const updateConfiguratorOptionField = (
+    stepField: string,
+    optValue: string,
+    key: "info" | "forMe",
+    value: string
+  ) => {
+    setConfiguratorInfoData((prev) => {
+      const step = prev[stepField] ?? { stepInfo: "", options: {} };
+      return {
+        ...prev,
+        [stepField]: {
+          ...step,
+          options: {
+            ...step.options,
+            [optValue]: { ...(step.options?.[optValue] ?? { info: "", forMe: "" }), [key]: value },
+          },
+        },
+      };
+    });
+    setConfiguratorInfoDirty(true);
+  };
+
   const submitToken = () => { setError(null); setToken(inputToken.trim()); };
 
   // List editor helpers
@@ -323,6 +387,7 @@ export default function Admin() {
       label: `Waitlist${waitlistEntries.length > 0 ? ` (${waitlistEntries.length})` : ""}`,
       icon: <Bell className="w-4 h-4" />,
     },
+    { id: "configurator", label: "Configurator Texts", icon: <HelpCircle className="w-4 h-4" /> },
   ];
 
   const fetchWaitlist = async () => {
@@ -716,6 +781,105 @@ export default function Admin() {
               <button type="button" onClick={handleSaveShippingConfig} disabled={shippingConfigSaving || shippingOptions.length === 0} className="cta-primary !py-2 !text-sm disabled:opacity-50">{shippingConfigSaving ? "Saving…" : "Save shipping settings"}</button>
             </section>
           )}
+          {/* ── CONFIGURATOR TEXTS ───────────────────────────────── */}
+          {activeTab === "configurator" && (
+            <section className="card-motorsport p-6">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="font-display text-lg font-bold text-foreground flex items-center gap-2">
+                  <HelpCircle className="w-5 h-5" /> Configurator Help Texts
+                </h2>
+                <button
+                  onClick={handleSaveConfiguratorInfo}
+                  disabled={configuratorInfoSaving || !configuratorInfoDirty}
+                  className="cta-primary !py-2 !text-sm disabled:opacity-50 inline-flex items-center gap-1"
+                >
+                  <Save className="w-4 h-4" /> {configuratorInfoSaving ? "Saving…" : "Save all"}
+                </button>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">
+                Edit the explanatory text shown in the info popovers on each configurator step and option. Changes take effect immediately after saving.
+              </p>
+              {configuratorInfoError && (
+                <div className="p-3 mb-4 rounded bg-destructive/10 border border-destructive/20 text-destructive text-sm">{configuratorInfoError}</div>
+              )}
+              <div className="space-y-8">
+                {configuratorSteps.map((step) => {
+                  const stepData = configuratorInfoData[step.field] ?? { stepInfo: "", options: {} };
+                  return (
+                    <div key={step.field} className="p-4 rounded-lg border border-border bg-background/50 space-y-4">
+                      <div>
+                        <p className="text-xs font-semibold text-primary uppercase tracking-wide mb-1">Step: {step.label}</p>
+                        <div className="space-y-2">
+                          <div>
+                            <label className="block text-xs font-medium text-muted-foreground mb-1">
+                              Step explanation (shown in the info icon next to the step title)
+                            </label>
+                            <textarea
+                              value={stepData.stepInfo ?? ""}
+                              onChange={(e) => updateConfiguratorStepField(step.field, "stepInfo", e.target.value)}
+                              rows={3}
+                              className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-muted-foreground mb-1">
+                              Documentation URL (optional — shown as a subtle link inside the step info popover)
+                            </label>
+                            <input
+                              value={stepData.docUrl ?? ""}
+                              onChange={(e) => updateConfiguratorStepField(step.field, "docUrl", e.target.value)}
+                              placeholder="https://wiki.speeduino.com/en/..."
+                              className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm font-mono"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        {step.options.map((opt) => {
+                          const optData = stepData.options?.[opt.value] ?? { info: "", forMe: "" };
+                          return (
+                            <div key={opt.value} className="pl-3 border-l-2 border-border/60 space-y-2">
+                              <p className="text-xs font-medium text-foreground">Option: {opt.label}</p>
+                              <div>
+                                <label className="block text-xs text-muted-foreground mb-1">What it is (1 sentence)</label>
+                                <textarea
+                                  value={optData.info ?? ""}
+                                  onChange={(e) => updateConfiguratorOptionField(step.field, opt.value, "info", e.target.value)}
+                                  rows={2}
+                                  className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs text-muted-foreground mb-1">Is it for me? (1–2 sentences explaining when to choose it)</label>
+                                <textarea
+                                  value={optData.forMe ?? ""}
+                                  onChange={(e) => updateConfiguratorOptionField(step.field, opt.value, "forMe", e.target.value)}
+                                  rows={2}
+                                  className="w-full px-2 py-1.5 rounded border border-border bg-background text-foreground text-sm"
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {configuratorInfoDirty && (
+                <div className="mt-6 flex justify-end">
+                  <button
+                    onClick={handleSaveConfiguratorInfo}
+                    disabled={configuratorInfoSaving}
+                    className="cta-primary !py-2 !text-sm disabled:opacity-50 inline-flex items-center gap-1"
+                  >
+                    <Save className="w-4 h-4" /> {configuratorInfoSaving ? "Saving…" : "Save all changes"}
+                  </button>
+                </div>
+              )}
+            </section>
+          )}
+
           {/* ── WAITLIST ──────────────────────────────────────────── */}
           {activeTab === "waitlist" && (
             <section className="card-motorsport p-6">
