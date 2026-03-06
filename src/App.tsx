@@ -25,6 +25,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Returns from "./pages/Returns";
 import Shipping from "./pages/Shipping";
+import GetStarted from "./pages/GetStarted";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/returns" element={<Returns />} />
             <Route path="/shipping" element={<Shipping />} />
+            <Route path="/get-started" element={<GetStarted />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

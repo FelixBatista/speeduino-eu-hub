@@ -25,6 +25,20 @@ export async function getProductById(db: D1Database, id: string): Promise<Server
   };
 }
 
+/** Returns the product's `included` array for packing checklist purposes. Falls back to [] if not found or parse fails. */
+export async function getProductIncluded(db: D1Database, id: string): Promise<string[]> {
+  const row = await db
+    .prepare("SELECT included FROM products WHERE id = ?")
+    .bind(id)
+    .first<{ included: string }>();
+  if (!row?.included) return [];
+  try {
+    return JSON.parse(row.included) as string[];
+  } catch {
+    return [];
+  }
+}
+
 export function getUnitAmount(product: ServerProduct, currency: "EUR" | "SEK"): number {
   return currency === "EUR" ? product.unitAmountEUR : product.unitAmountSEK;
 }

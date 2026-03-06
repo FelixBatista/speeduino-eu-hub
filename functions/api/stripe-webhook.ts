@@ -79,7 +79,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
           })
         : null;
 
-    const { getProductById, getUnitAmount } = await import("../lib/catalog");
+    const { getProductById, getUnitAmount, getProductIncluded } = await import("../lib/catalog");
     const items: { productId: string; qty: number; unitAmount: number; lineAmount: number }[] = [];
     for (const row of cart) {
       const product = await getProductById(DB, row.productId);
@@ -105,15 +105,18 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
       currency,
       amount_total: amountTotal,
       customer_email: customerEmail,
+      shipping_json: shippingJson,
     };
     const itemsForEmail = await Promise.all(items.map(async (item) => {
       const product = await getProductById(DB, item.productId);
+      const included = await getProductIncluded(DB, item.productId);
       return {
         product_id: item.productId,
         name: product?.name ?? item.productId,
         qty: item.qty,
         unit_amount: item.unitAmount,
         line_amount: item.lineAmount,
+        included,
       };
     }));
     try {

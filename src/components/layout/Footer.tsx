@@ -115,6 +115,7 @@ export default function Footer() {
               <li><Link to="/find-my-kit" className="hover:text-foreground transition-colors">Find My Kit</Link></li>
               <li><Link to="/compare" className="hover:text-foreground transition-colors">ECU Comparison</Link></li>
               <li><Link to="/guides" className="hover:text-foreground transition-colors">Guides & Blog</Link></li>
+              <li><Link to="/get-started" className="hover:text-foreground transition-colors">Get Started</Link></li>
               <li><Link to="/support" className="hover:text-foreground transition-colors">Support</Link></li>
             </ul>
           </div>

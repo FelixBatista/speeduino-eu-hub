@@ -61,6 +61,14 @@ In **Pages → your project → Settings → Environment variables**, add:
 | `RESEND_API_KEY` | Resend API key for order emails (see Order notifications below) | `re_...` |
 | `MAIL_FROM` | Sender for transactional emails | `Speeduino EU Hub <orders@yourdomain.com>` |
 | `SELLER_EMAIL` | Email that receives "new sale" notifications | `you@yourdomain.com` |
+| `SENDER_NAME` | (Optional) Your business name on the printable shipping label | `Speeduino EU Hub` |
+| `SENDER_LINE1` | (Optional) Street and number for the label return address | `Exempelgatan 1` |
+| `SENDER_LINE2` | (Optional) Apartment / floor / additional address line | |
+| `SENDER_CITY` | (Optional) City for the return address | `Stockholm` |
+| `SENDER_POSTAL_CODE` | (Optional) Postal code for the return address | `11122` |
+| `SENDER_COUNTRY` | (Optional) Country for the return address | `Sweden` |
+
+The `SENDER_*` vars appear in the **FROM** block of the printable shipping label included in the "new sale" email. If not set, the label still shows the recipient (TO) and the packing checklist.
 
 Do **not** put these in client code or commit them to git.
 

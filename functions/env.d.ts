@@ -27,4 +27,11 @@ interface Env {
   MAIL_FROM?: string;
   /** Email that receives "new sale" notifications */
   SELLER_EMAIL?: string;
+  /** Sender/return address shown on the printable shipping label */
+  SENDER_NAME?: string;
+  SENDER_LINE1?: string;
+  SENDER_LINE2?: string;
+  SENDER_CITY?: string;
+  SENDER_POSTAL_CODE?: string;
+  SENDER_COUNTRY?: string;
 }
