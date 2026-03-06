@@ -8,7 +8,7 @@ const columns = [
     icon: DollarSign,
     problem: "You're paying premium prices for a black box",
     want: "Fair pricing with no hidden costs",
-    solve: "Starting from €129 (DIY). No license fees, no mandatory software subscriptions, no locked features.",
+    solve: "Starting from €149 (DIY kit, all components included). No license fees, no mandatory software subscriptions, no locked features.",
   },
   {
     icon: Lock,

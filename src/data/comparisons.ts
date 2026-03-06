@@ -13,7 +13,7 @@ export type FilterCategory = "all" | "street" | "track" | "rally" | "budget" | "
 export const comparisonDimensions: ComparisonRow[] = [
   {
     dimension: "Approximate starting price (EUR)",
-    speeduino: "~€129 (DIY) / ~€299 (assembled)",
+    speeduino: "~€149 (DIY kit) / ~€299 (assembled)",
     megasquirt: "~€350–500",
     link: "~€800–1500",
     haltech: "~€1200–2500",
