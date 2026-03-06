@@ -5,7 +5,8 @@ import { configuratorSteps, isProductVisible, ConfiguratorInputs, Product } from
 import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useAvailability } from "@/hooks/useAvailability";
-import { ChevronRight, ChevronLeft, Check, ShoppingCart, Plus, Loader2, AlertTriangle, Bell } from "lucide-react";
+import { ChevronRight, ChevronLeft, Check, ShoppingCart, Plus, Loader2, AlertTriangle, Bell, Info, ExternalLink } from "lucide-react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { toast } from "sonner";
 import WaitlistDialog from "@/components/WaitlistDialog";
 
@@ -153,11 +154,49 @@ export default function CompatibilityWizard() {
                         }`}
                       >
                         <div className="flex items-start justify-between gap-3">
-                          <div>
+                          <div className="flex-1 min-w-0">
                             <p className="font-medium text-foreground">{opt.label}</p>
                             {opt.hint && <p className="text-sm text-muted-foreground mt-1">{opt.hint}</p>}
                           </div>
-                          {selected && <Check className="w-5 h-5 text-primary flex-shrink-0" />}
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <span
+                                  role="button"
+                                  tabIndex={0}
+                                  onClick={(e) => e.stopPropagation()}
+                                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") e.stopPropagation(); }}
+                                  className="p-0.5 rounded text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                                  aria-label={`Learn more about ${opt.label}`}
+                                >
+                                  <Info className="w-4 h-4" />
+                                </span>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-72 text-sm"
+                                side="top"
+                                align="end"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <p className="text-popover-foreground leading-relaxed">{opt.info}</p>
+                                {step.docUrl && (
+                                  <div className="mt-3 pt-3 border-t border-border/50">
+                                    <a
+                                      href={step.docUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                      Official documentation
+                                      <ExternalLink className="w-3 h-3" />
+                                    </a>
+                                  </div>
+                                )}
+                              </PopoverContent>
+                            </Popover>
+                            {selected && <Check className="w-5 h-5 text-primary" />}
+                          </div>
                         </div>
                       </button>
                     );
