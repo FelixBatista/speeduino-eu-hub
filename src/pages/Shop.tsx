@@ -5,7 +5,7 @@ import { useProducts } from "@/hooks/useProducts";
 import { useCart } from "@/contexts/CartContext";
 import { useAvailability } from "@/hooks/useAvailability";
 import { motion } from "framer-motion";
-import { Filter, ArrowRight, ShoppingCart, AlertCircle, Loader2, Bell } from "lucide-react";
+import { Filter, ArrowRight, ShoppingCart, AlertCircle, Bell } from "lucide-react";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 import WaitlistDialog from "@/components/WaitlistDialog";
@@ -81,8 +81,20 @@ export default function Shop() {
         </div>
 
         {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="card-motorsport p-5 flex flex-col animate-pulse">
+                <div className="aspect-[4/3] rounded-lg bg-secondary/70 mb-4" />
+                <div className="h-4 w-24 rounded bg-secondary mb-2" />
+                <div className="h-5 w-3/4 rounded bg-secondary mb-1" />
+                <div className="h-4 w-full rounded bg-secondary/60 mb-1" />
+                <div className="h-4 w-2/3 rounded bg-secondary/60 mb-4" />
+                <div className="flex justify-between items-center mt-auto">
+                  <div className="h-6 w-20 rounded bg-secondary" />
+                  <div className="h-8 w-8 rounded bg-secondary" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
