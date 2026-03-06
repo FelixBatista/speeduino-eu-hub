@@ -273,14 +273,14 @@ export async function sendNewSaleAlertToSeller(
   <h2 style="font-size:1rem;margin:0 0 4px;">Shipping Label</h2>
   ${shippingLabel}
 
-  <!-- Packing checklist + QR code side by side -->
+  <!-- Packing checklist + QR code -->
   <div class="page-break" style="margin-top:28px;">
     <h2 style="font-size:1rem;margin:0 0 12px;border-bottom:2px solid #111;padding-bottom:6px;">Packing Checklist — Order ${escapeHtml(order.id)}</h2>
-    <div style="display:flex;gap:24px;align-items:flex-start;">
-      <div style="flex:1;">${checklistSections}</div>
-      <div style="flex-shrink:0;text-align:center;padding:12px;border:1px solid #ddd;border-radius:6px;background:#fafafa;">
+    <div style="display:flex;gap:48px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">${checklistSections}</div>
+      <div style="flex-shrink:0;width:164px;margin-left:auto;text-align:center;padding:14px 12px 10px;border:1px solid #ddd;border-radius:6px;background:#fafafa;">
         <img src="${qrImgUrl}" alt="QR code: Get Started" width="140" height="140" style="display:block;margin:0 auto;">
-        <p style="margin:8px 0 0;font-size:10px;color:#555;line-height:1.4;">Scan for step-by-step<br>installation guide</p>
+        <p style="margin:10px 0 0;font-size:10px;color:#555;line-height:1.5;">Scan for step-by-step<br>installation guide</p>
       </div>
     </div>
   </div>
