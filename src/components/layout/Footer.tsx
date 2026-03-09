@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Zap, Mail, MapPin, Truck } from "lucide-react";
+import { Mail, MapPin, Truck } from "lucide-react";
 import {
   SPEEDUINO_MAIN,
   SPEEDUINO_FORUM,
@@ -10,6 +10,7 @@ import {
   SPEEDUINO_FIRMWARE_RELEASES,
   SPEEDUINO_HARDWARE,
 } from "@/data/speeduinoLinks";
+import logoIcon from "@/assets/logo-icon.png";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -56,7 +57,7 @@ export default function Footer() {
             Ready to Take Control of Your Engine?
           </h2>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Browse boards, sensors, and modules — everything you need to build your own Speeduino ECU.
+            Browse boards, sensors, and modules — everything you need to build your own open-source ECU.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/find-my-kit" className="cta-primary">Find My Kit</Link>
@@ -70,7 +71,7 @@ export default function Footer() {
         <div className="max-w-xl mx-auto text-center">
           <h3 className="font-display text-xl font-bold text-foreground mb-2">Wiring Checklist + Base Map Tips</h3>
           <p className="text-muted-foreground text-sm mb-4">
-            Get our free starter guide — practical tips for your first Speeduino install.
+            Get our free starter guide — practical tips for your first ECU install.
           </p>
           <form className="flex flex-col gap-2" onSubmit={handleSubscribe}>
             <div className="flex gap-2">
@@ -151,7 +152,7 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> support@speeduino.eu</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> support@wrenchoverwallet.com</li>
               <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> EU-based (Sweden)</li>
               <li className="flex items-center gap-2"><Truck className="w-4 h-4 text-primary" /> Ships within EU</li>
             </ul>
@@ -163,9 +164,9 @@ export default function Footer() {
       <div className="border-t border-border">
         <div className="container py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-primary" />
+            <img src={logoIcon} alt="Wrench over Wallet" className="w-4 h-4" />
             <span className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Speeduino.eu — Speeduino-compatible engine management for Europe
+              © {new Date().getFullYear()} Wrench over Wallet — Open-source engine management for Europe
             </span>
           </div>
           <p className="text-xs text-muted-foreground max-w-md text-center md:text-right">

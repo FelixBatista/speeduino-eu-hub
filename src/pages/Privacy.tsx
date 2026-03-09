@@ -10,7 +10,7 @@ export default function Privacy() {
         <h1 className="font-display text-4xl font-bold text-foreground mb-8">Privacy Policy</h1>
         <div className="space-y-6 text-sm text-secondary-foreground leading-relaxed">
           <p><strong className="text-foreground">Last updated:</strong> [Date]</p>
-          <p>Speeduino.eu ("we", "us") operates this website. This policy explains how we collect, use, and protect your personal data in compliance with the EU General Data Protection Regulation (GDPR).</p>
+          <p>Wrench over Wallet ("we", "us") operates this website. This policy explains how we collect, use, and protect your personal data in compliance with the EU General Data Protection Regulation (GDPR).</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Data We Collect</h2>
           <ul className="list-disc pl-6 space-y-1">
             <li>Order information: name, email, shipping address, payment details (processed by Stripe).</li>
@@ -24,7 +24,7 @@ export default function Privacy() {
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Cookies</h2>
           <p>We use essential cookies for site functionality and optional analytics cookies (with consent). You can manage preferences via the cookie banner.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Contact</h2>
-          <p>Data controller: Speeduino.eu, [Address], Sweden. Email: support@speeduino.eu</p>
+          <p>Data controller: Wrench over Wallet, [Address], Sweden. Email: support@wrenchoverwallet.com</p>
         </div>
       </div>
     </main>

@@ -495,7 +495,7 @@ export default function Admin() {
                                 {o.status !== "SHIPPED" && o.status !== "DELIVERED" && (
                                   <button onClick={() => setShippingOrderId(o.id)} className="inline-flex items-center gap-1 text-xs text-primary hover:underline" title="Mark as shipped"><Truck className="w-3.5 h-3.5" /> Shipped</button>
                                 )}
-                                {(o.status === "SHIPPED" || o.status === "PAID") && o.status !== "DELIVERED" && (
+                                {(o.status === "SHIPPED" || o.status === "PAID") && (
                                   <button onClick={() => handleMarkDelivered(o.id)} disabled={updatingOrderId === o.id} className="inline-flex items-center gap-1 text-xs text-primary hover:underline disabled:opacity-50" title="Mark as delivered"><CheckCircle className="w-3.5 h-3.5" /> Delivered</button>
                                 )}
                               </div>

@@ -30,9 +30,9 @@ export default function Index() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Speeduino.eu",
-            url: "https://speeduino.eu",
-            description: "Open-source Speeduino ECU components for Europe. DIY boards, sensors, modules, and accessories with EU shipping.",
+            name: "Wrench over Wallet",
+            url: "https://wrenchoverwallet.com",
+            description: "Open-source ECU components for Europe. DIY boards, sensors, modules, and accessories with EU shipping.",
             address: { "@type": "PostalAddress", addressCountry: "SE" },
           }),
         }}

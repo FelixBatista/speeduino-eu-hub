@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart, Zap, MessageCircle } from "lucide-react";
+import { Menu, X, ShoppingCart, MessageCircle } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { motion, AnimatePresence } from "framer-motion";
+import logoIcon from "@/assets/logo-icon.png";
 
 const navLinks = [
   { label: "Shop", href: "/shop" },
@@ -36,11 +37,9 @@ export default function Header() {
       <div className="container flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center glow-racing-sm">
-            <Zap className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={logoIcon} alt="Wrench over Wallet logo" className="w-8 h-8 rounded" />
           <span className="font-display text-xl font-bold tracking-tight text-foreground">
-            Speed<span className="text-primary">uino</span>.eu
+            Wrench<span className="text-primary">over</span>Wallet
           </span>
         </Link>
 
@@ -68,7 +67,7 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Join Speeduino Discord"
+            aria-label="Join Discord"
           >
             <MessageCircle className="w-5 h-5" />
           </a>

@@ -52,7 +52,7 @@ export default function CaseStudy() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h3 className="font-display text-2xl font-bold text-foreground mb-4">
-              Volvo S60 2.4T — From OEM to Speeduino
+              Volvo S60 2.4T — From OEM to Open-Source
             </h3>
             <p className="text-muted-foreground mb-6">
               Converted from the factory ME7 ECU to Speeduino with sequential injection, coil-on-plug, and closed-loop boost control. Full wideband tuning on E85.
@@ -72,7 +72,7 @@ export default function CaseStudy() {
             <div className="card-motorsport p-5 relative">
               <Quote className="w-8 h-8 text-primary/20 absolute top-3 right-3" />
               <p className="text-sm text-secondary-foreground italic mb-3">
-                "Switching to Speeduino was the best decision for this build. Full control over every parameter, zero license fees, and the community support is incredible."
+                "Switching to an open-source ECU was the best decision for this build. Full control over every parameter, zero license fees, and the community support is incredible."
               </p>
               <p className="text-xs text-muted-foreground">— Builder from Stockholm, Sweden</p>
             </div>
