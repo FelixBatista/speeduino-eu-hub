@@ -71,7 +71,7 @@ export default function Footer() {
         <div className="max-w-xl mx-auto text-center">
           <h3 className="font-display text-xl font-bold text-foreground mb-2">Wiring Checklist + Base Map Tips</h3>
           <p className="text-muted-foreground text-sm mb-4">
-            Get our free starter guide — practical tips for your first Speeduino install.
+            Get our free starter guide — practical tips for your first ECU install.
           </p>
           <form className="flex flex-col gap-2" onSubmit={handleSubscribe}>
             <div className="flex gap-2">
