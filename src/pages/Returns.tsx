@@ -10,7 +10,7 @@ export default function Returns() {
         <h1 className="font-display text-4xl font-bold text-foreground mb-8">Returns & Warranty</h1>
         <div className="space-y-6 text-sm text-secondary-foreground leading-relaxed">
           <h2 className="font-display text-xl font-bold text-foreground">Returns</h2>
-          <p>We offer a 14-day right of withdrawal in accordance with EU consumer protection regulations. Items must be unused, in original packaging, and returned at the buyer's expense. Contact support@speeduino.eu to initiate a return.</p>
+          <p>We offer a 14-day right of withdrawal in accordance with EU consumer protection regulations. Items must be unused, in original packaging, and returned at the buyer's expense. Contact support@wrenchoverwallet.com to initiate a return.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Warranty</h2>
           <ul className="list-disc pl-6 space-y-1">
             <li><strong className="text-foreground">PCBs & DIY Kits:</strong> Components are warranted as delivered. Once soldered, assembly quality is the buyer's responsibility. We're happy to help troubleshoot.</li>
