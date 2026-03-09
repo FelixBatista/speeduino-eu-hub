@@ -11,7 +11,7 @@ export default function Terms() {
         <div className="space-y-6 text-sm text-secondary-foreground leading-relaxed">
           <p><strong className="text-foreground">Last updated:</strong> [Date]</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">General</h2>
-          <p>By placing an order through speeduino.eu, you agree to these terms. Products are sold for off-road/educational/hobby use unless otherwise stated. It is the buyer's responsibility to ensure compliance with local regulations regarding engine modifications and emissions.</p>
+          <p>By placing an order through Wrench over Wallet, you agree to these terms. Products are sold for off-road/educational/hobby use unless otherwise stated. It is the buyer's responsibility to ensure compliance with local regulations regarding engine modifications and emissions.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Products</h2>
           <p>Products are described as accurately as possible. Speeduino is an open-source project; firmware features may vary by version. We do not guarantee compatibility with every vehicle or configuration — please use the compatibility wizard and contact us with questions before ordering.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Pricing & Payment</h2>
