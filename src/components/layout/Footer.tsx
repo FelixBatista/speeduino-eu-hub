@@ -57,7 +57,7 @@ export default function Footer() {
             Ready to Take Control of Your Engine?
           </h2>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-            Browse boards, sensors, and modules — everything you need to build your own Speeduino ECU.
+            Browse boards, sensors, and modules — everything you need to build your own open-source ECU.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/find-my-kit" className="cta-primary">Find My Kit</Link>
