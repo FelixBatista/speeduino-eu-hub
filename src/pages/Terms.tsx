@@ -17,7 +17,7 @@ export default function Terms() {
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Pricing & Payment</h2>
           <p>All prices are in EUR and include VAT for EU customers. Payment is processed securely via Stripe. We reserve the right to update prices without prior notice.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Limitation of Liability</h2>
-          <p>Speeduino.eu is not liable for damages resulting from improper installation, wiring, tuning, or use of products. Engine management modifications carry inherent risk — always verify your work and test in a safe environment.</p>
+          <p>Wrench over Wallet is not liable for damages resulting from improper installation, wiring, tuning, or use of products. Engine management modifications carry inherent risk — always verify your work and test in a safe environment.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Governing Law</h2>
           <p>These terms are governed by the laws of Sweden. EU consumer protection regulations apply.</p>
         </div>

@@ -24,7 +24,7 @@ export default function Privacy() {
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Cookies</h2>
           <p>We use essential cookies for site functionality and optional analytics cookies (with consent). You can manage preferences via the cookie banner.</p>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">Contact</h2>
-          <p>Data controller: Speeduino.eu, [Address], Sweden. Email: support@speeduino.eu</p>
+          <p>Data controller: Wrench over Wallet, [Address], Sweden. Email: support@wrenchoverwallet.com</p>
         </div>
       </div>
     </main>

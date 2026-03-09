@@ -169,8 +169,8 @@ export default function VehicleDetail() {
         breadcrumb: {
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://speeduino.eu/" },
-            { "@type": "ListItem", position: 2, name: "Vehicles", item: "https://speeduino.eu/vehicles" },
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://wrenchoverwallet.com/" },
+            { "@type": "ListItem", position: 2, name: "Vehicles", item: "https://wrenchoverwallet.com/vehicles" },
             { "@type": "ListItem", position: 3, name: vehicle.name },
           ],
         },

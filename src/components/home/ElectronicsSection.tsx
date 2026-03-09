@@ -34,7 +34,7 @@ export default function ElectronicsSection() {
             <div className="relative aspect-square max-w-md mx-auto">
               <img
                 src={ecuProduct}
-                alt="Speeduino ECU board closeup"
+                alt="ECU board closeup"
                 className="w-full h-full object-cover rounded-2xl"
                 loading="lazy"
               />

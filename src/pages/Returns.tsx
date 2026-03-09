@@ -18,7 +18,7 @@ export default function Returns() {
             <li><strong className="text-foreground">Connectors & Accessories:</strong> Warranted as delivered. No returns on crimp pins once used.</li>
           </ul>
           <h2 className="font-display text-xl font-bold text-foreground mt-8">How to Claim</h2>
-          <p>Email support@speeduino.eu with your order number, a description of the issue, and photos if applicable. We'll respond within 2 business days.</p>
+          <p>Email support@wrenchoverwallet.com with your order number, a description of the issue, and photos if applicable. We'll respond within 2 business days.</p>
         </div>
       </div>
     </main>

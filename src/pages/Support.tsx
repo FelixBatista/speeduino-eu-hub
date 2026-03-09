@@ -3,7 +3,7 @@ import { Mail, MessageCircle, BookOpen, Youtube, Headphones } from "lucide-react
 import { SPEEDUINO_FORUM, SPEEDUINO_DISCORD, SPEEDUINO_WIKI } from "@/data/speeduinoLinks";
 
 const channels = [
-  { icon: Mail, title: "Email Support", desc: "EU-based support for products purchased from our shop. Typical response time: 1–2 business days.", action: "support@speeduino.eu", href: "mailto:support@speeduino.eu" },
+  { icon: Mail, title: "Email Support", desc: "EU-based support for products purchased from our shop. Typical response time: 1–2 business days.", action: "support@wrenchoverwallet.com", href: "mailto:support@wrenchoverwallet.com" },
   { icon: Headphones, title: "Remote Tuning Review", desc: "Book a session for base map review, wiring check, or troubleshooting help. Available by appointment.", action: "Coming soon" },
   { icon: MessageCircle, title: "Forum", desc: "The Speeduino forum is searchable and archival — great for build logs and detailed threads.", action: "Speeduino forum", href: SPEEDUINO_FORUM },
   { icon: MessageCircle, title: "Discord community", desc: "Fastest for real-time help: \"Is this normal?\" debugging and quick questions.", action: "Join Discord", href: SPEEDUINO_DISCORD },
