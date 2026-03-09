@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Zap, Mail, MapPin, Truck } from "lucide-react";
+import { Mail, MapPin, Truck } from "lucide-react";
 import {
   SPEEDUINO_MAIN,
   SPEEDUINO_FORUM,
@@ -10,6 +10,7 @@ import {
   SPEEDUINO_FIRMWARE_RELEASES,
   SPEEDUINO_HARDWARE,
 } from "@/data/speeduinoLinks";
+import logoIcon from "@/assets/logo-icon.png";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
