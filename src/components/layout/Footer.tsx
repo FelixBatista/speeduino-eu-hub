@@ -152,7 +152,7 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> support@speeduino.eu</li>
+              <li className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> support@wrenchoverwallet.com</li>
               <li className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> EU-based (Sweden)</li>
               <li className="flex items-center gap-2"><Truck className="w-4 h-4 text-primary" /> Ships within EU</li>
             </ul>
