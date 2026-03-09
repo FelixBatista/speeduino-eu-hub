@@ -28,7 +28,7 @@ export default function ConfigSnapshot() {
         >
           <p className="data-label text-primary mb-3">Supported Configurations</p>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
-            What Your ECU Can Run
+            What Speeduino Can Run
           </h2>
         </motion.div>
 

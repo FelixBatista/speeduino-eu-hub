@@ -32,7 +32,7 @@ export default function Index() {
             "@type": "Organization",
             name: "Wrench over Wallet",
             url: "https://wrenchoverwallet.com",
-            description: "Open-source ECU components for Europe. DIY boards, sensors, modules, and accessories with EU shipping.",
+            description: "Open-source Speeduino ECU components for Europe. DIY boards, sensors, modules, and accessories with EU shipping.",
             address: { "@type": "PostalAddress", addressCountry: "SE" },
           }),
         }}

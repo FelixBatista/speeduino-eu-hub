@@ -67,7 +67,7 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Join Discord"
+            aria-label="Join Speeduino Discord"
           >
             <MessageCircle className="w-5 h-5" />
           </a>

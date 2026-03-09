@@ -166,7 +166,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <img src={logoIcon} alt="Wrench over Wallet" className="w-4 h-4" />
             <span className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Wrench over Wallet — Open-source engine management for Europe
+              © {new Date().getFullYear()} Wrench over Wallet — Speeduino-compatible engine management for Europe
             </span>
           </div>
           <p className="text-xs text-muted-foreground max-w-md text-center md:text-right">

@@ -43,7 +43,7 @@ export default function Hero() {
             <span className="text-gradient">Actually Own</span>
           </h1>
           <p className="text-lg md:text-xl text-secondary-foreground/80 mb-10 max-w-xl leading-relaxed">
-            Open hardware, open firmware, no license fees.
+            Speeduino gives you full control — open hardware, open firmware, no license fees.
             From 4 to 8 cylinders, batch to sequential, NA to turbo. Built for enthusiasts who want transparency, not lock-in.
           </p>
 

@@ -72,7 +72,7 @@ export default function CaseStudy() {
             <div className="card-motorsport p-5 relative">
               <Quote className="w-8 h-8 text-primary/20 absolute top-3 right-3" />
               <p className="text-sm text-secondary-foreground italic mb-3">
-                "Switching to an open-source ECU was the best decision for this build. Full control over every parameter, zero license fees, and the community support is incredible."
+                "Switching to Speeduino was the best decision for this build. Full control over every parameter, zero license fees, and the community support is incredible."
               </p>
               <p className="text-xs text-muted-foreground">— Builder from Stockholm, Sweden</p>
             </div>
