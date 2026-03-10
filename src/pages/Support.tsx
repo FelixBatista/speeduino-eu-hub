@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, MessageCircle, BookOpen, Youtube, Headphones } from "lucide-react";
 import { SPEEDUINO_FORUM, SPEEDUINO_DISCORD, SPEEDUINO_WIKI } from "@/data/speeduinoLinks";
+import SEOHead from "@/components/SEOHead";
 
 const channels = [
   { icon: Mail, title: "Email Support", desc: "EU-based support for products purchased from our shop. Typical response time: 1–2 business days.", action: "support@wrenchoverwallet.com", href: "mailto:support@wrenchoverwallet.com" },
@@ -13,7 +14,12 @@ const channels = [
 
 export default function Support() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Speeduino ECU Support — EU-Based Help for Your Build"
+        description="EU-based support for Speeduino ECU builds. Email support, remote tuning review, community forum, Discord, and official wiki. We help you get your engine running."
+        canonical="/support"
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -46,5 +52,6 @@ export default function Support() {
         </div>
       </div>
     </main>
+    </>
   );
 }

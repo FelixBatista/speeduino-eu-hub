@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { MapPin, Truck, Heart, Github } from "lucide-react";
 import { SPEEDUINO_MAIN } from "@/data/speeduinoLinks";
+import SEOHead from "@/components/SEOHead";
 
 export default function About() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="About Wrench over Wallet | EU-Based Open-Source ECU Shop"
+        description="Wrench over Wallet is an EU-based shop (Sweden) making open-source Speeduino ECU kits accessible to European car enthusiasts. Affordable, transparent, community-driven."
+        canonical="/about"
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -46,5 +52,6 @@ export default function About() {
         </div>
       </div>
     </main>
+    </>
   );
 }

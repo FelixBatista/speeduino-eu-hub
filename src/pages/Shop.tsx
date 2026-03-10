@@ -9,6 +9,7 @@ import { Filter, ArrowRight, ShoppingCart, AlertCircle, Bell } from "lucide-reac
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 import WaitlistDialog from "@/components/WaitlistDialog";
+import SEOHead from "@/components/SEOHead";
 
 const categories: { id: "all" | ProductCategory; label: string }[] = [
   { id: "all", label: "All Products" },
@@ -30,7 +31,15 @@ export default function Shop() {
   const price = (p: Product) => `€${p.priceEUR}`;
   const stockQty = (productId: string) => typeof availability[productId] === "number" ? availability[productId] : -1;
   const outOfStock = (productId: string) => stockQty(productId) === 0;
+
   return (
+    <>
+      <SEOHead
+        title="Shop Aftermarket ECU Parts Europe | Speeduino Boards, Sensors & Modules"
+        description="Buy Speeduino ECU boards, sensors, modules, and accessories for Europe. DIY aftermarket engine management from €149 inc. VAT. EU shipping, no customs duties."
+        canonical="/shop"
+        ogType="website"
+      />
     <main className="pt-24 pb-20">
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
@@ -214,5 +223,6 @@ export default function Shop() {
         />
       )}
     </main>
+    </>
   );
 }

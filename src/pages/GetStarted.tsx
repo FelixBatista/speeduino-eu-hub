@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ExternalLink, Package, Cpu, Cable, Settings, Rocket, BookOpen } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 import {
   SPEEDUINO_GETTING_STARTED,
   SPEEDUINO_WIKI_FIRMWARE,
@@ -71,7 +72,12 @@ const resources = [
 
 export default function GetStarted() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Get Started with Speeduino ECU — Step-by-Step Guide for Europe"
+        description="How to get started with a Speeduino aftermarket ECU. From unboxing to first start: firmware, wiring, sensors, TunerStudio setup. Practical guide for European builders."
+        canonical="/get-started"
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -162,5 +168,6 @@ export default function GetStarted() {
         </p>
       </div>
     </main>
+    </>
   );
 }

@@ -3,10 +3,16 @@ import { blogPosts } from "@/data/blogPosts";
 import { motion } from "framer-motion";
 import { Clock, ArrowRight, BookOpen } from "lucide-react";
 import { SPEEDUINO_WIKI } from "@/data/speeduinoLinks";
+import SEOHead from "@/components/SEOHead";
 
 export default function Guides() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Speeduino ECU Guides & Blog | Aftermarket ECU Tutorials for Europe"
+        description="Practical guides for Speeduino and aftermarket ECU builds in Europe. Wiring basics, sensor selection, boost control, first start, and tuning guides."
+        canonical="/guides"
+      />
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -63,5 +69,6 @@ export default function Guides() {
         </div>
       </div>
     </main>
+    </>
   );
 }

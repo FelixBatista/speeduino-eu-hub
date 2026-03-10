@@ -4,10 +4,10 @@ import { Truck, Github, Headphones, FileSearch } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const trustItems = [
-  { icon: Truck, label: "EU Shipping" },
-  { icon: Github, label: "Open-Source Ecosystem" },
-  { icon: Headphones, label: "Tuning Support Available" },
-  { icon: FileSearch, label: "Transparent Specs" },
+  { icon: Truck, label: "EU Shipping — No Customs" },
+  { icon: Github, label: "Fully Open-Source" },
+  { icon: Headphones, label: "EU-Based Support" },
+  { icon: FileSearch, label: "From €149 inc. VAT" },
 ];
 
 export default function Hero() {
@@ -37,14 +37,15 @@ export default function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-3xl"
         >
-          <p className="data-label text-primary mb-4">Open-Source Engine Management</p>
+          <p className="data-label text-primary mb-4">Open-Source Aftermarket ECU — Ships from the EU</p>
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.05] mb-6">
-            The ECU You Can{" "}
-            <span className="text-gradient">Actually Own</span>
+            The Standalone ECU You Can{" "}
+            <span className="text-gradient">Actually Afford</span>
           </h1>
           <p className="text-lg md:text-xl text-secondary-foreground/80 mb-10 max-w-xl leading-relaxed">
-            Speeduino gives you full control — open hardware, open firmware, no license fees.
-            From 4 to 8 cylinders, batch to sequential, NA to turbo. Built for enthusiasts who want transparency, not lock-in.
+            Speeduino is Europe's most affordable aftermarket ECU — open hardware, open firmware, no license fees.
+            Sequential injection, boost control, coil-on-plug. From €149 inc. VAT, shipped from Sweden.
+            The open-source alternative to Haltech, Link ECU, MaxxECU, and ECUMaster.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-14">
@@ -53,6 +54,9 @@ export default function Hero() {
             </Link>
             <Link to="/shop" className="cta-secondary">
               Shop Bundles
+            </Link>
+            <Link to="/compare" className="cta-secondary">
+              Compare ECUs
             </Link>
           </div>
 

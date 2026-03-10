@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Check, ShoppingCart, Wrench, Clock, Users, ArrowLeft, ArrowRight, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
+import SEOHead from "@/components/SEOHead";
 
 export default function VehicleDetail() {
   const { slug } = useParams();
@@ -25,10 +26,28 @@ export default function VehicleDetail() {
   const bundle = allProducts.find((p) => p.id === vehicle.recommendedBundleId);
 
   return (
+    <>
+      <SEOHead
+        title={vehicle.metaTitle}
+        description={vehicle.metaDescription}
+        canonical={`/vehicles/${vehicle.slug}`}
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: vehicle.metaTitle,
+          description: vehicle.metaDescription,
+          url: `https://wrenchoverwallet.com/vehicles/${vehicle.slug}`,
+          breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://wrenchoverwallet.com/" },
+              { "@type": "ListItem", position: 2, name: "Vehicles", item: "https://wrenchoverwallet.com/vehicles" },
+              { "@type": "ListItem", position: 3, name: vehicle.name, item: `https://wrenchoverwallet.com/vehicles/${vehicle.slug}` },
+            ],
+          },
+        }}
+      />
     <main className="pt-24 pb-20">
-      {/* Meta title */}
-      <title>{vehicle.metaTitle}</title>
-      <meta name="description" content={vehicle.metaDescription} />
 
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
@@ -160,21 +179,7 @@ export default function VehicleDetail() {
         </section>
       </div>
 
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: vehicle.metaTitle,
-        description: vehicle.metaDescription,
-        breadcrumb: {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://wrenchoverwallet.com/" },
-            { "@type": "ListItem", position: 2, name: "Vehicles", item: "https://wrenchoverwallet.com/vehicles" },
-            { "@type": "ListItem", position: 3, name: vehicle.name },
-          ],
-        },
-      }) }} />
     </main>
+    </>
   );
 }

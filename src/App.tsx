@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { CartProvider } from "@/contexts/CartContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -16,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import Admin from "./pages/Admin";
 import Compare from "./pages/Compare";
+import CompareDetail from "./pages/CompareDetail";
 import FindMyKit from "./pages/FindMyKit";
 import Guides from "./pages/Guides";
 import BlogArticle from "./pages/BlogArticle";
@@ -26,11 +28,14 @@ import Terms from "./pages/Terms";
 import Returns from "./pages/Returns";
 import Shipping from "./pages/Shipping";
 import GetStarted from "./pages/GetStarted";
+import Vehicles from "./pages/Vehicles";
+import VehicleDetail from "./pages/VehicleDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
@@ -48,6 +53,7 @@ const App = () => (
             <Route path="/order/success" element={<OrderSuccess />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/compare" element={<Compare />} />
+            <Route path="/compare/:slug" element={<CompareDetail />} />
             <Route path="/find-my-kit" element={<FindMyKit />} />
             <Route path="/compatibility" element={<Navigate to="/find-my-kit" replace />} />
             <Route path="/guides" element={<Guides />} />
@@ -59,6 +65,8 @@ const App = () => (
             <Route path="/returns" element={<Returns />} />
             <Route path="/shipping" element={<Shipping />} />
             <Route path="/get-started" element={<GetStarted />} />
+            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/vehicles/:slug" element={<VehicleDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
@@ -67,6 +75,7 @@ const App = () => (
       </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 
 export default function Privacy() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Privacy Policy | Wrench over Wallet"
+        description="Privacy policy for wrenchoverwallet.com. How we collect, store, and protect your personal data in accordance with GDPR."
+        canonical="/privacy"
+        noIndex={true}
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link><span className="mx-2">/</span><span className="text-foreground">Privacy Policy</span>
@@ -28,5 +35,6 @@ export default function Privacy() {
         </div>
       </div>
     </main>
+    </>
   );
 }

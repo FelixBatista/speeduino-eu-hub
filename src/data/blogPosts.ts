@@ -26,8 +26,8 @@ export const blogPosts: BlogPost[] = [
     category: "Getting Started",
     readTime: "8 min",
     date: "2025-01-15",
-    author: "Speeduino.eu Team",
-    metaTitle: "Speeduino in Europe — Buying Guide & Getting Started | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Speeduino in Europe — Buying Guide & Getting Started | Wrench over Wallet",
     metaDescription: "Complete guide to buying and starting with Speeduino in Europe. EU shipping, VAT, sourcing sensors, and your first steps with open-source engine management.",
     content: [
       {
@@ -60,8 +60,8 @@ export const blogPosts: BlogPost[] = [
     category: "Comparisons",
     readTime: "10 min",
     date: "2025-01-10",
-    author: "Speeduino.eu Team",
-    metaTitle: "Aftermarket ECU Comparison — What Actually Matters | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Aftermarket ECU Comparison — What Actually Matters | Wrench over Wallet",
     metaDescription: "Honest comparison of aftermarket ECUs: Speeduino, Megasquirt, Link, Haltech, MaxxECU. Focus on cost, flexibility, community, and real-world usability.",
     content: [
       {
@@ -94,8 +94,8 @@ export const blogPosts: BlogPost[] = [
     category: "Guides",
     readTime: "7 min",
     date: "2025-01-05",
-    author: "Speeduino.eu Team",
-    metaTitle: "Wiring Basics for Aftermarket ECU: Grounds, Shielding, Noise | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Wiring Basics for Aftermarket ECU: Grounds, Shielding, Noise | Wrench over Wallet",
     metaDescription: "Essential wiring guide for Speeduino and aftermarket ECU installations. Star grounding, shielded cables, noise isolation, and common wiring mistakes to avoid.",
     content: [
       {
@@ -128,8 +128,8 @@ export const blogPosts: BlogPost[] = [
     category: "Guides",
     readTime: "9 min",
     date: "2024-12-20",
-    author: "Speeduino.eu Team",
-    metaTitle: "Turbo Boost Control Basics with Speeduino ECU | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Turbo Boost Control Basics with Speeduino ECU | Wrench over Wallet",
     metaDescription: "Learn how to set up electronic boost control with Speeduino. Solenoid selection, wiring, open/closed loop control, and overboost protection explained.",
     content: [
       { heading: "How Electronic Boost Control Works", body: "Electronic boost control replaces the mechanical wastegate actuator spring with a solenoid valve that the ECU controls. By varying the duty cycle of the solenoid, the ECU can bleed pressure from the wastegate actuator line, allowing the turbo to build more boost than the spring alone would permit.\n\nThe most common setup uses a 3-port MAC-type solenoid. Port 1 connects to the compressor housing (pressure source), port 2 connects to the wastegate actuator, and port 3 vents to atmosphere through a small filter.\n\nAt 0% duty cycle, full pressure reaches the wastegate actuator — this is your 'base' boost level (determined by the spring). As duty cycle increases, more pressure is vented, allowing the turbo to build higher boost." },
@@ -147,8 +147,8 @@ export const blogPosts: BlogPost[] = [
     category: "Guides",
     readTime: "8 min",
     date: "2024-12-15",
-    author: "Speeduino.eu Team",
-    metaTitle: "Choosing Sensors for Speeduino: MAP, IAT, CLT, Wideband O2 | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Choosing Sensors for Speeduino: MAP, IAT, CLT, Wideband O2 | Wrench over Wallet",
     metaDescription: "Sensor selection guide for Speeduino ECU builds. MAP sensor sizing, temperature sensor calibration, wideband O2 selection, and sensor placement best practices.",
     content: [
       { heading: "Required vs Optional Sensors", body: "**Required for basic operation:**\n- Crank position sensor (usually OEM)\n- MAP or TPS (Speeduino supports both speed-density and alpha-N fuel strategies)\n- Coolant temperature (CLT) — for warmup enrichment and fan control\n- Intake air temperature (IAT) — for air density correction\n\n**Highly recommended:**\n- Wideband O2 — essential for tuning\n- Throttle position sensor (TPS) — for acceleration enrichment\n\n**Optional but valuable:**\n- Cam position sensor — required for sequential injection\n- Knock sensor — for detonation protection\n- Flex fuel sensor — for E85 blends\n- Barometric pressure sensor — for altitude correction" },
@@ -166,8 +166,8 @@ export const blogPosts: BlogPost[] = [
     category: "Getting Started",
     readTime: "6 min",
     date: "2024-12-10",
-    author: "Speeduino.eu Team",
-    metaTitle: "First Start Checklist for Speeduino ECU | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "First Start Checklist for Speeduino ECU | Wrench over Wallet",
     metaDescription: "Complete first start checklist for Speeduino ECU installations. Wiring verification, sensor sanity checks, fuel priming, and first crank procedure.",
     content: [
       { heading: "Pre-Start Wiring Verification", body: "Before anything else, verify every connection:\n\n- [ ] All sensor grounds connected to ECU sensor ground\n- [ ] All power grounds connected to engine block ground point\n- [ ] 12V supply to ECU is clean and fused\n- [ ] Injector wiring: correct firing order, proper resistance\n- [ ] Ignition coil wiring: correct firing order, flyback diodes if needed\n- [ ] Fuel pump relay: controlled by ECU output\n- [ ] No shorts to ground or 12V on any signal wire\n\nUse a multimeter to verify every circuit. This step alone prevents the majority of first-start problems." },
@@ -185,8 +185,8 @@ export const blogPosts: BlogPost[] = [
     category: "Tuning",
     readTime: "7 min",
     date: "2024-12-05",
-    author: "Speeduino.eu Team",
-    metaTitle: "Base Maps Explained: What They Are and Aren't | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Base Maps Explained: What They Are and Aren't | Wrench over Wallet",
     metaDescription: "Understanding Speeduino base maps. What they contain, why they're not a finished tune, and how to progress from base map to proper engine calibration.",
     content: [
       { heading: "What a Base Map Actually Contains", body: "A base map is a starting-point calibration that contains:\n\n- **VE (Volumetric Efficiency) table:** An estimate of how efficiently your engine fills its cylinders at various RPM and load points\n- **Ignition timing table:** Conservative spark advance values\n- **Sensor calibrations:** Pre-configured for common sensor types\n- **Cranking and warmup enrichment:** Values to get the engine started and running during warmup\n- **Idle control settings:** Basic idle speed targeting\n\nA base map is designed to get your engine running safely. It is NOT designed for optimal performance, fuel economy, or emissions." },
@@ -204,8 +204,8 @@ export const blogPosts: BlogPost[] = [
     category: "Tuning",
     readTime: "9 min",
     date: "2024-11-30",
-    author: "Speeduino.eu Team",
-    metaTitle: "Common Tuning Mistakes with Aftermarket ECUs | Speeduino.eu",
+    author: "Wrench over Wallet",
+    metaTitle: "Common Tuning Mistakes with Aftermarket ECUs | Wrench over Wallet",
     metaDescription: "Avoid these common Speeduino and aftermarket ECU tuning mistakes. Sensor calibration, ignition safety, auto-tune pitfalls, and data logging best practices.",
     content: [
       { heading: "Incorrect Sensor Calibration", body: "This is the #1 tuning mistake. If your sensor calibration tables don't match your actual sensors, every fuel and timing decision the ECU makes will be wrong.\n\nCommon symptoms: engine runs rich/lean despite 'correct' VE table, temperature corrections don't work properly, idle quality is poor despite correct idle settings.\n\n**Fix:** Verify every sensor against known values. Compare CLT and IAT readings to a thermometer. Verify MAP sensor reads atmospheric pressure with the engine off. Check TPS range and linearity." },

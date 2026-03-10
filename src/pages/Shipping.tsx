@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 
 export default function Shipping() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Shipping Information — EU ECU Delivery | Wrench over Wallet"
+        description="Shipping information for Wrench over Wallet. EU shipping from Sweden — 3–7 business days, no customs duties, free shipping on orders over €250."
+        canonical="/shipping"
+        noIndex={true}
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link><span className="mx-2">/</span><span className="text-foreground">Shipping</span>
@@ -37,5 +44,6 @@ export default function Shipping() {
         </div>
       </div>
     </main>
+    </>
   );
 }

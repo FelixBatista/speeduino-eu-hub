@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 
 export default function Terms() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Terms & Conditions | Wrench over Wallet"
+        description="Terms and conditions for purchasing from wrenchoverwallet.com. EU consumer rights, order process, and seller information."
+        canonical="/terms"
+        noIndex={true}
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link><span className="mx-2">/</span><span className="text-foreground">Terms & Conditions</span>
@@ -23,5 +30,6 @@ export default function Terms() {
         </div>
       </div>
     </main>
+    </>
   );
 }

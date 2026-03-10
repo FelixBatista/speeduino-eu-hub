@@ -1,33 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://your-domain.com/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
-  <url><loc>https://your-domain.com/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://your-domain.com/find-my-kit</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <!-- Boards -->
-  <url><loc>https://your-domain.com/product/speeduino-v03-pcb</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://your-domain.com/product/speeduino-v04-pcb</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://your-domain.com/product/arduino-mega-2560</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <!-- Modules -->
-  <url><loc>https://your-domain.com/product/vr-conditioner-max9926</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/wideband-controller-spartan</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/ignition-driver-4ch-211</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/drv8825-stepper-driver</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/ballast-resistor-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <!-- Sensors -->
-  <url><loc>https://your-domain.com/product/map-sensor-mpx4250</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/iat-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/clt-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/tps-sensor-3wire</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/wideband-o2-lsu49</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/flex-fuel-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <!-- Accessories -->
-  <url><loc>https://your-domain.com/product/boost-control-solenoid-mac</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/relay-pack-4x-30a</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/idc40-plug-pins-v04</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/lsu49-connector-6pin</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/product/smart-coil-connector-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <!-- Other pages -->
-  <url><loc>https://your-domain.com/guides</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://your-domain.com/support</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://your-domain.com/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Core pages -->
+  <url><loc>https://wrenchoverwallet.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://wrenchoverwallet.com/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/find-my-kit</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://wrenchoverwallet.com/get-started</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Competitor comparison pages (high priority for SEO) -->
+  <url><loc>https://wrenchoverwallet.com/compare/speeduino-vs-haltech</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare/speeduino-vs-link-ecu</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare/speeduino-vs-maxxecu</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare/speeduino-vs-ecumaster</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare/speeduino-vs-megasquirt</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://wrenchoverwallet.com/compare/best-aftermarket-ecu-europe</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+
+  <!-- Products — Boards -->
+  <url><loc>https://wrenchoverwallet.com/product/speeduino-v03-pcb</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/speeduino-v04-pcb</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/arduino-mega-2560</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Products — Modules -->
+  <url><loc>https://wrenchoverwallet.com/product/vr-conditioner-max9926</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/wideband-controller-spartan</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/ignition-driver-4ch-211</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/drv8825-stepper-driver</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/ballast-resistor-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Products — Sensors -->
+  <url><loc>https://wrenchoverwallet.com/product/map-sensor-mpx4250</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/iat-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/clt-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/tps-sensor-3wire</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/wideband-o2-lsu49</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/flex-fuel-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Products — Accessories -->
+  <url><loc>https://wrenchoverwallet.com/product/boost-control-solenoid-mac</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/relay-pack-4x-30a</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/idc40-plug-pins-v04</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/lsu49-connector-6pin</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/smart-coil-connector-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Guides index -->
+  <url><loc>https://wrenchoverwallet.com/guides</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
+
+  <!-- Blog articles -->
+  <url><loc>https://wrenchoverwallet.com/guides/speeduino-in-europe</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/aftermarket-ecu-comparison</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/wiring-basics</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/turbo-control-basics</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/choosing-sensors</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/first-start-checklist</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/base-maps-explained</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/guides/common-tuning-mistakes</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Vehicle guides -->
+  <url><loc>https://wrenchoverwallet.com/vehicles</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://wrenchoverwallet.com/vehicles/volvo-p2-5-cylinder-turbo</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://wrenchoverwallet.com/vehicles/volvo-na-5-cylinder</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://wrenchoverwallet.com/vehicles/4-cylinder-turbo-universal</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://wrenchoverwallet.com/vehicles/6-cylinder-universal</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+  <url><loc>https://wrenchoverwallet.com/vehicles/8-cylinder-v8-universal</loc><changefreq>monthly</changefreq><priority>0.65</priority></url>
+
+  <!-- Info pages -->
+  <url><loc>https://wrenchoverwallet.com/support</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://wrenchoverwallet.com/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Legal pages (low priority) -->
+  <url><loc>https://wrenchoverwallet.com/privacy</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://wrenchoverwallet.com/terms</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://wrenchoverwallet.com/returns</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://wrenchoverwallet.com/shipping</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
 </urlset>

@@ -53,11 +53,27 @@ export const faqs: FAQ[] = [
     answer: "We offer a 14-day return policy for unused items in original packaging, in accordance with EU consumer protection regulations. Assembled ECUs come with a 12-month warranty covering manufacturing defects. DIY kits are not covered by warranty once soldered, but we're happy to help troubleshoot.",
   },
   {
-    question: "How does Speeduino compare to Megasquirt, Link, or Haltech?",
-    answer: "Speeduino offers a fully open-source alternative at a fraction of the cost. While premium ECUs like Link and Haltech offer more integrated features (built-in CAN, advanced data logging), Speeduino provides the core functionality most enthusiasts need. See our detailed comparison page for a feature-by-feature breakdown. Features vary by configuration and firmware; verify for your application.",
+    question: "How does Speeduino compare to Haltech, Link ECU, MaxxECU, and ECUMaster?",
+    answer: "Speeduino is Europe's most affordable standalone ECU — starting at €149 vs €900–2,500 for commercial alternatives. It delivers the same core engine management features: sequential injection, coil-on-plug, boost control, flex fuel, and data logging. Haltech, Link ECU, MaxxECU, and ECUMaster have advantages in advanced driver aids, plug-and-play harnesses, and professional support. Speeduino is the open-source alternative for budget-conscious builders. See our detailed comparison page for a feature-by-feature breakdown.",
+  },
+  {
+    question: "Is Speeduino a good alternative to Haltech in Europe?",
+    answer: "Yes. Speeduino covers all the core features of the Haltech Elite series (sequential injection, COP ignition, boost control, wideband integration) at approximately 80% lower cost — from €149 vs €1,200+ for Haltech. It ships from within the EU with no customs duties. The trade-off is that Speeduino requires more DIY involvement and doesn't have manufacturer warranty support. For most European project car builds, it's an excellent alternative to Haltech.",
+  },
+  {
+    question: "How does Speeduino compare to MaxxECU?",
+    answer: "Both Speeduino and MaxxECU are popular in Europe, particularly Scandinavia. MaxxECU offers a polished commercial experience with the MaxxTune software and advanced driver aids, starting at ~€900. Speeduino is fully open-source and starts at €149 — about 80% cheaper. Both ship from Sweden/EU. Speeduino is the budget open-source alternative; MaxxECU is the premium commercial choice.",
   },
   {
     question: "Can I use Speeduino for a track car or rally car?",
     answer: "Yes. Many track and rally builds use Speeduino successfully. For competition use, we recommend the full sensor pack (including wideband, knock sensor, and boost control), proper shielded wiring, and thorough testing before race day. Our Track/Rally bundle includes everything you need to get started.",
+  },
+  {
+    question: "What is the cheapest aftermarket ECU I can buy in Europe?",
+    answer: "Speeduino is the most affordable standalone ECU option for European builders. DIY kits start at €149 including VAT, shipped from Sweden within the EU. A complete working setup (board, Arduino, core sensors, and wideband) typically costs €400–700 — compared to €1,500–3,000+ for commercial alternatives like Haltech, Link ECU, MaxxECU, or ECUMaster.",
+  },
+  {
+    question: "Does Speeduino work with common European engines?",
+    answer: "Yes. Speeduino is widely used with European engines. Documented builds include: Volvo 5-cylinder (B5254T, B5244T, B5252, B5244), BMW inline-6, VAG 4-cylinder turbo (EA113, EA888), Ford Duratec and Zetec, Opel/Vauxhall 4-cylinder, Renault 4-cylinder, and many more. The Speeduino community has base maps and wiring guides for many common European engine configurations.",
   },
 ];

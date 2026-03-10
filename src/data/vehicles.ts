@@ -33,7 +33,7 @@ export const vehicles: VehiclePage[] = [
     fuelType: "Petrol / E85",
     heroTitle: "Speeduino for Volvo P2 5-Cylinder Turbo",
     heroDescription: "Run your S60, V70, or S80 B5254T on a fully open-source ECU. Sequential injection, coil-on-plug, boost control — all supported.",
-    metaTitle: "Speeduino ECU Kit for Volvo P2 S60 V70 5-Cylinder Turbo | Speeduino.eu",
+    metaTitle: "Speeduino ECU Kit for Volvo P2 S60 V70 5-Cylinder Turbo | Wrench over Wallet",
     metaDescription: "Affordable standalone ECU for Volvo P2 platform. Supports sequential injection, COP ignition, and electronic boost control on the B5254T 5-cylinder turbo.",
     whySpeeduino: [
       "Full sequential injection on all 5 cylinders",
@@ -69,7 +69,7 @@ export const vehicles: VehiclePage[] = [
     fuelType: "Petrol",
     heroTitle: "Speeduino for Volvo NA 5-Cylinder Engines",
     heroDescription: "Upgrade your naturally aspirated Volvo 5-cylinder with a modern standalone ECU. Perfect for turbo conversion projects or performance NA builds.",
-    metaTitle: "Speeduino ECU for Volvo NA 5-Cylinder B5252 B5244 | Speeduino.eu",
+    metaTitle: "Speeduino ECU for Volvo NA 5-Cylinder B5252 B5244 | Wrench over Wallet",
     metaDescription: "Open-source ECU solution for Volvo naturally aspirated 5-cylinder engines. Ideal for turbo conversion prep or standalone engine management on a budget.",
     whySpeeduino: [
       "Perfect base for NA-to-turbo conversion projects",
@@ -104,7 +104,7 @@ export const vehicles: VehiclePage[] = [
     fuelType: "Petrol / E85",
     heroTitle: "Speeduino for 4-Cylinder Turbo Engines",
     heroDescription: "The most popular Speeduino configuration. Full sequential injection, COP ignition, and boost control for any 4-cylinder turbo engine.",
-    metaTitle: "Speeduino ECU Kit for 4-Cylinder Turbo Engines | Speeduino.eu",
+    metaTitle: "Speeduino ECU Kit for 4-Cylinder Turbo Engines | Wrench over Wallet",
     metaDescription: "Universal Speeduino ECU kit for 4-cylinder turbo engines. Supports sequential injection, coil-on-plug, boost control, and flex fuel. Ships from the EU.",
     whySpeeduino: [
       "The most tested and community-supported configuration",
@@ -139,7 +139,7 @@ export const vehicles: VehiclePage[] = [
     fuelType: "Petrol",
     heroTitle: "Speeduino for 6-Cylinder Engines",
     heroDescription: "Run your inline-6 or V6 on Speeduino. Sequential injection and individual coil control with the right hardware configuration.",
-    metaTitle: "Speeduino ECU for 6-Cylinder Engines — Inline 6 & V6 | Speeduino.eu",
+    metaTitle: "Speeduino ECU for 6-Cylinder Engines — Inline 6 & V6 | Wrench over Wallet",
     metaDescription: "Speeduino ECU kits for 6-cylinder engines. Supports sequential injection with expansion, wasted spark and COP ignition. EU shipping.",
     whySpeeduino: [
       "Sequential injection possible with 6+ output hardware",
@@ -172,7 +172,7 @@ export const vehicles: VehiclePage[] = [
     fuelType: "Petrol",
     heroTitle: "Speeduino for V8 Engines",
     heroDescription: "Running a V8 on Speeduino is achievable with the right hardware. Batch or semi-sequential injection with wasted spark ignition.",
-    metaTitle: "Speeduino ECU for V8 Engines | Speeduino.eu",
+    metaTitle: "Speeduino ECU for V8 Engines | Wrench over Wallet",
     metaDescription: "Speeduino ECU options for V8 engines. Batch and semi-sequential injection with wasted spark ignition support. Budget-friendly standalone ECU from the EU.",
     whySpeeduino: [
       "Batch or semi-sequential injection on 8 cylinders",

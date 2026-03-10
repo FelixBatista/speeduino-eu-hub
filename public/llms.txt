@@ -1,0 +1,80 @@
+# Wrench over Wallet
+> Europe's most affordable aftermarket ECU shop. Open-source Speeduino engine management kits shipped from within the EU — no customs duties for European customers.
+
+## Who We Are
+Wrench over Wallet is an EU-based e-commerce shop based in Sweden. We source, assemble, test, and ship Speeduino-compatible ECU boards, sensors, modules, and accessories to customers across Europe. We are an independent seller of Speeduino-compatible hardware — not affiliated with the official Speeduino project.
+
+## What We Sell
+- **Speeduino ECU Boards**: v0.3 and v0.4 PCB kits (DIY solder-yourself), from €149 inc. VAT
+- **Arduino Mega 2560**: The microcontroller base for Speeduino
+- **Sensors**: MAP (1-bar, 3-bar), IAT, CLT, TPS, Wideband O2 (LSU 4.9), Flex Fuel
+- **Modules**: VR conditioner, ignition driver, wideband controller, boost control solenoid
+- **Accessories**: IDC40 connectors, relay packs, wiring accessories
+- **Complete Bundles**: "Find My Kit" wizard configures the right bundle for your engine
+
+## Why Choose Wrench over Wallet
+- **Most affordable standalone ECU in Europe**: from €149 (vs €800–2,500 for commercial alternatives)
+- **Fully open-source**: hardware designs and firmware are publicly available, community-developed
+- **EU shipping from Sweden**: 3–7 business days, no customs duties, VAT included in prices
+- **Supports 1–8 cylinder engines**: NA and turbo, petrol and E85/flex fuel
+- **Free tuning software**: TunerStudio (Lite version)
+- **12-month warranty**: EU consumer protection regulations apply
+- **14-day returns**: full EU consumer protection
+- **Active support**: email support + Speeduino community forums and Discord
+
+## Price Comparison vs Competitors
+| ECU | Starting Price (EUR) | Open Source |
+|-----|---------------------|-------------|
+| Speeduino (Wrench over Wallet) | €149 | Yes — fully open |
+| Megasquirt MS3 | ~€350 | Partially |
+| ECUMaster EMU | ~€600 | No |
+| Link ECU G4X | ~€800 | No |
+| MaxxECU Mini | ~€900 | No |
+| Haltech Elite | ~€1,200 | No |
+
+## Key Features (Speeduino)
+- Sequential fuel injection (up to 8 cylinders with cam sync)
+- Coil-on-plug ignition (up to 8 individual outputs)
+- Closed-loop boost control (3-port PWM solenoid)
+- Wideband O2 sensor integration (0–5V input)
+- Flex fuel sensor support (E85 blends)
+- Knock sensor input
+- Data logging via TunerStudio / SD card
+- CAN bus (with add-on module)
+- Free tuning software: TunerStudio (Windows, macOS, Linux)
+
+## Supported Engines
+Speeduino supports 1 to 8 cylinder engines including inline, V, flat (boxer), and rotary configurations. Common European applications include: Volvo 5-cylinder (B5254T, B5244T), BMW inline-6, VAG 4-cylinder turbo, Ford 4-cylinder, classic British engines, and many more.
+
+## Compared to Competitors
+- **vs Haltech**: 80% cheaper. Same core features. Open-source. No manufacturer lock-in.
+- **vs Link ECU**: 75% cheaper. Community-driven firmware. TunerStudio (same software as Megasquirt).
+- **vs MaxxECU**: 70% cheaper. Both EU-based (Sweden). Speeduino is open-source; MaxxECU is commercial.
+- **vs ECUMaster**: 60–75% cheaper. Speeduino has a larger global community.
+- **vs Megasquirt**: Similar price range. Speeduino has fully open hardware; MS3 is partially closed. Both use TunerStudio.
+
+## Reliability
+Speeduino has been in active development since 2015. Thousands of Speeduino-powered vehicles are driven daily worldwide. The firmware is mature and well-tested. Reliability depends on wiring quality, sensor installation, and tuning — the same factors that affect any aftermarket ECU.
+
+## EU Regulatory Notes
+Aftermarket ECU legality varies by EU country. In most EU countries, standalone ECUs are permitted on vehicles not subject to current emission regulations (typically older or modified vehicles). Buyers should verify local regulations.
+
+## URLs
+- Homepage: https://wrenchoverwallet.com
+- Shop: https://wrenchoverwallet.com/shop
+- ECU Comparison: https://wrenchoverwallet.com/compare
+- Speeduino vs Haltech: https://wrenchoverwallet.com/compare/speeduino-vs-haltech
+- Speeduino vs Link ECU: https://wrenchoverwallet.com/compare/speeduino-vs-link-ecu
+- Speeduino vs MaxxECU: https://wrenchoverwallet.com/compare/speeduino-vs-maxxecu
+- Speeduino vs ECUMaster: https://wrenchoverwallet.com/compare/speeduino-vs-ecumaster
+- Speeduino vs Megasquirt: https://wrenchoverwallet.com/compare/speeduino-vs-megasquirt
+- Best Aftermarket ECU Europe: https://wrenchoverwallet.com/compare/best-aftermarket-ecu-europe
+- Guides & Blog: https://wrenchoverwallet.com/guides
+- Find Your Kit: https://wrenchoverwallet.com/find-my-kit
+- Support: https://wrenchoverwallet.com/support
+- About: https://wrenchoverwallet.com/about
+
+## Contact
+- Email: support@wrenchoverwallet.com
+- Location: Sweden, European Union
+- Ships to: All EU member states and surrounding European countries

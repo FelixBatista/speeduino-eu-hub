@@ -2,9 +2,16 @@ import { Link } from "react-router-dom";
 import { comparisonDimensions, comparisonDisclaimer } from "@/data/comparisons";
 import { motion } from "framer-motion";
 import { Info, CheckCircle2 } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 
 export default function Compare() {
   return (
+    <>
+      <SEOHead
+        title="Aftermarket ECU Comparison: Speeduino vs Haltech vs Link vs MaxxECU vs ECUMaster"
+        description="Honest side-by-side comparison of aftermarket ECUs for Europe. Speeduino vs Haltech, Link ECU, MaxxECU, ECUMaster, and Megasquirt — price, features, open-source, and community."
+        canonical="/compare"
+      />
     <main className="pt-24 pb-20">
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
@@ -66,5 +73,6 @@ export default function Compare() {
         </div>
       </div>
     </main>
+    </>
   );
 }

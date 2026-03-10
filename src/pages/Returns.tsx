@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import SEOHead from "@/components/SEOHead";
 
 export default function Returns() {
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Returns & Warranty | Wrench over Wallet"
+        description="14-day return policy and 12-month warranty for ECU products from Wrench over Wallet. EU consumer protection applies. Easy returns from anywhere in Europe."
+        canonical="/returns"
+        noIndex={true}
+      />
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link><span className="mx-2">/</span><span className="text-foreground">Returns & Warranty</span>
@@ -22,5 +29,6 @@ export default function Returns() {
         </div>
       </div>
     </main>
+    </>
   );
 }

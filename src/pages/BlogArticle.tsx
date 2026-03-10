@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { getBlogPostBySlug, blogPosts } from "@/data/blogPosts";
 import { motion } from "framer-motion";
 import { Clock, ArrowLeft, ArrowRight, Calendar } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 
 export default function BlogArticle() {
   const { slug } = useParams();
@@ -22,9 +23,32 @@ export default function BlogArticle() {
   const next = idx < blogPosts.length - 1 ? blogPosts[idx + 1] : null;
 
   return (
+    <>
+      <SEOHead
+        title={post.metaTitle}
+        description={post.metaDescription}
+        canonical={`/guides/${post.slug}`}
+        ogType="article"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          description: post.metaDescription,
+          url: `https://wrenchoverwallet.com/guides/${post.slug}`,
+          author: { "@type": "Organization", name: "Wrench over Wallet" },
+          datePublished: post.date,
+          publisher: {
+            "@type": "Organization",
+            name: "Wrench over Wallet",
+            url: "https://wrenchoverwallet.com",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://wrenchoverwallet.com/guides/${post.slug}`,
+          },
+        }}
+      />
     <main className="pt-24 pb-20">
-      <title>{post.metaTitle}</title>
-      <meta name="description" content={post.metaDescription} />
 
       <div className="container max-w-3xl">
         <nav className="text-sm text-muted-foreground mb-8">
@@ -102,16 +126,7 @@ export default function BlogArticle() {
         </motion.article>
       </div>
 
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: post.title,
-        description: post.metaDescription,
-        author: { "@type": "Organization", name: post.author },
-        datePublished: post.date,
-        publisher: { "@type": "Organization", name: "Speeduino.eu" },
-      }) }} />
     </main>
+    </>
   );
 }

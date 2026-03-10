@@ -3,6 +3,7 @@ import { vehicles } from "@/data/vehicles";
 import { motion } from "framer-motion";
 import { ArrowRight, Search } from "lucide-react";
 import { useState } from "react";
+import SEOHead from "@/components/SEOHead";
 
 export default function Vehicles() {
   const [search, setSearch] = useState("");
@@ -12,7 +13,12 @@ export default function Vehicles() {
   );
 
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="Speeduino ECU by Vehicle — Compatible Engine Builds for Europe"
+        description="Find Speeduino ECU compatibility and build guides for your vehicle. Volvo 5-cylinder, 4-cylinder turbo, inline-6, V8, and more. Open-source aftermarket ECU for Europe."
+        canonical="/vehicles"
+      />
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -73,5 +79,6 @@ export default function Vehicles() {
         )}
       </div>
     </main>
+    </>
   );
 }

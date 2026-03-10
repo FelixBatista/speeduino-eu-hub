@@ -3,12 +3,18 @@ import { supportedConfigs } from "@/data/compatibility";
 import CompatibilityWizard from "@/components/home/CompatibilityWizard";
 import { motion } from "framer-motion";
 import { Check, X, Info } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 
 export default function FindMyKit() {
   const { sensors, control, transmission } = supportedConfigs;
 
   return (
-    <main className="pt-24 pb-20">
+    <>
+      <SEOHead
+        title="ECU Kit Finder — Which Speeduino Kit Fits Your Engine?"
+        description="Find the right aftermarket ECU kit for your engine. Answer a few questions about cylinders, induction, and sensors — get a personalised Speeduino kit recommendation shipped from the EU."
+        canonical="/find-my-kit"
+      />
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
@@ -86,5 +92,6 @@ export default function FindMyKit() {
         </section>
       </div>
     </main>
+    </>
   );
 }

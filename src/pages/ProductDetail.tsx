@@ -9,6 +9,7 @@ import { SPEEDUINO_WIKI, SPEEDUINO_DISCORD } from "@/data/speeduinoLinks";
 import { toast } from "sonner";
 import ecuProduct from "@/assets/ecu-product.jpg";
 import WaitlistDialog from "@/components/WaitlistDialog";
+import SEOHead from "@/components/SEOHead";
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -61,7 +62,50 @@ export default function ProductDetail() {
     );
   }
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.longDescription,
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "Speeduino" },
+    url: `https://wrenchoverwallet.com/product/${product.slug}`,
+    offers: {
+      "@type": "Offer",
+      price: product.priceEUR,
+      priceCurrency: "EUR",
+      availability: outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      seller: { "@type": "Organization", name: "Wrench over Wallet", url: "https://wrenchoverwallet.com" },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "EU" },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          businessDays: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"] },
+          cutoffTime: "14:00:00+01:00",
+          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: product.leadTimeDays, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 7, unitCode: "DAY" },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 14,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn",
+      },
+    },
+  };
+
   return (
+    <>
+      <SEOHead
+        title={`${product.name} — Speeduino ECU Part for Europe`}
+        description={`Buy ${product.name} from €${product.priceEUR} inc. VAT. Speeduino-compatible aftermarket ECU part shipped from the EU. ${product.longDescription.slice(0, 100)}`}
+        canonical={`/product/${product.slug}`}
+        ogType="product"
+        schema={productSchema}
+      />
     <main className="pt-24 pb-20">
       <div className="container">
         <nav className="text-sm text-muted-foreground mb-8">
@@ -232,24 +276,7 @@ export default function ProductDetail() {
         productName={product.name}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: product.name,
-            description: product.longDescription,
-            offers: {
-              "@type": "Offer",
-              price: product.priceEUR,
-              priceCurrency: "EUR",
-              availability: outOfStock ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-              seller: { "@type": "Organization", name: "Speeduino.eu" },
-            },
-          }),
-        }}
-      />
     </main>
+    </>
   );
 }
