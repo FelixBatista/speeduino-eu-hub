@@ -48,7 +48,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-card mt-16">
       {/* CTA Band */}
       <div className="bg-primary/5 border-b border-border">
         <div className="container py-12 md:py-16 text-center">
