@@ -28,13 +28,19 @@
   <url><loc>https://wrenchoverwallet.com/product/drv8825-stepper-driver</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/ballast-resistor-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
+  <!-- Products — Modules (new) -->
+  <url><loc>https://wrenchoverwallet.com/product/iac-stepper-valve-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
   <!-- Products — Sensors -->
   <url><loc>https://wrenchoverwallet.com/product/map-sensor-mpx4250</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/map-sensor-3bar</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/iat-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/clt-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/tps-sensor-3wire</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/wideband-o2-lsu49</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/flex-fuel-sensor-gm</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/knock-sensor-m12</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/cam-sensor-hall-3wire</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- Products — Accessories -->
   <url><loc>https://wrenchoverwallet.com/product/boost-control-solenoid-mac</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -42,6 +48,9 @@
   <url><loc>https://wrenchoverwallet.com/product/idc40-plug-pins-v04</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/lsu49-connector-6pin</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/product/smart-coil-connector-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/flyback-diode-pack-1n4007</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/trigger-wheel-36-1-steel</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://wrenchoverwallet.com/product/gm-sensor-pigtail-pack</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 
   <!-- Guides index -->
   <url><loc>https://wrenchoverwallet.com/guides</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
