@@ -91,7 +91,6 @@ export default function FindMyKit() {
           </div>
         </section>
       </div>
-    </main>
     </>
   );
 }

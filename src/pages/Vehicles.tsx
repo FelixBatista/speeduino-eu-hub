@@ -78,7 +78,6 @@ export default function Vehicles() {
           </div>
         )}
       </div>
-    </main>
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function About() {
           <p className="text-lg">
             We're an EU-based shop dedicated to making open-source engine management accessible to European enthusiasts. Based in Sweden, we source, assemble, test, and ship Speeduino ECU kits across Europe. The official Speeduino project and community are at{" "}
             <a href={SPEEDUINO_MAIN} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">speeduino.com</a>
-            {" "}— they don't sell boards; Wrench over Wallet is an independent EU shop.
+            {" "}— Wrench over Wallet is an independent EU shop.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 not-prose my-8">
@@ -51,7 +51,6 @@ export default function About() {
           </p>
         </div>
       </div>
-    </main>
     </>
   );
 }

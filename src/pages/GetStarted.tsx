@@ -167,7 +167,6 @@ export default function GetStarted() {
           . We keep this page as a curated index only — the content lives on the official project.
         </p>
       </div>
-    </main>
     </>
   );
 }
