@@ -11,7 +11,7 @@ const steps = [
 ];
 
 const supportOptions = [
-  { icon: Headphones, label: "Base map review", desc: "We'll review your map and sensor data" },
+  { icon: Headphones, label: "Base map review", desc: "Coming up — map & sensor review service" },
   { icon: BookOpen, label: "Wiring guides", desc: "Step-by-step harness documentation" },
   { icon: Users, label: "Community", desc: "Forums, Discord, and YouTube resources" },
 ];
