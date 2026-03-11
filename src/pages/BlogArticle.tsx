@@ -1,8 +1,71 @@
 import { useParams, Link } from "react-router-dom";
-import { getBlogPostBySlug, blogPosts } from "@/data/blogPosts";
+import { getBlogPostBySlug, blogPosts, BlogReference } from "@/data/blogPosts";
 import { motion } from "framer-motion";
-import { Clock, ArrowLeft, ArrowRight, Calendar } from "lucide-react";
+import { Clock, ArrowLeft, ArrowRight, Calendar, BookOpen, MessageSquare, Wrench, ExternalLink } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+
+/**
+ * Renders a plain-text body string with inline markdown support:
+ * - **bold text** → <strong>
+ * - [link text](url) → <a> (external) or <Link> (internal, starting with /)
+ */
+function renderInlineMarkdown(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /\*\*(.+?)\*\*|\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    if (match[1] !== undefined) {
+      parts.push(
+        <strong key={key++} className="font-semibold text-foreground">
+          {match[1]}
+        </strong>
+      );
+    } else if (match[2] !== undefined) {
+      const url = match[3];
+      if (url.startsWith("/")) {
+        parts.push(
+          <Link key={key++} to={url} className="text-primary hover:underline">
+            {match[2]}
+          </Link>
+        );
+      } else {
+        parts.push(
+          <a
+            key={key++}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            {match[2]}
+          </a>
+        );
+      }
+    }
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts;
+}
+
+const REFERENCE_TYPE_META: Record<
+  BlogReference["type"],
+  { label: string; Icon: React.FC<{ className?: string }> }
+> = {
+  wiki: { label: "Official Wiki", Icon: BookOpen },
+  forum: { label: "Forum Discussion", Icon: MessageSquare },
+  tool: { label: "Tools & Downloads", Icon: Wrench },
+};
 
 export default function BlogArticle() {
   const { slug } = useParams();
@@ -17,10 +80,13 @@ export default function BlogArticle() {
     );
   }
 
-  // Find prev/next
   const idx = blogPosts.findIndex((p) => p.slug === post.slug);
   const prev = idx > 0 ? blogPosts[idx - 1] : null;
   const next = idx < blogPosts.length - 1 ? blogPosts[idx + 1] : null;
+
+  const referenceTypes = (["wiki", "forum", "tool"] as BlogReference["type"][]).filter(
+    (type) => post.references?.some((r) => r.type === type)
+  );
 
   return (
     <>
@@ -100,7 +166,7 @@ export default function BlogArticle() {
                 <div className="prose-custom">
                   {section.body.split("\n\n").map((paragraph, j) => (
                     <p key={j} className="text-secondary-foreground text-sm leading-relaxed mb-4 whitespace-pre-line">
-                      {paragraph}
+                      {renderInlineMarkdown(paragraph)}
                     </p>
                   ))}
                 </div>
@@ -108,8 +174,44 @@ export default function BlogArticle() {
             ))}
           </div>
 
+          {/* References & Further Reading */}
+          {post.references && post.references.length > 0 && (
+            <div className="mt-12 card-motorsport p-5">
+              <p className="data-label text-primary mb-4">References & Further Reading</p>
+              <div className="space-y-4">
+                {referenceTypes.map((type) => {
+                  const items = post.references!.filter((r) => r.type === type);
+                  const { label, Icon } = REFERENCE_TYPE_META[type];
+                  return (
+                    <div key={type}>
+                      <p className="text-xs font-mono text-muted-foreground mb-2 flex items-center gap-1.5">
+                        <Icon className="w-3 h-3" />
+                        {label}
+                      </p>
+                      <ul className="space-y-1.5 ml-4">
+                        {items.map((ref, i) => (
+                          <li key={i}>
+                            <a
+                              href={ref.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                            >
+                              <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                              {ref.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Prev/Next navigation */}
-          <div className="mt-16 pt-8 border-t border-border grid grid-cols-2 gap-4">
+          <div className="mt-10 pt-8 border-t border-border grid grid-cols-2 gap-4">
             {prev ? (
               <Link to={`/guides/${prev.slug}`} className="card-motorsport p-4 group">
                 <p className="data-label text-xs mb-1">← Previous</p>

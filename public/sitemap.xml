@@ -47,6 +47,7 @@
   <url><loc>https://wrenchoverwallet.com/guides</loc><changefreq>weekly</changefreq><priority>0.75</priority></url>
 
   <!-- Blog articles -->
+  <url><loc>https://wrenchoverwallet.com/guides/first-steps-with-speeduino</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://wrenchoverwallet.com/guides/speeduino-in-europe</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://wrenchoverwallet.com/guides/aftermarket-ecu-comparison</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://wrenchoverwallet.com/guides/wiring-basics</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
