@@ -29,7 +29,6 @@ export default function Terms() {
           <p>These terms are governed by the laws of Sweden. EU consumer protection regulations apply.</p>
         </div>
       </div>
-    </main>
     </>
   );
 }

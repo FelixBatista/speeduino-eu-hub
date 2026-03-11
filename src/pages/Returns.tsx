@@ -28,7 +28,6 @@ export default function Returns() {
           <p>Email support@wrenchoverwallet.com with your order number, a description of the issue, and photos if applicable. We'll respond within 2 business days.</p>
         </div>
       </div>
-    </main>
     </>
   );
 }

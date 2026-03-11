@@ -43,7 +43,6 @@ export default function Shipping() {
           <p>Orders are typically processed within 1–2 business days. Assembled ECUs may take 3–5 additional business days for build and testing. You'll receive a tracking number once shipped.</p>
         </div>
       </div>
-    </main>
     </>
   );
 }

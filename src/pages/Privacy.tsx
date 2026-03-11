@@ -34,7 +34,6 @@ export default function Privacy() {
           <p>Data controller: Wrench over Wallet, [Address], Sweden. Email: support@wrenchoverwallet.com</p>
         </div>
       </div>
-    </main>
     </>
   );
 }
