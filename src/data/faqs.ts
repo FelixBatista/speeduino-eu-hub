@@ -10,7 +10,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What engines and cylinder counts does Speeduino support?",
-    answer: "Speeduino supports 1 to 8 cylinder engines, including inline, V, flat (boxer), and rotary configurations. The most common setups are 4-cylinder and 5-cylinder (Volvo), but 6 and 8-cylinder builds are well documented. The system works with petrol (gasoline) and E85/flex fuel setups.",
+    answer: "Speeduino supports 1 to 8 cylinder engines, including inline, V, flat (boxer), and rotary configurations. The most common setup is 4-cylinder, though 5, 6, and 8-cylinder builds are well documented. The system works with petrol (gasoline) and E85/flex fuel setups.",
   },
   {
     question: "Can I run full sequential fuel injection?",

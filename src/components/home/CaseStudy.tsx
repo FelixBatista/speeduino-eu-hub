@@ -52,7 +52,7 @@ export default function CaseStudy() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h3 className="font-display text-2xl font-bold text-foreground mb-4">
-              Volvo S60 2.4T — From OEM to Open-Source
+              From OEM to Open-Source
             </h3>
             <p className="text-muted-foreground mb-6">
               Converted from the factory ME7 ECU to Speeduino with sequential injection, coil-on-plug, and closed-loop boost control. Full wideband tuning on E85.
