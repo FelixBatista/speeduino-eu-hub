@@ -7,8 +7,7 @@ import {
   SPEEDUINO_WIKI,
   SPEEDUINO_DISCORD,
   SPEEDUINO_SPEEDYLOADER,
-  SPEEDUINO_FIRMWARE_RELEASES,
-  SPEEDUINO_HARDWARE,
+  SPEEDUINO_TUNERSTUDIO,
 } from "@/data/speeduinoLinks";
 import logoIcon from "@/assets/logo-icon.png";
 
@@ -123,21 +122,23 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold text-foreground uppercase tracking-wider mb-4">Speeduino project</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Documentation (Wiki)</a></li>
+              <li>
+                <a href={SPEEDUINO_TUNERSTUDIO} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">TunerStudio</a>
+                <span className="block text-xs text-muted-foreground/80">Tuning software — required for all builds</span>
+              </li>
+              <li>
+                <a href={SPEEDUINO_SPEEDYLOADER} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">SpeedyLoader</a>
+                <span className="block text-xs text-muted-foreground/80">Firmware flasher — no compiling needed</span>
+              </li>
+              <li><a href={SPEEDUINO_FORUM} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Forum</a></li>
+              <li><a href={SPEEDUINO_DISCORD} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Discord</a></li>
               <li>
                 <a href={SPEEDUINO_MAIN} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
                   Speeduino.com
                 </a>
                 <span className="block text-xs text-muted-foreground/80">Project home (no boards sold here)</span>
               </li>
-              <li><a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Documentation</a></li>
-              <li>
-                <a href={SPEEDUINO_SPEEDYLOADER} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Software (Official)</a>
-                <span className="block text-xs text-muted-foreground/80">SpeedyLoader + firmware — pre-compiled, no compiling needed</span>
-              </li>
-              <li><a href={SPEEDUINO_FIRMWARE_RELEASES} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Firmware releases</a></li>
-              <li><a href={SPEEDUINO_FORUM} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Forum</a></li>
-              <li><a href={SPEEDUINO_DISCORD} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Discord</a></li>
-              <li><a href={SPEEDUINO_HARDWARE} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Hardware designs / license</a></li>
             </ul>
           </div>
           <div>

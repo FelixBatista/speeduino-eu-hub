@@ -17,3 +17,4 @@ export const SPEEDUINO_WIKI_WIRING = "https://wiki.speeduino.com/en/wiring/Overv
 export const SPEEDUINO_WIKI_CONFIGURATION = "https://wiki.speeduino.com/en/configuration/Engine_Constants";
 export const SPEEDUINO_WIKI_FIRST_START = "https://wiki.speeduino.com/en/Start_Up";
 export const SPEEDUINO_TUNERSTUDIO = "https://www.tunerstudio.com/index.php/tuner-studio";
+export const SPEEDUINO_YOUTUBE_SEARCH = "https://www.youtube.com/results?search_query=speeduino";
