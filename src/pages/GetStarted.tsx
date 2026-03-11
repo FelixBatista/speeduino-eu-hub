@@ -78,7 +78,7 @@ export default function GetStarted() {
         description="How to get started with a Speeduino aftermarket ECU. From unboxing to first start: firmware, wiring, sensors, TunerStudio setup. Practical guide for European builders."
         canonical="/get-started"
       />
-      <div className="container max-w-3xl">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>

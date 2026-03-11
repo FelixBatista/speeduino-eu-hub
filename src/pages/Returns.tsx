@@ -10,7 +10,7 @@ export default function Returns() {
         canonical="/returns"
         noIndex={true}
       />
-      <div className="container max-w-3xl">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link><span className="mx-2">/</span><span className="text-foreground">Returns & Warranty</span>
         </nav>

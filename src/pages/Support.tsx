@@ -83,7 +83,7 @@ export default function Support() {
         description="EU-based support for Speeduino ECU builds. Step-by-step installation guide, TunerStudio, SpeedyLoader, official wiki, Discord, forum, and email support."
         canonical="/support"
       />
-      <div className="container max-w-3xl">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>

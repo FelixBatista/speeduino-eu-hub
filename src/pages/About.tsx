@@ -11,7 +11,7 @@ export default function About() {
         description="Wrench over Wallet is an EU-based shop (Sweden) making open-source Speeduino ECU kits accessible to European car enthusiasts. Affordable, transparent, community-driven."
         canonical="/about"
       />
-      <div className="container max-w-3xl">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>
