@@ -13,7 +13,7 @@ export default function Guides() {
         description="Practical guides for Speeduino and aftermarket ECU builds in Europe. Wiring basics, sensor selection, boost control, first start, and tuning guides."
         canonical="/guides"
       />
-      <div className="container">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>
