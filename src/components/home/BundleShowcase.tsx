@@ -55,7 +55,7 @@ export default function BundleShowcase() {
                 >
                   <div className="aspect-[4/3] rounded-lg overflow-hidden mb-5 bg-secondary/50">
                     <img
-                      src={ecuProduct}
+                      src={product.imageUrl || ecuProduct}
                       alt={product.name}
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                       loading="lazy"
