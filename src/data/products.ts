@@ -31,6 +31,7 @@ export interface Product {
   badge?: string;
   featured: boolean;
   inStock: boolean;
+  imageUrl?: string | null;
   images: string[];
   specs: Record<string, string>;
   stripePaymentLink?: string;

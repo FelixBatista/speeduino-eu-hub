@@ -105,7 +105,7 @@ export default function Shop() {
                   >
                     <div className="aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-secondary/50 relative">
                       <img
-                        src={ecuProduct}
+                        src={product.imageUrl || ecuProduct}
                         alt={product.name}
                         className={`w-full h-full object-cover transition-all duration-500 ${
                           oos ? "opacity-40 grayscale" : "opacity-70 group-hover:opacity-100 group-hover:scale-105"

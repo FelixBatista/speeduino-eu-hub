@@ -123,7 +123,7 @@ export default function ProductDetail() {
         <div className="grid lg:grid-cols-2 gap-10">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <div className={`aspect-square rounded-xl overflow-hidden bg-secondary/50 border border-border relative ${outOfStock && stockLoaded ? "opacity-70" : ""}`}>
-              <img src={ecuProduct} alt={product.name} className="w-full h-full object-cover" />
+              <img src={product.imageUrl || ecuProduct} alt={product.name} className="w-full h-full object-cover" />
               {outOfStock && stockLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="bg-destructive text-destructive-foreground text-sm font-bold px-4 py-2 rounded-lg shadow-lg rotate-[-8deg]">
