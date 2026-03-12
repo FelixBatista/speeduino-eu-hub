@@ -53,7 +53,7 @@ export default function Hero() {
               Find My Kit
             </Link>
             <Link to="/shop" className="cta-secondary">
-              Shop Bundles
+              Shop
             </Link>
             <Link to="/compare" className="cta-secondary">
               Compare ECUs
