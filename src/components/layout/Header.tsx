@@ -113,19 +113,11 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-3 pt-3 border-t border-border flex gap-3">
-                <a
-                  href={SPEEDUINO_DISCORD}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cta-secondary flex-1 !py-3 !text-sm text-center"
-                >
-                  <MessageCircle className="w-4 h-4 inline mr-2" /> Discord
-                </a>
-                <Link to="/cart" className="cta-secondary flex-1 !py-3 !text-sm text-center">
+              <div className="mt-3 pt-3 border-t border-border flex flex-col gap-3">
+                <Link to="/cart" className="cta-secondary w-full !py-3 !text-sm text-center">
                   <ShoppingCart className="w-4 h-4 inline mr-2" /> Cart
                 </Link>
-                <Link to="/find-my-kit" className="cta-primary flex-1 !py-3 !text-sm text-center">
+                <Link to="/find-my-kit" className="cta-primary w-full !py-3 !text-sm text-center">
                   Find My Kit
                 </Link>
               </div>
