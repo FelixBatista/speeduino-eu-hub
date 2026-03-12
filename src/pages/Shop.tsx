@@ -111,6 +111,7 @@ export default function Shop() {
                           oos ? "opacity-40 grayscale" : "opacity-70 group-hover:opacity-100 group-hover:scale-105"
                         }`}
                         loading="lazy"
+                        onError={(e) => { e.currentTarget.src = ecuProduct; }}
                       />
                       {oos && (
                         <div className="absolute inset-0 flex items-center justify-center">

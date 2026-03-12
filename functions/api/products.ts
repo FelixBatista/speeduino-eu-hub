@@ -23,7 +23,7 @@ function mapRow(row: ProductRow) {
     badge: row.badge || null,
     featured: row.featured === 1,
     inStock: row.in_stock === 1,
-    imageUrl: row.image_url || null,
+    imageUrl: row.image_url || (row.category !== 'board' ? `/products/${row.id}.png` : null),
     images: [],
     specs: JSON.parse((row.specs as string) || "{}"),
   };
