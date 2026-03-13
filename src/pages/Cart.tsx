@@ -46,7 +46,7 @@ export default function Cart() {
               className="card-motorsport p-4 flex gap-4 items-center"
             >
               <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary/50 flex-shrink-0">
-                <img src={ecuProduct} alt={item.product.shortName} className="w-full h-full object-cover" />
+                <img src={item.product.imageUrl || ecuProduct} alt={item.product.shortName} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 min-w-0">
                 <Link to={`/product/${item.product.slug}`} className="font-display font-bold text-foreground hover:text-primary transition-colors">
