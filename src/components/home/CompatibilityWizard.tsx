@@ -341,7 +341,7 @@ export default function CompatibilityWizard() {
                                       className={`p-2 rounded-md flex-shrink-0 transition-colors ${
                                         inCart
                                           ? "bg-amber-500 text-white hover:bg-amber-600"
-                                          : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
+                                          : "bg-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                       }`}
                                       aria-label={inCart ? `Remove ${product.shortName} from cart` : `Add ${product.shortName} to cart`}
                                       title={inCart ? "Remove from cart" : "Add to cart"}
