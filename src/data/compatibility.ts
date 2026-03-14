@@ -103,7 +103,7 @@ export const wizardSteps: WizardStep[] = [
 
 // Supported configurations summary (for specs page & homepage)
 export const supportedConfigs = {
-  cylinders: { range: "1–8", common: ["4", "5", "6", "8"], notes: "Most common: 4-cylinder and 5-cylinder" },
+  cylinders: { range: "1–8", common: ["4", "5", "6", "8"], notes: "Most common: 4-cylinder" },
   injectors: { maxOutputs: 8, modes: ["Batch fire", "Semi-sequential", "Full sequential"], notes: "Sequential requires cam position sensor" },
   ignition: { maxOutputs: 8, modes: ["Wasted spark", "Coil-on-plug", "Single coil + distributor"], notes: "COP recommended for best performance" },
   sensors: {
