@@ -28,7 +28,7 @@ export default function CompatibilityWizard() {
   const [showResult, setShowResult] = useState(false);
   const { data: allProducts = [], isLoading: productsLoading } = useProducts();
   const { data: configuratorInfo = {} } = useConfiguratorInfo();
-  const { addItem } = useCart();
+  const { addItem, removeItem, items: cartItems } = useCart();
   const { availability } = useAvailability();
 
   const step = configuratorSteps[currentStep];
@@ -291,6 +291,7 @@ export default function CompatibilityWizard() {
                             {items.map((product) => {
                               const stock = typeof availability[product.id] === "number" ? availability[product.id] : -1;
                               const oos = stock === 0;
+                              const inCart = cartItems.some((i) => i.product.id === product.id);
                               return (
                                 <div
                                   key={product.id}
@@ -329,13 +330,23 @@ export default function CompatibilityWizard() {
                                   ) : (
                                     <button
                                       onClick={() => {
-                                        addItem(product);
-                                        toast.success(`${product.shortName} added to cart`);
+                                        if (inCart) {
+                                          removeItem(product.id);
+                                          toast.success(`${product.shortName} removed from cart`);
+                                        } else {
+                                          addItem(product);
+                                          toast.success(`${product.shortName} added to cart`);
+                                        }
                                       }}
-                                      className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors flex-shrink-0"
-                                      aria-label={`Add ${product.shortName} to cart`}
+                                      className={`p-2 rounded-md flex-shrink-0 transition-colors ${
+                                        inCart
+                                          ? "bg-amber-500 text-white hover:bg-amber-600"
+                                          : "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground"
+                                      }`}
+                                      aria-label={inCart ? `Remove ${product.shortName} from cart` : `Add ${product.shortName} to cart`}
+                                      title={inCart ? "Remove from cart" : "Add to cart"}
                                     >
-                                      <Plus className="w-4 h-4" />
+                                      {inCart ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                                     </button>
                                   )}
                                 </div>
