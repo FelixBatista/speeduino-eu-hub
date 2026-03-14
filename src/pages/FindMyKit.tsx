@@ -15,7 +15,7 @@ export default function FindMyKit() {
         description="Find the right aftermarket ECU kit for your engine. Answer a few questions about cylinders, induction, and sensors — get a personalised Speeduino kit recommendation shipped from the EU."
         canonical="/find-my-kit"
       />
-      <div className="container">
+      <div className="container max-w-3xl pt-24 pb-20">
         <nav className="text-sm text-muted-foreground mb-8">
           <Link to="/" className="hover:text-foreground">Home</Link>
           <span className="mx-2">/</span>

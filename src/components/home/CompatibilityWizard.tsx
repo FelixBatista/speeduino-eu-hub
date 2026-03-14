@@ -257,12 +257,22 @@ export default function CompatibilityWizard() {
                 className="card-motorsport p-6 md:p-8"
               >
                 <p className="data-label text-primary mb-1">Your Shopping List</p>
-                <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">
-                  Compatible Components
-                </h3>
-                <p className="text-muted-foreground text-sm mb-6">
-                  Based on your selections, here's everything you need for your build.
-                </p>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                  <div>
+                    <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-2">
+                      Compatible Components
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      Based on your selections, here's everything you need for your build.
+                    </p>
+                  </div>
+                  <button
+                    onClick={addAllToCart}
+                    className="cta-primary !py-2.5 !px-4 !text-sm flex-shrink-0 self-start sm:self-center"
+                  >
+                    <ShoppingCart className="w-4 h-4 mr-2 inline" /> Add All to Cart
+                  </button>
+                </div>
 
                 {productsLoading ? (
                   <div className="flex items-center justify-center py-8">
@@ -321,7 +331,6 @@ export default function CompatibilityWizard() {
                                       onClick={() => {
                                         addItem(product);
                                         toast.success(`${product.shortName} added to cart`);
-                                        navigate("/cart");
                                       }}
                                       className="p-2 rounded-md bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors flex-shrink-0"
                                       aria-label={`Add ${product.shortName} to cart`}
@@ -347,10 +356,10 @@ export default function CompatibilityWizard() {
                   <div className="flex gap-3">
                     <button onClick={reset} className="cta-secondary flex-1 !py-3 !text-sm">Start Over</button>
                     <button
-                      onClick={addAllToCart}
+                      onClick={() => navigate("/cart")}
                       className="cta-primary flex-1 !py-3 !text-sm"
                     >
-                      <ShoppingCart className="w-4 h-4 mr-2 inline" /> Add All to Cart
+                      <ShoppingCart className="w-4 h-4 mr-2 inline" /> Go to Cart
                     </button>
                   </div>
                 </div>
