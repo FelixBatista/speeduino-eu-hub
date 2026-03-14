@@ -124,6 +124,6 @@ export const supportedConfigs = {
   },
   transmission: {
     manual: { supported: true, notes: "No special requirements from ECU side" },
-    automatic: { supported: false, notes: "Speeduino does not control automatic transmissions. The vehicle's existing TCU typically continues to operate independently. Verify compatibility for your specific vehicle." },
+    automatic: { supported: false, notes: "Speeduino controls the engine only — it does not control automatic transmissions. Some vehicles can retain the factory transmission control unit (TCU), but compatibility depends heavily on the transmission and vehicle electronics. Older or simpler automatics may continue to work with the original TCU if it still receives the signals it needs. Many newer electronically controlled automatics require additional integration, such as throttle/RPM/load signals, torque reduction, or CAN communication with the engine ECU. Manual transmission vehicles generally have no special transmission-control requirements." },
   },
 };
