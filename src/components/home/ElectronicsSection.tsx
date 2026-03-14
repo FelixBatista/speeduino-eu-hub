@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-const ecuProduct = "/assets/ecu-product.jpg";
+import ecuProduct from "@/assets/ecu-product.png";
 import { Cpu, Shield, Plug, Thermometer, Expand, Wrench } from "lucide-react";
 
 const features = [
