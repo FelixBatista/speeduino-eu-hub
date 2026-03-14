@@ -6,7 +6,7 @@ export interface FAQ {
 export const faqs: FAQ[] = [
   {
     question: "Is Speeduino reliable enough for a daily driver?",
-    answer: "Yes. Thousands of Speeduino-powered vehicles are driven daily around the world. The platform has been in active development since 2015, and the firmware is mature and well-tested. Like any aftermarket ECU, reliability depends on proper wiring, sensor installation, and tuning. We provide wiring guides and base maps to help you get a reliable result.",
+    answer: "Yes. Thousands of Speeduino-powered vehicles are driven daily around the world. The platform has been in active development since 2015, and the firmware is mature and well-tested. Like any aftermarket ECU, reliability depends on proper wiring, sensor installation, and tuning. Speeduino official materials provide wiring guides and base maps to help you get a reliable result.",
   },
   {
     question: "What engines and cylinder counts does Speeduino support?",
@@ -26,7 +26,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What about automatic transmission compatibility?",
-    answer: "Speeduino controls the engine only — it does not control automatic transmissions. In most vehicles, the existing transmission control unit (TCU) continues to operate independently. Some vehicles may need additional work to ensure the TCU communicates correctly without the original engine ECU. Manual transmission vehicles have no special requirements.",
+    answer: "Speeduino controls the engine only — it does not control automatic transmissions. Some vehicles can retain the factory transmission control unit (TCU), but compatibility depends heavily on the transmission and vehicle electronics. Older or simpler automatics may continue to work with the original TCU if it still receives the signals it needs. Many newer electronically controlled automatics require additional integration, such as throttle/RPM/load signals, torque reduction, or CAN communication with the engine ECU. Manual transmission vehicles generally have no special transmission-control requirements.",
   },
   {
     question: "What sensors do I need?",
@@ -42,11 +42,11 @@ export const faqs: FAQ[] = [
   },
   {
     question: "What kind of support is available?",
-    answer: "We offer EU-based email support for products purchased from our shop. The Speeduino community is also very active, with forums, a wiki, Discord servers, and YouTube channels with build guides. For hands-on help, we offer optional base map review and remote support sessions.",
+    answer: "We offer EU-based email support for products purchased from our shop. The Speeduino community is also very active, with forums, a wiki, Discord servers, and YouTube channels with build guides. For hands-on help, we will offer optional base map review and remote support sessions in the future for a fee.",
   },
   {
     question: "Do you ship to all EU countries?",
-    answer: "Yes. We ship from within the EU, so there are no customs duties for EU customers. Standard shipping typically takes 3–7 business days within the EU, and 5–10 days for Sweden/Scandinavia. Express shipping options are available at checkout.",
+    answer: "Yes. We ship from within the EU, so there are no customs duties for EU customers. Standard shipping typically takes 3–7 business days. Express shipping options are available at checkout.",
   },
   {
     question: "What is your return and warranty policy?",
@@ -66,7 +66,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "Can I use Speeduino for a track car or rally car?",
-    answer: "Yes. Many track and rally builds use Speeduino successfully. For competition use, we recommend the full sensor pack (including wideband, knock sensor, and boost control), proper shielded wiring, and thorough testing before race day. Our Track/Rally bundle includes everything you need to get started.",
+    answer: "Yes. Many track and rally builds use Speeduino successfully. For competition use, we recommend the full sensor pack (including wideband, knock sensor, and boost control), proper shielded wiring, and thorough testing before race day.",
   },
   {
     question: "What is the cheapest aftermarket ECU I can buy in Europe?",
