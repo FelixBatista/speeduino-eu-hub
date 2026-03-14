@@ -77,11 +77,11 @@ export default function CaseStudy() {
               <p className="text-xs text-muted-foreground">— Builder from Stockholm, Sweden</p>
             </div>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <Link to="/shop" className="text-primary text-sm font-medium hover:underline">
                 See more builds →
               </Link>
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </div>
