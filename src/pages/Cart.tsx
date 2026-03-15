@@ -61,28 +61,34 @@ export default function Cart() {
               >
                 <button
                   onClick={(e) => { e.stopPropagation(); updateQuantity(item.product.id, item.quantity - 1); }}
-                  className="min-w-[48px] min-h-[48px] p-3 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  className="group p-2 -m-2 flex items-center justify-center [touch-action:manipulation]"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="w-3.5 h-3.5 pointer-events-none" />
+                  <span className="p-1.5 rounded bg-secondary group-hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center">
+                    <Minus className="w-3.5 h-3.5 pointer-events-none" />
+                  </span>
                 </button>
                 <span className="font-mono text-sm w-8 text-center text-foreground py-2">{item.quantity}</span>
                 <button
                   onClick={(e) => { e.stopPropagation(); updateQuantity(item.product.id, item.quantity + 1); }}
-                  className="min-w-[48px] min-h-[48px] p-3 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  className="group p-2 -m-2 flex items-center justify-center [touch-action:manipulation]"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="w-3.5 h-3.5 pointer-events-none" />
+                  <span className="p-1.5 rounded bg-secondary group-hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center">
+                    <Plus className="w-3.5 h-3.5 pointer-events-none" />
+                  </span>
                 </button>
                 <span className="font-mono font-bold text-foreground w-16 md:w-24 text-right ml-1 md:ml-0">
                   {`€${item.product.priceEUR * item.quantity}`}
                 </span>
                 <button
                   onClick={(e) => { e.stopPropagation(); removeItem(item.product.id); }}
-                  className="min-w-[48px] min-h-[48px] p-3 text-muted-foreground hover:text-destructive transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  className="group p-2 -m-2 flex items-center justify-center [touch-action:manipulation]"
                   aria-label="Remove from cart"
                 >
-                  <Trash2 className="w-4 h-4 pointer-events-none" />
+                  <span className="p-2 text-muted-foreground group-hover:text-destructive transition-colors flex items-center justify-center">
+                    <Trash2 className="w-4 h-4 pointer-events-none" />
+                  </span>
                 </button>
               </div>
               </div>
