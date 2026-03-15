@@ -43,32 +43,49 @@ export default function Cart() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="card-motorsport p-4 flex gap-4 items-center"
+              className="card-motorsport p-4 flex gap-4 items-stretch"
             >
-              <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary/50 flex-shrink-0">
+              <div className="w-20 h-20 rounded-lg overflow-hidden bg-secondary/50 flex-shrink-0 self-start">
                 <img src={item.product.imageUrl || ecuProduct} alt={item.product.shortName} className="w-full h-full object-cover" />
               </div>
-              <div className="flex-1 min-w-0">
-                <Link to={`/product/${item.product.slug}`} className="font-display font-bold text-foreground hover:text-primary transition-colors">
-                  {item.product.shortName}
-                </Link>
-                <p className="text-sm text-muted-foreground truncate">{item.product.description}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="p-1.5 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors">
-                  <Minus className="w-3.5 h-3.5" />
+              <div className="flex-1 min-w-0 flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                <div className="min-w-0 flex-1">
+                  <Link to={`/product/${item.product.slug}`} className="font-display font-bold text-foreground hover:text-primary transition-colors">
+                    {item.product.shortName}
+                  </Link>
+                  <p className="text-sm text-muted-foreground truncate">{item.product.description}</p>
+                </div>
+              <div
+                className="flex items-center gap-2 shrink-0 pt-3 pb-2 md:pt-0 md:pb-0"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={(e) => { e.stopPropagation(); updateQuantity(item.product.id, item.quantity - 1); }}
+                  className="min-w-[48px] min-h-[48px] p-3 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  aria-label="Decrease quantity"
+                >
+                  <Minus className="w-3.5 h-3.5 pointer-events-none" />
                 </button>
-                <span className="font-mono text-sm w-8 text-center text-foreground">{item.quantity}</span>
-                <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="p-1.5 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors">
-                  <Plus className="w-3.5 h-3.5" />
+                <span className="font-mono text-sm w-8 text-center text-foreground py-2">{item.quantity}</span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); updateQuantity(item.product.id, item.quantity + 1); }}
+                  className="min-w-[48px] min-h-[48px] p-3 rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  aria-label="Increase quantity"
+                >
+                  <Plus className="w-3.5 h-3.5 pointer-events-none" />
+                </button>
+                <span className="font-mono font-bold text-foreground w-16 md:w-24 text-right ml-1 md:ml-0">
+                  {`€${item.product.priceEUR * item.quantity}`}
+                </span>
+                <button
+                  onClick={(e) => { e.stopPropagation(); removeItem(item.product.id); }}
+                  className="min-w-[48px] min-h-[48px] p-3 text-muted-foreground hover:text-destructive transition-colors flex items-center justify-center [touch-action:manipulation]"
+                  aria-label="Remove from cart"
+                >
+                  <Trash2 className="w-4 h-4 pointer-events-none" />
                 </button>
               </div>
-              <span className="font-mono font-bold text-foreground w-24 text-right">
-                {`€${item.product.priceEUR * item.quantity}`}
-              </span>
-              <button onClick={() => removeItem(item.product.id)} className="p-2 text-muted-foreground hover:text-destructive transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
+              </div>
             </motion.div>
           ))}
         </div>
