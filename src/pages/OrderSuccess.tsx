@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
-import InstallSteps from "@/components/home/InstallSteps";
+import GetStartedSection from "@/components/GetStartedSection";
 
 type OrderData = {
   order: { id: string; created_at: string; status: string; currency: string; amount_total: number; customer_email: string | null };
@@ -89,7 +89,9 @@ export default function OrderSuccess() {
         </div>
       </div>
 
-      <InstallSteps />
+      <div className="container max-w-3xl mt-12">
+        <GetStartedSection showHeader />
+      </div>
     </main>
   );
 }
