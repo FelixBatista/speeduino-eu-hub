@@ -147,6 +147,14 @@ export default function GetStartedSection({ showHeader = true }: Props) {
           </div>
         </div>
       </div>
+
+      <p className="mt-10 text-xs text-muted-foreground text-center">
+        All installation steps link to the official{" "}
+        <a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          Speeduino Wiki
+        </a>
+        . We keep this page as a curated index only — the content lives on the official project.
+      </p>
     </div>
   );
 }

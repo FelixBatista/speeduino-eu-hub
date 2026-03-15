@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import GetStartedSection from "@/components/GetStartedSection";
-import { SPEEDUINO_WIKI } from "@/data/speeduinoLinks";
 
 export default function GetStarted() {
   return (
@@ -30,14 +29,6 @@ export default function GetStarted() {
         </div>
 
         <GetStartedSection showHeader={false} />
-
-        <p className="mt-10 text-xs text-muted-foreground text-center">
-          All installation steps link to the official{" "}
-          <a href={SPEEDUINO_WIKI} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            Speeduino Wiki
-          </a>
-          . We keep this page as a curated index only — the content lives on the official project.
-        </p>
       </div>
     </>
   );
