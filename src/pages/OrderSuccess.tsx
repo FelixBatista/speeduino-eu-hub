@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
+import InstallSteps from "@/components/home/InstallSteps";
 
 type OrderData = {
   order: { id: string; created_at: string; status: string; currency: string; amount_total: number; customer_email: string | null };
@@ -86,12 +87,9 @@ export default function OrderSuccess() {
           <h2 className="font-display text-lg font-bold text-foreground">Next steps</h2>
           <p>We'll send a confirmation to your email if you entered one at checkout. You'll receive shipping details once your order is dispatched.</p>
         </div>
-
-        <div className="mt-8 flex gap-4">
-          <Link to="/shop" className="text-primary hover:underline">Continue shopping</Link>
-          <Link to="/support" className="text-primary hover:underline">Contact support</Link>
-        </div>
       </div>
+
+      <InstallSteps />
     </main>
   );
 }
